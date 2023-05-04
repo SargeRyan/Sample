@@ -3,7 +3,7 @@ import styled from 'styled-component';
 import { View } from 'react-native';
 
 
-export const Colors = {]
+export const Colors = {
     primary:  '#ffffff',
     secondary: "#E4E7EB",
     tertiary: "#1F2937",
