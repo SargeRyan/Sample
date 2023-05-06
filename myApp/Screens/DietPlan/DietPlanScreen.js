@@ -1,80 +1,18 @@
-import {
-  StyleSheet,
-  Text,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  View,
-  Button,
-  Image,
-} from "react-native";
+import { StyleSheet, Text, SafeAreaView, ScrollView, View } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import React, { useState } from "react";
-import Ionicons from "react-native-vector-icons/Ionicons";
-
+import MealList from "./Components/MealList";
+import MealSettings from "./Components/MealSettings";
 export default DietPlanScreen = ({ navigation, route }) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
+        <MealSettings></MealSettings>
         <View style={styles.headingContainer}>
           <Text style={styles.heading}>Today Meals</Text>
           <MealTimeDropDown listMode="SCROLLVIEW" />
         </View>
-        <View style={styles.mealCardContainer}>
-          <View style={[styles.card, styles.shadowProp]}>
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <View style={{ display: "flex", flexDirection: "row" }}>
-                <View
-                  style={{
-                    height: 70,
-                    width: 80,
-                    marginRight: 10,
-                    borderRadius: 8,
-                    overflow: "hidden",
-                  }}
-                >
-                  <Image
-                    style={{ width: 80, borderRadius: 8, height: 70 }}
-                    source={require("../../image/pandesal.jpg")}
-                  />
-                </View>
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-around",
-                  }}
-                >
-                  <Text style={{ fontSize: 20, width: 150 }}>Pandesal </Text>
-                  <View>
-                    <Text style={{ fontSize: 14 }}>3 pcs</Text>
-                    <Text style={{ fontSize: 14 }}>100 kcal</Text>
-                  </View>
-                </View>
-              </View>
-
-              <View
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                <Ionicons
-                  name={"checkmark-circle"}
-                  size={40}
-                  color={"green"}
-                  style={{ alignSelf: "center" }}
-                />
-              </View>
-            </View>
-          </View>
-        </View>
+        <MealList />
       </ScrollView>
     </SafeAreaView>
   );
@@ -94,32 +32,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     overflow: "visible",
     flexWrap: "wrap",
+    backgroundColor: "#fff",
   },
   heading: {
     fontSize: 24,
     fontWeight: 600,
     alignSelf: "center",
-  },
-  mealCardContainer: {
-    display: "flex",
-    flexDirection: "column",
-    paddingVertical: 20,
-    paddingHorizontal: 5,
-  },
-  card: {
-    backgroundColor: "white",
-    borderRadius: 8,
-    padding: 14,
-    width: "100%",
-    alignSelf: "center",
-  },
-  shadowProp: {
-    shadowColor: "#171717",
-    shadowOffset: { width: -2, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 3,
-    bprderRadius: 8,
   },
 });
 
