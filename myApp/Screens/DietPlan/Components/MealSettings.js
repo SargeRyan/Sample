@@ -1,9 +1,10 @@
 import { Text, Button, StyleSheet, View, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import AddMealScreen from "../AddMealScreen";
-
-export default MealSettings = () => {
+import PlanWeeklyMeal from "../PlanWeeklyMeal";
+export default MealSettings = ({ fetchMeals }) => {
   const [addMealModalVisible, setAddMealModalVisible] = useState(false);
+  const [weeklyMealModalVisible, setweeklyMealModalVisible] = useState(false);
   return (
     <View
       style={{
@@ -23,11 +24,23 @@ export default MealSettings = () => {
           setAddMealModalVisible(true);
         }}
       />
-      <SettingButton title={"Set Daily Diet Plan"} onPress={() => {}} />
+      <SettingButton
+        title={"Plan Weekly Meal"}
+        onPress={() => {
+          setweeklyMealModalVisible(true);
+        }}
+      />
       <AddMealScreen
         modalVisible={addMealModalVisible}
         onPressCloseModal={() => {
           setAddMealModalVisible(false);
+        }}
+      />
+      <PlanWeeklyMeal
+        modalVisible={weeklyMealModalVisible}
+        onPressCloseModal={() => {
+          setweeklyMealModalVisible(false);
+          fetchMeals();
         }}
       />
     </View>

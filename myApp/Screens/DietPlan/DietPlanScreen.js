@@ -1,18 +1,36 @@
 import { StyleSheet, Text, SafeAreaView, ScrollView, View } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
-import React, { useState } from "react";
 import MealList from "./Components/MealList";
 import MealSettings from "./Components/MealSettings";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useState, useEffect } from "react";
+import {
+  mealDayToEat,
+  mealTimeToEat,
+  getMealsToday,
+} from "../../AsyncStorageFunctions";
 export default DietPlanScreen = ({ navigation, route }) => {
+  const [value, setValue] = useState("Breakfast");
+  const [mealsToday, setMealsToday] = useState([]);
+
+  const fetchMeals = async () => {
+    setMealsToday([]);
+    const mealsToday = await getMealsToday(mealDayToEat.monday, value);
+    console.log(mealsToday);
+    setMealsToday(mealsToday);
+  };
+  useEffect(() => {
+    fetchMeals();
+  }, [value]);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
-        <MealSettings></MealSettings>
+        <MealSettings fetchMeals={fetchMeals}></MealSettings>
         <View style={styles.headingContainer}>
           <Text style={styles.heading}>Today Meals</Text>
-          <MealTimeDropDown listMode="SCROLLVIEW" />
+          <MealTimeDropDown value={value} setValue={setValue} />
         </View>
-        <MealList />
+        <MealList mealsToday={mealsToday} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -24,7 +42,9 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     backgroundColor: "#fff",
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 50,
   },
   headingContainer: {
     display: "flex",
@@ -41,9 +61,8 @@ const styles = StyleSheet.create({
   },
 });
 
-MealTimeDropDown = () => {
+MealTimeDropDown = ({ value, setValue }) => {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("Breakfast");
   const [items, setItems] = useState([
     { label: "Breakfast", value: "Breakfast" },
     { label: "Lunch", value: "Lunch" },

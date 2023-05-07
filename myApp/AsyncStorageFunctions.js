@@ -1,6 +1,17 @@
 // https://react-native-async-storage.github.io/async-storage/docs/usage
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+export const isUniqueKey = async (storage_Key) => {
+  try {
+    const value = await AsyncStorage.getItem(storage_Key);
+    console.log(`Get Data (is Unique) - ${storage_Key} : ${value} `);
+    return value == null ? true : false;
+  } catch (e) {
+    // error reading value
+    console.error(e);
+  }
+};
+
 export const storeData = async (storage_Key, value) => {
   try {
     await AsyncStorage.setItem(storage_Key, value);
@@ -80,6 +91,35 @@ export const getMealsToday = async (dayToEat, timeToEat) => {
   }
 };
 
+export const getMealsSelection = async () => {
+  try {
+    let toGetMeals = [];
+
+    // get meal keys
+    let mealKeys = [];
+    let allKeys = await AsyncStorage.getAllKeys();
+    for (let i = 0; i < allKeys.length; i++) {
+      if (allKeys[i].startsWith("@selection_meal_")) {
+        mealKeys.push(allKeys[i]);
+      }
+    }
+
+    console.log(mealKeys);
+
+    // get meal values
+    let mealValues = await AsyncStorage.multiGet(mealKeys);
+    for (let i = 0; i < mealValues.length; i++) {
+      const mealKey = mealValues[i][0];
+      const mealValue = JSON.parse(mealValues[i][1]);
+      toGetMeals.push(mealValue);
+    }
+
+    return toGetMeals;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 export const mealDayToEat = {
   monday: "monday",
   tuesday: "tuesday",
@@ -91,7 +131,7 @@ export const mealDayToEat = {
 };
 
 export const mealTimeToEat = {
-  breakfast: "breakfast",
-  lunch: "lunch",
-  dinner: "dinner",
+  breakfast: "Breakfast",
+  lunch: "Lunch",
+  dinner: "Dinner",
 };

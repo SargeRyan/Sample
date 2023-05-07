@@ -1,18 +1,57 @@
 import React, { useState } from "react";
-import { Modal, StyleSheet, Text, View, Image } from "react-native";
+import {
+  Modal,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ToastAndroid,
+} from "react-native";
 import { Button, Stack, TextInput, Avatar } from "@react-native-material/core";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import DropDownPicker from "react-native-dropdown-picker";
 import * as ImagePicker from "expo-image-picker";
+import { storeDataObject, isUniqueKey } from "../../AsyncStorageFunctions";
 
 export default AddMealScreen = ({ modalVisible, onPressCloseModal }) => {
   const defaultImage =
     "https://firebasestorage.googleapis.com/v0/b/healtpilot.appspot.com/o/healthy-food.jpg?alt=media&token=9f6639b3-80e2-42d4-b50c-9dc24f61de77";
-  const [mealToAdd, setMealToAdd] = useState({});
-  const [mealImage, setMealImage] = useState(defaultImage);
-  addMeal = () => {
-    console.log(mealToAdd);
-    // onPressCloseModal();
+  const [mealToAdd, setMealToAdd] = useState({
+    mealImage: defaultImage,
+  });
+
+  const [inputErrors, setInputErrors] = useState({});
+  addMeal = async () => {
+    // check required field
+    const mealToAddRequiredKey = ["mealName", "calories", "quantity"];
+    for (i = 0; i < mealToAddRequiredKey.length; i++) {
+      const key = mealToAddRequiredKey[i];
+      console.log(key);
+      if (!mealToAdd[key]) {
+        let newInputErrors = { ...inputErrors };
+        newInputErrors[key] = "This field is required";
+        setInputErrors(newInputErrors);
+        return;
+      } else {
+        let newInputErrors = { ...inputErrors };
+        newInputErrors[key] = "";
+        setInputErrors(newInputErrors);
+      }
+    }
+    const mealId = "@selection_meal_" + mealToAdd.mealName;
+    if (!(await isUniqueKey(mealId))) {
+      setInputErrors({ ...inputErrors, mealName: "Meal name already exists" });
+      return;
+    }
+
+    mealToAdd.id = mealId;
+    await storeDataObject(mealId, mealToAdd);
+    setMealToAdd({
+      mealImage: defaultImage,
+    });
+    setInputErrors({});
+    ToastAndroid.show("Meal has been added to Selection", ToastAndroid.LONG);
+    onPressCloseModal();
   };
   return (
     <Modal
@@ -39,7 +78,7 @@ export default AddMealScreen = ({ modalVisible, onPressCloseModal }) => {
                 style={{ alignSelf: "center" }}
                 size={100}
                 image={{
-                  uri: mealImage,
+                  uri: mealToAdd.mealImage,
                 }}
               />
               <Button
@@ -50,24 +89,28 @@ export default AddMealScreen = ({ modalVisible, onPressCloseModal }) => {
                 onPress={async () => {
                   // No permissions request is necessary for launching the image library
                   let result = await ImagePicker.launchImageLibraryAsync({
-                    mediaTypes: ImagePicker.MediaTypeOptions.All,
+                    mediaTypes: ImagePicker.MediaTypeOptions.Images,
                     allowsEditing: true,
                     aspect: [4, 3],
-                    quality: 1,
+                    quality: 0.5,
                   });
 
                   console.log(result);
 
-                  if (!result.canceled) {
-                    setMealImage(result.assets[0].uri);
+                  if (result.assets) {
+                    setMealToAdd({
+                      ...mealToAdd,
+                      mealImage: result.assets[0].uri,
+                    });
                   }
                 }}
               />
             </Stack>
             <TextInput
               label="Meal Name"
-              color="#146C94"
+              color={inputErrors.mealName ? "red" : "#146C94"}
               value={mealToAdd.mealName}
+              helperText={inputErrors.mealName}
               onChangeText={(text) =>
                 setMealToAdd({ ...mealToAdd, mealName: text })
               }
@@ -76,6 +119,7 @@ export default AddMealScreen = ({ modalVisible, onPressCloseModal }) => {
               label="Calories"
               color="#146C94"
               value={mealToAdd.calories}
+              helperText={inputErrors.calories}
               onChangeText={(text) =>
                 setMealToAdd({ ...mealToAdd, calories: text })
               }
@@ -86,11 +130,16 @@ export default AddMealScreen = ({ modalVisible, onPressCloseModal }) => {
                 label="Quantity"
                 color="#146C94"
                 value={mealToAdd.quantity}
+                helperText={inputErrors.quantity}
                 onChangeText={(text) =>
                   setMealToAdd({ ...mealToAdd, quantity: text })
                 }
               />
-              <QuantityCurrency />
+              <QuantityCurrency
+                onChangeValue={(text) => {
+                  setMealToAdd({ ...mealToAdd, quantityCurrency: text });
+                }}
+              />
             </View>
             <Button color="#146C94" title={"Add Meal"} onPress={addMeal} />
           </Stack>
@@ -155,7 +204,7 @@ const styles = StyleSheet.create({
   },
 });
 
-QuantityCurrency = () => {
+QuantityCurrency = ({ onChangeValue }) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("pcs");
   const [items, setItems] = useState([
@@ -175,6 +224,7 @@ QuantityCurrency = () => {
   return (
     <View>
       <DropDownPicker
+        onChangeValue={onChangeValue}
         open={open}
         value={value}
         items={items}
@@ -184,6 +234,7 @@ QuantityCurrency = () => {
         zIndex={5000}
         zOrder={5000}
         dropDownDirection="TOP"
+        listMode="MODAL"
         style={{
           width: 150,
           color: "#fff",
