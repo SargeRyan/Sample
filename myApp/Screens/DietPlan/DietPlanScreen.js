@@ -1,80 +1,36 @@
-import {
-  StyleSheet,
-  Text,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  View,
-  Button,
-  Image,
-} from "react-native";
+import { StyleSheet, Text, SafeAreaView, ScrollView, View } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
-import React, { useState } from "react";
-import Ionicons from "react-native-vector-icons/Ionicons";
-
+import MealList from "./Components/MealList";
+import MealSettings from "./Components/MealSettings";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useState, useEffect } from "react";
+import {
+  mealDayToEat,
+  mealTimeToEat,
+  getMealsToday,
+} from "../../AsyncStorageFunctions";
 export default DietPlanScreen = ({ navigation, route }) => {
+  const [value, setValue] = useState("Breakfast");
+  const [mealsToday, setMealsToday] = useState([]);
+
+  const fetchMeals = async () => {
+    setMealsToday([]);
+    const mealsToday = await getMealsToday(mealDayToEat.monday, value);
+    console.log(mealsToday);
+    setMealsToday(mealsToday);
+  };
+  useEffect(() => {
+    fetchMeals();
+  }, [value]);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
+        <MealSettings fetchMeals={fetchMeals}></MealSettings>
         <View style={styles.headingContainer}>
           <Text style={styles.heading}>Today Meals</Text>
-          <MealTimeDropDown listMode="SCROLLVIEW" />
+          <MealTimeDropDown value={value} setValue={setValue} />
         </View>
-        <View style={styles.mealCardContainer}>
-          <View style={[styles.card, styles.shadowProp]}>
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <View style={{ display: "flex", flexDirection: "row" }}>
-                <View
-                  style={{
-                    height: 70,
-                    width: 80,
-                    marginRight: 10,
-                    borderRadius: 8,
-                    overflow: "hidden",
-                  }}
-                >
-                  <Image
-                    style={{ width: 80, borderRadius: 8, height: 70 }}
-                    source={require("../../image/pandesal.jpg")}
-                  />
-                </View>
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-around",
-                  }}
-                >
-                  <Text style={{ fontSize: 20, width: 150 }}>Pandesal </Text>
-                  <View>
-                    <Text style={{ fontSize: 14 }}>3 pcs</Text>
-                    <Text style={{ fontSize: 14 }}>100 kcal</Text>
-                  </View>
-                </View>
-              </View>
-
-              <View
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                <Ionicons
-                  name={"checkmark-circle"}
-                  size={40}
-                  color={"green"}
-                  style={{ alignSelf: "center" }}
-                />
-              </View>
-            </View>
-          </View>
-        </View>
+        <MealList mealsToday={mealsToday} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -86,7 +42,9 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     backgroundColor: "#fff",
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 50,
   },
   headingContainer: {
     display: "flex",
@@ -94,38 +52,17 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     overflow: "visible",
     flexWrap: "wrap",
+    backgroundColor: "#fff",
   },
   heading: {
     fontSize: 24,
     fontWeight: 600,
     alignSelf: "center",
   },
-  mealCardContainer: {
-    display: "flex",
-    flexDirection: "column",
-    paddingVertical: 20,
-    paddingHorizontal: 5,
-  },
-  card: {
-    backgroundColor: "white",
-    borderRadius: 8,
-    padding: 14,
-    width: "100%",
-    alignSelf: "center",
-  },
-  shadowProp: {
-    shadowColor: "#171717",
-    shadowOffset: { width: -2, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 3,
-    bprderRadius: 8,
-  },
 });
 
-MealTimeDropDown = () => {
+MealTimeDropDown = ({ value, setValue }) => {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("Breakfast");
   const [items, setItems] = useState([
     { label: "Breakfast", value: "Breakfast" },
     { label: "Lunch", value: "Lunch" },
