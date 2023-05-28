@@ -5,12 +5,14 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import DietPlanScreen from "./DietPlan/DietPlanScreen";
 import ExercisePlanScreen from "./ExercisePlan/ExercisePlanScreen";
+import Dashboard from "./Dashboard/BmiCalculator";
 
 const Tab = createBottomTabNavigator();
 export default MainTabNavigation = () => {
   return (
     <NavigationContainer>
       <Tab.Navigator screenOptions={navigatorScreenOptions}>
+      <Tab.Screen name="BMI Calculator" component={BmiCalculator} />
         <Tab.Screen name="Exercise Plan" component={ExercisePlanScreen} />
         <Tab.Screen name="Diet Plan" component={DietPlanScreen} />
       </Tab.Navigator>
@@ -21,8 +23,10 @@ export default MainTabNavigation = () => {
 let navigatorScreenOptions = ({ route }) => ({
   tabBarIcon: ({ focused, color, size }) => {
     let iconName; // find icon names at https://ionic.io/ionicons
-
-    if (route.name === "Exercise Plan") {
+    if (route.name === "BMI Calculator"){
+    iconName = focused ? "podium" :  "podium-outline";
+    }
+    else if (route.name === "Exercise Plan") {
       iconName = focused ? "barbell" : "barbell-outline";
     } else if (route.name === "Diet Plan") {
       iconName = focused ? "ios-list" : "ios-list-outline";
