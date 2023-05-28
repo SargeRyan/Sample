@@ -15,6 +15,7 @@ export default MealCard = ({ mealData }) => {
     setChecked(!isChecked);
     mealData.isChecked = !isChecked;
     await storeDataObject(mealData.id, mealData);
+    console.log("Checked========", mealData.id);
   };
 
   return (

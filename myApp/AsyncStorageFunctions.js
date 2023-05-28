@@ -56,6 +56,7 @@ export const getDataObject = async (storage_Key) => {
 
 export const getMealsToday = async (dayToEat, timeToEat) => {
   try {
+    // await AsyncStorage.clear()
     let toGetMeals = [];
 
     // get meal keys
@@ -66,9 +67,9 @@ export const getMealsToday = async (dayToEat, timeToEat) => {
         mealKeys.push(allKeys[i]);
       }
     }
-
     // get meal values
     let mealValues = await AsyncStorage.multiGet(mealKeys);
+    console.log("All Meals ===========", JSON.stringify(mealValues));
     for (let i = 0; i < mealValues.length; i++) {
       const mealKey = mealValues[i][0];
       const mealValue = JSON.parse(mealValues[i][1]);
@@ -121,13 +122,13 @@ export const getMealsSelection = async () => {
 };
 
 export const mealDayToEat = {
-  monday: "monday",
-  tuesday: "tuesday",
-  wednesday: "wednesday",
-  thursday: "thursday",
-  friday: "friday",
-  saturday: "saturday",
-  sunday: "sunday",
+  monday: "Monday",
+  tuesday: "Tuesday",
+  wednesday: "Wednesday",
+  thursday: "Thursday",
+  friday: "Friday",
+  saturday: "Saturday",
+  sunday: "Sunday",
 };
 
 export const mealTimeToEat = {
@@ -135,3 +136,13 @@ export const mealTimeToEat = {
   lunch: "Lunch",
   dinner: "Dinner",
 };
+
+export const removeValue = async (key) => {
+    console.log("AsyncStorage Removing Key: " + key);
+    try {
+      await AsyncStorage.removeItem(key)
+    } catch(e) {
+      console.error(e);
+    }
+    console.log("AsyncStorage Removed Key: " + key);
+  }

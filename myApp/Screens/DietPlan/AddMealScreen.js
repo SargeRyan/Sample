@@ -18,6 +18,8 @@ export default AddMealScreen = ({ modalVisible, onPressCloseModal }) => {
     "https://firebasestorage.googleapis.com/v0/b/healtpilot.appspot.com/o/healthy-food.jpg?alt=media&token=9f6639b3-80e2-42d4-b50c-9dc24f61de77";
   const [mealToAdd, setMealToAdd] = useState({
     mealImage: defaultImage,
+    quantityCurrency : "pcs",
+    quantity: 1,
   });
 
   const [inputErrors, setInputErrors] = useState({});

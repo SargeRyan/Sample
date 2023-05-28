@@ -10,22 +10,28 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { storeDataObject } from "../../../AsyncStorageFunctions";
 import { Button } from "@react-native-material/core";
 
-export default SelectionMealCard = ({ mealData, timeToEat, dayToEat }) => {
-  const [isChecked, setChecked] = useState(mealData.isChecked);
+export default SelectionMealCard = ({ mealsToday, mealData,onToggleCheckFunction }) => {
+  const [isChecked, setChecked] = useState(false);
+  const [mealDayTimeId, setMealDayTimeId] = useState();
+  const [addMealModalVisible, setAddMealModalVisible] = useState(false);
+
   const toggleChecked = async () => {
     let newState = !isChecked;
     setChecked(newState);
-    if (newState) {
-      let toAddMeal = mealData;
-      toAddMeal["timeToEat"] = timeToEat;
-      toAddMeal["dayToEat"] = dayToEat;
-      toAddMeal["id"] = `@meal_${timeToEat}_${mealData.mealName}`;
-      await storeDataObject(
-        `@meal_${timeToEat}_${mealData.mealName}`,
-        mealData
-      );
-    }
+    onToggleCheckFunction(newState, mealDayTimeId);
   };
+
+  useEffect(() => {
+    setChecked(false);
+    mealsToday.forEach((meal)=>{
+        if(meal.meal_id === mealData.id){
+            console.log("MEAL CARD Checked ===============",meal.meal_id);
+            setMealDayTimeId(meal.id);
+            setChecked(true);
+        }
+      });
+  }, [mealsToday, mealData]);
+
   return (
     <TouchableHighlight
       onPress={() => {
@@ -69,7 +75,7 @@ export default SelectionMealCard = ({ mealData, timeToEat, dayToEat }) => {
                 {mealData.mealName}
               </Text>
               <View>
-                <Text style={{ fontSize: 14 }}>{mealData.quantity}</Text>
+                <Text style={{ fontSize: 14 }}>{`${mealData.quantity} ${mealData.quantityCurrency}`}</Text>
                 <Text style={{ fontSize: 14 }}>{mealData.calories} kcal</Text>
               </View>
             </View>
