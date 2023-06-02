@@ -60,7 +60,7 @@ export default MealCard = ({ mealData }) => {
                 {mealData.mealName}
               </Text>
               <View>
-                <Text style={{ fontSize: 14 }}>{mealData.quantity}</Text>
+                <Text style={{ fontSize: 14 }}>{mealData.quantity} {mealData.quantityCurrency}</Text>
                 <Text style={{ fontSize: 14 }}>{mealData.calories} kcal</Text>
               </View>
             </View>

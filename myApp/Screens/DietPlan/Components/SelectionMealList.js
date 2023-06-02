@@ -11,9 +11,10 @@ import {
 } from "../../../AsyncStorageFunctions";
 import SelectionMealCard from "./SelectionMealCard";
 import { Button, Stack } from "@react-native-material/core";
+import {localMeals} from "./LocalMeals.js";
 
 export default SelectionMealList = ({ dayMeal, mealTime, setMealTime, mealsTimeList, indexToTriggerRefresh }) => {
-    const [mealsSelection, setMealsSelection] = useState([]);
+    const [mealsSelection, setMealsSelection] = useState(localMeals);
     const [mealsToday, setMealsToday] = useState([]);
 
 
@@ -22,9 +23,10 @@ export default SelectionMealList = ({ dayMeal, mealTime, setMealTime, mealsTimeL
     }, [dayMeal, mealTime, indexToTriggerRefresh]);
 
     const fetchMeals = async () => {
-        const mealsSelection = await getMealsSelection();
-        console.log(mealsSelection);
-        setMealsSelection(mealsSelection);
+        const fetchMeals = await getMealsSelection();
+        console.log("Meal Selection===============",fetchMeals);
+
+        setMealsSelection(fetchMeals.concat(mealsSelection));
 
         // meals this time
         const mealsToday = await getMealsToday(dayMeal, mealTime);
