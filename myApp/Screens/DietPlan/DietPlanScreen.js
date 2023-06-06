@@ -2,9 +2,8 @@ import { StyleSheet, Text, SafeAreaView, ScrollView, View, Image } from "react-n
 import DropDownPicker from "react-native-dropdown-picker";
 import MealList from "./Components/MealList";
 import MealSettings from "./Components/MealSettings";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { HStack } from "@react-native-material/core";
 import React, { useState, useEffect } from "react";
+import MealChart from "./Components/MealChart";
 import {
     mealDayToEat,
     mealTimeToEat,
@@ -59,6 +58,7 @@ export default DietPlanScreen = ({ navigation, route }) => {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView style={styles.scrollView}>
+                <MealChart></MealChart>
                 <MealSettings fetchMeals={fetchMeals}></MealSettings>
                 <View style={styles.headingContainer}>
                     <Text style={styles.heading}>{mealDay.toUpperCase()} Meals</Text>
