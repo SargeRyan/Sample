@@ -1,4 +1,5 @@
 import { StatusBar } from "expo-status-bar";
+import { useState } from "react";
 import React from "react";
 import {
   StyleSheet,
@@ -9,7 +10,12 @@ import {
   Image,
   SafeAreaView,
   TouchableOpacity,
+  Modal,
+  Pressable,
 } from "react-native";
+import DropDownPicker from "react-native-dropdown-picker";
+
+
 TouchableOpacity.defaultProps = { ActiveOpacity: 0.8 };
 
 const AppButton = ({ onPress, title }) => (
@@ -18,9 +24,64 @@ const AppButton = ({ onPress, title }) => (
   </TouchableOpacity>
 );
 export default CompleteProfileScreen = ({ setShowMainScreen }) => {
+
+  const [modalVisible, setModalVisible] = useState(false);
+   const [modalSampleVisible, setSampleVisible] = useState(false);
+ 
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([
+    {label: 'Not Very Active', value: 'Not Very Active'},
+    {label: 'Lightly Very Active', value: 'Lightly Very Active'},
+    {label: 'Active', value: 'Active'},
+    {label: 'Very Active', value: 'Very Active'},
+  ]);
+
+  const [opens, setOpens] = useState(false);
+  const [values, setValues] = useState(null);
+  const [item, setItem] = useState([
+    {label: 'Male', value: 'Male'},
+    {label: 'Female', value: 'Female'}
+  ]);
+
+  const [opened, setOpened] = useState(false);
+  const [valued, setValued] = useState(null);
+  const [itemed, setItemed] = useState([
+    {label: 'Lose Weight', value: 'Lose Weight'},
+    {label: 'Maintain Weight', value: 'Maintain Weight'},
+    {label: 'Gain Weight', value: 'Gain Weight'},
+    {label: 'Gain Muscles', value: 'Gain Muscles'},
+    {label: 'Modify My Diet', value: 'Modify My Diet'},
+    {label: 'Manage Stress', value: 'Manage Stress'},
+    {label: 'Increase My Step Count', value: 'Increase My Step Count'},
+  ]);
+
+  const [Pop, setPop] = useState(false);
+  const [Data, setData] = useState(null);
+  const [Selection, setSelection] = useState([
+    {label: 'Lack of Time', value: 'Lose Weight'},
+    {label: 'Healthy diets lack variety', value: 'Maintain Weight'},
+    {label: 'Stress around food choices', value: 'Gain Weight'},
+    {label: 'Food Cravings', value: 'Gain Muscles'},
+    {label: 'Lack of Progress', value: 'Modify My Diet'},
+    {label: 'Healthy Food is too expensive', value: 'Manage Stress'},
+  
+  ]);
+
+  const [Pops, setPops] = useState(false);
+  const [info, setInfo] = useState(null);
+  const [Selections, setSelections] = useState([
+    {label: 'Lose 0.25kg per week', value: '0.25'},
+    {label: 'Lose 0.5 per week', value: '0.50'},
+    {label: 'Lose 0.75 per week', value: '0.75'},
+    {label: 'Loss 1kg per week', value: '1'},
+    
+  ]);
+  
+
   return (
     <SafeAreaView
-      style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+      style={{ flex: 1, alignItems: "center", position: "absolute", left: 20}}
     >
       {/*Logo*/}
       <View>
@@ -35,32 +96,212 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
       <Text style={styles.subTitleText}>
         It will help us to know about you!
       </Text>
-
+ <Text style={{alignSelf: "baseline", fontSize: 17, fontWeight: "bold", marginBottom: 20 }}>
+        Personal Information
+      </Text>
+      <Text style={{width: 320}}>
+        Please select which sex we should use to calculate your calorie needs: 
+      </Text>
       <View style={styles.genderContainer}>
         <Image
           style={styles.genderImageContainer}
           source={require("../image/gender.png")}
         />
-
-        <TextInput
-          placeholder="Gender"
-          style={styles.genderTextContainer}
-        ></TextInput>
+  <Text style = {styles.genderTextContainer}>Gender</Text>
+        
       </View>
+
+      <Text style={{width: 320, marginBottom: 5}}>
+        How old are you?
+      </Text>
 
       <View style={styles.birthDateContainer}>
         <Image
           style={styles.birthDateImageContainer}
           source={require("../image/calendar.png")}
         />
-
         <TextInput
-          placeholder="Birth Date"
+          placeholder="Age"
+          inputMode="numeric"
           style={styles.birthDateTextContainer}
         ></TextInput>
       </View>
 
+       <Text style={{width: 320, marginBottom: 5}}>
+       How much do you weigh?
+      </Text>
+
       <View style={styles.weightContainer}>
+        <Image
+          style={styles.weightImageContainer}
+          source={require("../image/PngItem_4039383.png")}
+        />
+
+        <TextInput
+          placeholder="Weight(Kilograms/kg)"
+          inputMode="numeric"
+          style={styles.WeightTextContainer}
+        ></TextInput>
+      </View>
+        <Text style={{width: 320, marginBottom: 5}}>
+       How tall are you?
+      </Text>
+
+      <View style={styles.heightContainer}>
+        <Image
+          style={styles.heightImageContainer}
+          source={require("../image/computer-icons-ruler-pictogram-length-clip-art-ruler-1ccf0d3be8bd9cc8eeb2db1c88611e1a.png")}
+        />
+
+        <TextInput
+          placeholder="Height(Centimeter/cm)"
+          inputMode="numeric"
+          style={styles.heightTextContainer}
+        ></TextInput>
+      </View>
+
+      
+
+        <DropDownPicker 
+       open = {open}
+       value = {value}
+       items={item}
+       setOpen={setOpen}
+       setValue={setValue}
+       setItems={setItems}
+       zIndex={3000}
+       zIndexInverse={1000}
+       containerStyle={{width: 150, backgroundColor: "#f9eed9", position: "absolute",top: 305, right: 1}}
+       />
+
+
+
+       <Pressable
+        style={{backgroundColor: "#009688", height: 50, width: 320, borderRadius: 10, marginTop: 20}}
+        onPress={() => setModalVisible(true)}>
+        <Text style={{alignSelf: "center", marginTop: 10, fontSize: 20, fontWeight: "bold", color: "#fff"}}>NEXT</Text>
+      </Pressable> 
+   
+
+       <Modal
+        animationType="slide"
+        transparent={false}
+        visible={modalVisible}
+        onRequestClose={() => {
+         
+          setModalVisible(!modalVisible);
+        }}> 
+        <View style={{backgroundColor: "#f6f6f6", height: 700}}>
+          <View style={{flexDirection: "row", backgroundColor: "#f9eed9", height: 60}}>
+          <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => setModalVisible(!modalVisible)}>
+             <Image style={{height: 17, width: 23, marginLeft: 10, marginTop: 23}} source={require("../image/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}
+        />
+            </Pressable>
+            <Text style={{marginTop: 20, fontSize: 17, marginLeft: 15, fontWeight: "bold"}}>ACTIVITY LEVEL & GOAL</Text>
+          </View>
+
+           <Pressable
+        style={{backgroundColor: "#009688", height: 50, width: 320, borderRadius: 10, marginTop: 20, position: "absolute", bottom: 30, alignSelf: "center"}}
+        onPress={() => setSampleVisible(true)}>
+        <Text style={{alignSelf: "center", marginTop: 10, fontSize: 20, fontWeight: "bold", color: "#fff"}}>NEXT</Text>
+      </Pressable> 
+   
+          
+<Text style={{marginTop: 40, fontSize: 15, marginLeft: 15, fontWeight: "bold"}}>What is your baseline activity level</Text>
+<Text style={{marginTop: 2, fontSize: 12, marginLeft: 30, }}>Not including workouts- we count that separately: </Text>
+         
+<Text style={{marginTop: 90, fontSize: 15, marginLeft: 15, fontWeight: "bold"}}>What is your Goal</Text>
+<Text style={{marginTop: 2, fontSize: 12, marginLeft: 30, }}>Select your primary goal: </Text>
+
+<Text style={{marginTop: 90, fontSize: 15, marginLeft: 15, fontWeight: "bold"}}>In the past, what have been your primary barrier to losing weight</Text>
+<Text style={{marginTop: 2, fontSize: 12, marginLeft: 30, }}>Select your primary barrier: </Text>
+
+
+        <DropDownPicker 
+       open = {opens}
+       value = {values}
+       items={items}
+       setOpen={setOpens}
+       setValue={setValues}
+       setItems={setItem}
+       zIndex={3000}
+        placeholder="Select your baseline activity level "
+       zIndexInverse={1000}
+       containerStyle={{width: 320, backgroundColor: "#f9eed9", position: "absolute",top: 150, right: 20}}
+       />
+
+       <DropDownPicker 
+       open = {Pop}
+       value = {Data}
+       items={Selection}
+       setOpen={setPop}
+       setValue={setData}
+       setItems={setSelection}
+       placeholder="Select your goal "
+       zIndex={3000}
+       zIndexInverse={1000}
+       containerStyle={{width: 320, backgroundColor: "#f9eed9", position: "absolute",top: 430, right: 20}}
+       />
+       
+
+       <DropDownPicker 
+       open = {opened}
+       value = {valued}
+       items={itemed}
+       setOpen={setOpened}
+       setValue={setValued}
+       setItems={setItemed}
+       placeholder="Select your goal "
+       zIndex={3000}
+       zIndexInverse={1000}
+       containerStyle={{width: 320, backgroundColor: "#f9eed9", position: "absolute",top: 280, right: 20}}
+       />
+
+         <DropDownPicker 
+       open = {opens}
+       value = {values}
+       items={items}
+       setOpen={setOpens}
+       setValue={setValues}
+       setItems={setItem}
+       zIndex={3000}
+        placeholder="Select your Activity baseline level  "
+       zIndexInverse={1000}
+       containerStyle={{width: 320, backgroundColor: "#f9eed9", position: "absolute",top: 150, right: 20}}
+       />
+
+          
+        </View>
+      </Modal> 
+
+      
+       <Modal
+       //second modal
+        animationType="slide"
+        transparent={false}
+        visible={modalSampleVisible}
+        onRequestClose={() => {
+         
+          setModalVisible(!modalSampleVisible);
+        }}> 
+        <View style={{backgroundColor: "#f6f6f6", height: 700}}>
+          <View style={{flexDirection: "row", backgroundColor: "#f9eed9", height: 60}}>
+          <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => setSampleVisible(!modalSampleVisible)}>
+             <Image style={{height: 17, width: 23, marginLeft: 10, marginTop: 23}} source={require("../image/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}
+        />
+            </Pressable>
+            <Text style={{marginTop: 18, fontSize: 18, marginLeft: 15, fontWeight: "bold"}}>WEEKLY GOAL</Text>
+          </View>
+
+          <Text style = {{fontSize: 15, fontWeight: "bold", marginTop: 50, marginLeft: 20}}>What's your goal weight</Text>
+          <Text style = {{fontSize: 12, marginTop: 70, marginLeft: 20, marginRight: 15}}>Don't worry. This doesn't affect your daily calorie goal and can always change it later</Text>
+          <Text style = {{fontSize: 15, fontWeight: "bold", marginTop: 60, marginLeft: 20, marginRight: 15}}>What is your Weekly goal?</Text>
+
+          <View style={styles.goalWeightContainer}>
         <Image
           style={styles.weightImageContainer}
           source={require("../image/PngItem_4039383.png")}
@@ -72,24 +313,31 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
         ></TextInput>
       </View>
 
-      <View style={styles.heightContainer}>
-        <Image
-          style={styles.heightImageContainer}
-          source={require("../image/computer-icons-ruler-pictogram-length-clip-art-ruler-1ccf0d3be8bd9cc8eeb2db1c88611e1a.png")}
-        />
+         <DropDownPicker 
+       open = {Pops}
+       value = {info}
+       items={Selections}
+       setOpen={setPops}
+       setValue={setInfo}
+       setItems={setSelections}
+       zIndex={3000}
+        placeholder="Set Weekly Goal"
+       zIndexInverse={1000}
+       containerStyle={{width: 320, backgroundColor: "#f9eed9", position: "absolute",top: 320, right: 20}}
+       />
 
-        <TextInput
-          placeholder="Height(Centimeter/cm)"
-          style={styles.heightTextContainer}
-        ></TextInput>
-      </View>
 
-      <View style={styles.screenContainer}>
+
+    <View style={styles.screenContainer}>
         <AppButton
           title="Create Account"
           onPress={() => setShowMainScreen(false)}
         ></AppButton>
       </View>
+        </View>
+      </Modal>
+
+     
     </SafeAreaView>
   );
 };
@@ -97,8 +345,8 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
 const styles = StyleSheet.create({
   imageTitleHeader: {
     marginTop: 50,
-    width: 240,
-    height: 240,
+    width: 100,
+    height: 100,
   },
 
   subTitleText: {
@@ -115,6 +363,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: 16,
+    marginTop: 230
   },
 
   appButtonContainer: {
@@ -156,7 +405,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     height: 35,
     fontSize: 17,
-    marginTop: 6,
+    marginTop: 15,
+    fontWeight: "bold"
   },
   birthDateContainer: {
     flexDirection: "row",
@@ -230,4 +480,16 @@ const styles = StyleSheet.create({
     fontSize: 17,
     marginTop: 6,
   },
+   goalWeightContainer: {
+    flexDirection: "row",
+    borderBottomColor: "#ccc",
+    marginBottom: 12,
+    backgroundColor: "#f9eed9",
+    borderRadius: 18,
+    width: 320,
+    height: 50,
+    position: "absolute",
+    top: 140,
+    alignSelf: "center"
+  }
 });
