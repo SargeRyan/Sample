@@ -6,96 +6,174 @@ import {
   ScrollView,
   Image,
   SafeAreaView,
-  StyleSheet
+  StyleSheet,
+  Modal
 } from "react-native";
 import { IMAGE } from "../ExercisePlan/image/PngItem_4039383.png";
 import { render } from "react-dom";
 import { TextInput } from "@react-native-material/core";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default BmiCalculator = ({ navigation, route }) => {
-    const [weight, setWeight] = useState('')
-    const [height, setHeight] = useState('')
+    const [height, setHeight] = useState('');
+    const [weight, setWeight] = useState('');
+    const[gender, setGender]= useState('');
     const [bmi, setBmi] = useState('')
     const [description, setDescription] = useState('')
+    const [userData, setUserData] = useState(null);
+    const [calories, setCalories] = useState('');
+    const [modalVisible, setModalVisible] = useState(false);
+
+
+   useEffect(() => {
+    const getData = async () => {
+      try {
+        // Retrieve data using AsyncStorage
+        const heightValue = await AsyncStorage.getItem('height');
+        const weightValue = await AsyncStorage.getItem('weight');
+        const genderValue = await AsyncStorage.getItem('gender');
+
+        // Update state with retrieved data
+        setHeight(heightValue);
+        setWeight(weightValue);
+        setGender(genderValue);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getData();
+  }, []);
+
 
     const calculateBmi = () => {
-        const bmi = weight / ((height/100) * (height/100))
-        setBmi(bmi.toFixed(1))
+      
 
+        const bmi = userData.weight / ((userData.height/100) * (userData.height/100))
+        setBmi(bmi.toFixed(1))
+       
         if (bmi < 18.5){
-            setDescription('Underweight')
+            setDescription('UNDERWEIGHT')
         }
          else if (bmi >= 18.5 && bmi <= 24.9){
-            setDescription('Normal')
+            setDescription('NORMAL')
         }
         else if (bmi >= 25 && bmi <= 29.9){
-            setDescription('Overweight')
+            setDescription('OVERWEIGHT')
         }
           else if (bmi >= 30){
-            setDescription('Obese')
+            setDescription('OBESE')
         }
+         setModalVisible(true);
     }
 
-  return (
 
-  
+       useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      // Retrieve the stored data from AsyncStorage
+      const storedData = await AsyncStorage.getItem('userData');
+
+      if (storedData) {
+        const parsedData = JSON.parse(storedData);
+        setUserData(parsedData);
+      }
+    } catch (error) {
+      console.log('Error retrieving data:', error);
+    }
+  };
+
+  return (
     <ScrollView style={{backgroundColor: "#f9eed9"}}>
-    <View>
-        <Image
-          style={styles.imageTitleHeader}
-          source={require("../Dashboard/image/logo.png")}
-        />
-      </View>
-    <Text style={{alignSelf: "center", fontSize: 20}}>Body Mass Index Calculator</Text>
-    <View style={styles.genderContainer}>
-    <Image
-          style={styles.genderImageContainer}
-          source={require("../Dashboard/image/PngItem_4039383.png")}
-        />
-        <TextInput
-        style={styles.genderTextContainer}
-        value={weight}
-        onChangeText={(text) => setWeight(text)}
-        placeholder="Weight in kg"
-        keyboardType="numeric"
-        >
-        </TextInput>
+     <View>
+      {userData && (
+        <View> 
+      <View style={{width: 150, left: 200, marginTop: 40}}>
+          <Text style= {{fontSize: 20, fontWeight: "bold", }}>Gender</Text>
+          <TextInput style= {{width: 150, alignSelf: "center"}} value={userData.gender}></TextInput>
         </View>
 
+         <View style={{width: 150, left: 200, marginTop: 40}}>
+          <Text style= {{fontSize: 20, fontWeight: "bold", }}>Age</Text>
+          <TextInput style= {{width: 150, alignSelf: "center"}} value={userData.age}></TextInput>
+        </View>
 
-    <View style={styles.HeightTextContainer}>
+         <View style={{width: 150, left: 200, marginTop: 40}}>
+          <Text style= {{fontSize: 20, fontWeight: "bold", }}>Height</Text>
+          <TextInput style= {{width: 150, alignSelf: "center"}} value={userData.height}></TextInput>
+        </View>
 
-    <Image
-          style={styles.genderImageContainer}
-          source={require("../Dashboard/image/computer-icons-ruler-pictogram-length-clip-art-ruler-1ccf0d3be8bd9cc8eeb2db1c88611e1a.png")}
-        />
-          <TextInput
-          style={styles.genderTextContainer}
-        value={height}
-        onChangeText={(text) => setHeight(text)}
-        placeholder="Height in cm"
-        keyboardType="numeric"
-        >
-        </TextInput>
-        </View>     
+        <View style={{width: 150, left: 200, marginTop: 40}}>
+          <Text style= {{fontSize: 20, fontWeight: "bold", }}>Weight</Text>
+          <TextInput style= {{width: 150, alignSelf: "center"}} value={userData.weight}></TextInput>
+        </View>
         
-          <TouchableOpacity style = {styles.appButtonContainer} onPress={calculateBmi}>
-          <Text style = {styles.appButtonText}>Calculate</Text>
-          </TouchableOpacity>
-         
+        <TouchableOpacity  style={{backgroundColor: "#009688", height: 50, width: 300, alignSelf: "center", marginTop: 15, borderRadius: 20}} onPress={calculateBmi}>
+          <Text style={{alignSelf: "center", marginTop: 10, fontSize: 20, fontWeight: "bold", color:"#fff"}}>Calculate</Text>
+        </TouchableOpacity>
 
-           <View style={{alignSelf: "center", flexDirection: "row", marginTop: 20,}}>
-                <Text style={{alignSelf: "center"}}>BMI: </Text>
-                <Text style={{alignSelf: "center"}}>{bmi}</Text>
-        </View> 
-           <View style={{alignSelf: "center", flexDirection: "row"}}>
-                <Text style={{alignSelf: "center"}}>Classification: </Text>
-                <Text style={{alignSelf: "center"}}>{description}</Text>
-        </View> 
+    <Modal visible={modalVisible} animationType="slide">
+<ScrollView style= {{backgroundColor: "#f9eed9"}}>
+        <View style={{height: 70, backgroundColor: "#fff", flexDirection: "row", borderTopLeftRadius: 10, borderTopRightRadius: 10}}>
+          <TouchableOpacity onPress={() => setModalVisible(false)}>
+                <Image
+                    style={{height: 20, width: 27, marginTop: 25, marginLeft: 10}}
+                    source={require("../Dashboard/image/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}
+                />
+          </TouchableOpacity> 
+            <Text style={{fontSize: 20, fontWeight: "bold", marginLeft: 10, marginTop: 22, }}>CALCULATION RESULT</Text>
+        </View>
         
-    </ScrollView>
-      
+        <View style={{alignSelf: "center", marginTop: 80}}>
+          <Text style= {{fontSize: 20, fontWeight: "bold"}}>BMI SCORE</Text>
+        </View>
+
+          <View style={{alignSelf: "center", marginTop: 20}}>
+       <Text style= {{fontSize: 70, fontWeight: "bold", alignSelf: "center", marginRight: 10}}>{bmi}</Text>
+         <Text style= {{fontSize: 20, fontWeight: "bold", alignSelf: "center", marginRight: 10}}>{description}</Text>
+        </View>
+
+        <View style={{alignSelf: "center", marginTop: 40, flexDirection: "row"}}>
+        <Text style= {{fontSize: 15, fontWeight: "bold", alignSelf: "center", marginRight: 10}}>GENDER: </Text>
+         <Text style= {{fontSize: 15, fontWeight: "bold", alignSelf: "center", marginRight: 10}}>{userData.gender}</Text>
+        </View>
+        
+        <View style={{alignSelf: "center", marginTop: 20, flexDirection: "row"}}>
+        <Text style= {{fontSize: 15, fontWeight: "bold", alignSelf: "center", marginRight: 10}}>AGE: </Text>
+         <Text style= {{fontSize: 15, fontWeight: "bold", alignSelf: "center", marginRight: 10}}>{userData.age}</Text>
+        </View>
+
+         <View style={{alignSelf: "center", marginTop: 20, flexDirection: "row"}}>
+        <Text style= {{fontSize: 15, fontWeight: "bold", alignSelf: "center", marginRight: 10}}>HEIGHT: </Text>
+         <Text style= {{fontSize: 15, fontWeight: "bold", alignSelf: "center", marginRight: 10}}>{userData.height}</Text>
+        </View>
+
+         <View style={{alignSelf: "center", marginTop: 20, flexDirection: "row"}}>
+        <Text style= {{fontSize: 15, fontWeight: "bold", alignSelf: "center", marginRight: 10}}>WEIGHT: </Text>
+         <Text style= {{fontSize: 15, fontWeight: "bold", alignSelf: "center", marginRight: 10}}>{userData.weight}</Text>
+        </View>
+        
+</ScrollView>
+        
+      </Modal>
+
+       <View style = {{position: "absolute", height: 600}}>
+                
+                <Image
+                    style={{height: 410, width: 142, top: 70, left: 40}}
+                    source={require("../Dashboard/image/pngaaa.com-1130346.png")}
+                />
+            </View>
+        
+
+        </View>
+      )}
+    </View>
+      </ScrollView>
   );
 };
 
