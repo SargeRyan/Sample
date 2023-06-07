@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { useState } from "react";
+import { useEffect, useState} from "react";
 import React from "react";
 import {
     StyleSheet,
@@ -14,6 +14,7 @@ import {
     Pressable,
 } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 TouchableOpacity.defaultProps = { ActiveOpacity: 0.8 };
@@ -78,12 +79,39 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
 
     ]);
 
+    const [height, setHeight] = useState('');
+    const [weight, setWeight] = useState('');
+    const[gender, setGender]= useState('');
+    const[age, setAge]= useState('');
+    const[goalWeight, setGoalWeight]= useState('');
+    
+
+    const saveData = async () => {
+    try {
+      const userData = {
+        height,
+        weight,
+        age,
+        gender,
+        goalWeight
+      };
+
+      // Save the data to AsyncStorage
+      await AsyncStorage.setItem('userData', JSON.stringify(userData));
+      console.log('Data saved successfully!', userData);
+
+      // Navigate to the other screen
+     
+    } catch (error) {
+      console.log('Error saving data:', error);
+    }
+  };
 
     return (
         <SafeAreaView
             style={{ flex: 1, display: "flex", alignItems: "center", justifyContent : "center", padding: 20 }}
         >
-
+    
             {/*Logo*/}
             <View>
                 <Image
@@ -108,19 +136,12 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                     style={styles.genderImageContainer}
                     source={require("../image/gender.png")}
                 />
-                <Text style={styles.genderTextContainer}>Gender</Text>
-                <DropDownPicker
-                listMode="MODAL"
-                open={open}
-                value={value}
-                items={item}
-                setOpen={setOpen}
-                setValue={setValue}
-                setItems={setItems}
-                zIndex={3000}
-                zIndexInverse={1000}
-                containerStyle={{ width: 150, backgroundColor: "#f9eed9", zIndex: 1000 }}
-            />
+                <TextInput
+                value={gender}
+                placeholder="Male or Female"
+                onChangeText={(text) => setGender(text)}
+                 style={styles.genderTextContainer}></TextInput>
+                
             </View>
 
             <Text style={{ width: 320, marginBottom: 5 }}>
@@ -135,6 +156,8 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                 <TextInput
                     placeholder="Age"
                     inputMode="numeric"
+                    value={age}
+                    onChangeText={(text) => setAge(text)}
                     style={styles.birthDateTextContainer}
                 ></TextInput>
             </View>
@@ -153,6 +176,8 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                     placeholder="Weight(Kilograms/kg)"
                     inputMode="numeric"
                     style={styles.WeightTextContainer}
+                    value={weight}
+                    onChangeText={(text) => setWeight(text)}
                 ></TextInput>
             </View>
             <Text style={{ width: 320, marginBottom: 5 }}>
@@ -168,6 +193,8 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                 <TextInput
                     placeholder="Height(Centimeter/cm)"
                     inputMode="numeric"
+                    onChangeText={(text) => setHeight(text)}
+                    value={height}
                     style={styles.heightTextContainer}
                 ></TextInput>
             </View>
@@ -241,7 +268,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                         setOpen={setPop}
                         setValue={setData}
                         setItems={setSelection}
-                        placeholder="Select your goal "
+                        placeholder="Select your primary barrier "
                         zIndex={3000}
                         zIndexInverse={1000}
                         containerStyle={{ width: 320, backgroundColor: "#f9eed9", position: "absolute", top: 430, right: 20 }}
@@ -299,6 +326,10 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                         <Text style={{ marginTop: 18, fontSize: 18, marginLeft: 15, fontWeight: "bold" }}>WEEKLY GOAL</Text>
                     </View>
 
+                     <TouchableOpacity onPress={saveData} style={{position: "absolute", top: 17, height: 50, right: 20 }}>
+                         <Text style = {{fontSize: 18, fontWeight: "bold"}}>SAVE</Text>
+                     </TouchableOpacity>
+
                     <Text style={{ fontSize: 15, fontWeight: "bold", marginTop: 50, marginLeft: 20 }}>What's your goal weight</Text>
                     <Text style={{ fontSize: 12, marginTop: 70, marginLeft: 20, marginRight: 15 }}>Don't worry. This doesn't affect your daily calorie goal and can always change it later</Text>
                     <Text style={{ fontSize: 15, fontWeight: "bold", marginTop: 60, marginLeft: 20, marginRight: 15 }}>What is your Weekly goal?</Text>
@@ -310,6 +341,8 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                         />
 
                         <TextInput
+                            value={goalWeight}
+                            onChangeText={setGoalWeight}
                             placeholder="Weight(Kilograms/kg)"
                             style={styles.WeightTextContainer}
                         ></TextInput>
@@ -407,8 +440,8 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         height: 35,
         fontSize: 17,
-        marginTop: 15,
-        fontWeight: "bold"
+        marginTop: 7,
+        
     },
     birthDateContainer: {
         flexDirection: "row",
