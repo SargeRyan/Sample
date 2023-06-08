@@ -1,11 +1,15 @@
 import React, { useRef, useEffect, useState, } from 'react';
-import IMAGE from "../SleepingTracker/Elements/Logo1.png";
+import IMAGE from "../SleepingTracker/Elements/Logo.png";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { differenceInMinutes, differenceInHours } from 'date-fns';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Touchable, TouchableOpacity } from "react-native";
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Dimensions } from "react-native";
+import {LineChart} from "react-native-chart-kit";
+
+
 import {
     View,
     ScrollView,
@@ -17,7 +21,7 @@ import {
     } from 'react-native';  
     
 const SleepingTrackerTab = () => {
-  
+ 
 ////SCROLL BAR DATES
 
 const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -38,7 +42,7 @@ useEffect(() => {
  }
 }, []);
 
-  ///// REAPEAT DROP BAR
+  ///// REAPEAT DAYs DROP BAR
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDay, setSelectedDay] = useState('Select Day');
   
@@ -74,30 +78,90 @@ useEffect(() => {
 const [isTimePickerVisible1, setTimePickerVisible1] = useState(false);
 const [isTimePickerVisible2, setTimePickerVisible2] = useState(false);
 
-const [selectedTime1, setSelectedTime1] = React.useState('00:00 AM');
-const [selectedTime2, setSelectedTime2] = React.useState('00:00 AM');
+let [selectedBedTime1, setSelectedBedTime1] = React.useState('00:00 AM');
+let [selectedAlarmTime2, setSelectedAlarmTime2] = React.useState('00:00 AM');
 
-
-
-const handleTimeConfirm1 = (time) => {
-  const hours = (time.getHours() % 12 || 12).toString().padStart(2, '0');
-  const minutes = time.getMinutes().toString().padStart(2, '0');
-  const ampm = time.getHours() >= 12 ? 'PM' : 'AM';
-  const formattedTime = `${hours}:${minutes} ${ampm}`;
-  setSelectedTime1(formattedTime);
+let handleTimeConfirm1 = (time) => {
+  let hours = (time.getHours() % 12 || 12).toString().padStart(2, '0');
+  let minutes = time.getMinutes().toString().padStart(2, '0');
+  let ampm = time.getHours() >= 12 ? 'PM' : 'AM';
+  let formattedTime = `${hours}:${minutes} ${ampm}`;
+  setSelectedBedTime1(formattedTime);
   setTimePickerVisible1(false);
 
 };
 
-const handleTimeConfirm2 = (time) => {
-  const hours = (time.getHours() % 12 || 12).toString().padStart(2, '0');
-  const minutes = time.getMinutes().toString().padStart(2, '0');
-  const ampm = time.getHours() >= 12 ? 'PM' : 'AM';
-  const formattedTime = `${hours}:${minutes} ${ampm}`;
-  setSelectedTime2(formattedTime);
+let handleTimeConfirm2 = (time) => {
+  let hours = (time.getHours() % 12 || 12).toString().padStart(2, '0');
+  let minutes = time.getMinutes().toString().padStart(2, '0');
+  let ampm = time.getHours() >= 12 ? 'PM' : 'AM';
+  let formattedTime = `${hours}:${minutes} ${ampm}`;
+  setSelectedAlarmTime2(formattedTime);
   setTimePickerVisible2(false);
 };
+const calculateTimeDifference = () => {
+  // Parse the bed time and alarm time strings
+  const bedTime = selectedBedTime1.split(' ')[0];
+  const alarmTime = selectedAlarmTime2.split(' ')[0];
 
+  // Extract hours and minutes from bed time
+  let bedHours = parseInt(bedTime.split(':')[0], 10);
+  let bedMinutes = parseInt(bedTime.split(':')[1], 10);
+  let bedAMPM = selectedBedTime1.split(' ')[1];
+
+  // Extract hours and minutes from alarm time
+  let alarmHours = parseInt(alarmTime.split(':')[0], 10);
+  let alarmMinutes = parseInt(alarmTime.split(':')[1], 10);
+  let alarmAMPM = selectedAlarmTime2.split(' ')[1];
+
+// Convert bedHours to 24-hour format
+if (bedAMPM === 'PM' && bedHours !== 12) {
+  bedHours += 12;
+} else if (bedAMPM === 'AM' && bedHours === 12) {
+  bedHours = 0;
+}
+
+// Convert alarmHours to 24-hour format
+if (alarmAMPM === 'PM' && alarmHours !== 12) {
+  alarmHours += 12;
+} else if (alarmAMPM === 'AM' && alarmHours === 12) {
+  alarmHours = 0;
+}
+
+  // Calculate the difference in hours and minutes
+  let hoursDiff=0;
+
+  if (alarmHours > bedHours) {
+    hoursDiff = alarmHours - bedHours  ;
+  }
+    if (alarmHours < bedHours) {
+    hoursDiff = bedHours - alarmHours ;
+  }
+
+
+  let minutesDiff = alarmMinutes - bedMinutes;
+
+  // Handle cases where minutes difference is negative
+  if (minutesDiff < 0) {
+    minutesDiff += 60;
+    hoursDiff -= 1;
+  }
+ 
+  // Convert the difference to a formatted string
+  const diffString = `${hoursDiff}:${minutesDiff.toString().padStart(2, '0') }`;
+
+  return diffString;
+};
+
+
+// Call the calculateTimeDifference function whenever needed
+const timeDifference = calculateTimeDifference();
+
+const GetHoursDiff = () => {
+  let GraphHours = parseInt(timeDifference.split(':')[0], 10);
+  return GraphHours;
+}
+const FinalGraphHours = GetHoursDiff();
 
 const showTimePicker1 = () => {
   setTimePickerVisible1(true);
@@ -114,28 +178,100 @@ const showTimePicker2 = () => {
 const hideTimePicker2 = () => {
   setTimePickerVisible2(false);
 };
-////DISPLAY HOURS OF SLEEP
+/// Day index of The Drop bar
+const [selectedDayIndex, setSelectedDayIndex] = useState(-1);
+
+const handleDropBarDaySelect = (day) => {
+  const index = daysOfWeek.indexOf(day);
+  setSelectedDayIndex(index);
+};
+///Chart 
+const chartConfig = {
+  backgroundGradientFrom: "#009688", // Set background color to full black
+  backgroundGradientFromOpacity: 1,
+  backgroundGradientTo: "#009688", // Set background color to full black
+  backgroundGradientToOpacity: 1,
+  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`, // Set font color to white
+  strokeWidth: 2, // optional, default 3
+  barPercentage: 0.5,
+  useShadowColorFromDataset: true 
+};
+const screenWidth = Dimensions.get("window").width;
+const chartWidth = screenWidth * 0.9; // Adjust the chart width as desired
+const chartHeight = 170; // Adjust the chart height as desired
+
+const data = {
+  labels: ["Sun", "Mon", "Tues", "Weds", "Thurs", "Sat"],
+  datasets: [
+    {
+      data: [1,2,3,5,6,7,8],
+      color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
+      strokeWidth: 2 // optional
+    }
+  ],
+  legend: ["Sleeping Hours"] // optional
+};
+
+/// hoursDiff,selectedBedTime1,selectedAlarmTime2,selectedDAyIndex
+
+   // Generate the ID using selectedDayIndex
+  const id = selectedDayIndex.toString();
+  const alarmTime = selectedAlarmTime2;
+  const bedTime = selectedBedTime1;
+  const FinalhoursDiff = FinalGraphHours.toString();
+
+const saveSleepingData = async () => {
+  try {
+    // Create an object with the data to be saved
+    const data = {
+      id,
+      alarmTime,
+      bedTime,
+      FinalhoursDiff,
+    };
+
+    // Save the data to AsyncStorage
+    await AsyncStorage.setItem(id, JSON.stringify(data));
+    console.log('Data saved:', data);
+  } catch (error) {
+    console.log('Error saving data:', error);
+  }
+};
+
+const getData = async () => {
+  try {
+    const value = await AsyncStorage.getItem(id)
+    if(value !== null) {
+      saveSleepingData();
+    }
+  } catch(e) {
+    console.log('Time already Set', error);
+  }
+}
+
+
+const ButtonSave = () => {
+ 
+  toggleParentModal();
+    console.log("Saved Sleeping Data:");
+    console.log("Alarm Time:", alarmTime);
+    console.log("Bed Time:", bedTime);
+    console.log("Hours Difference:", FinalhoursDiff);
+    console.log("ID:",id );
+}
+
 
   return (
     <View style={styles.container}>
-         <View style={styles.headerContainer}>
-         <View style={styles.LeftColumn}>
-         <Text style={styles.heading1}>Ideal Sleep For Hours</Text>
-         <Text style={styles.SubHeading}>8 Hours and 30 mins</Text>
-         <TouchableOpacity style = {styles.appButtonContainer} >
-          <Text style = {styles.appButtonText}>Learn More</Text>
-          </TouchableOpacity>
-         </View>
-
-         <View style={styles.RightColumn}>
-         <Image
-            style={styles.ExerciseImage}
-            source={require("../SleepingTracker/Elements/Logo1.png")}
-          />
-         </View>
-         </View>
-
-
+   
+         <LineChart
+          data={data}
+          style={{ borderRadius: 20 ,color:'white'}}
+          width={chartWidth}
+          height={chartHeight}
+          chartConfig={chartConfig}
+            />
+          
          <View style={styles.ScrollsDiv}>
          <Text style={styles.heading2}>Your Schedule</Text>
          <ScrollView
@@ -224,11 +360,11 @@ const hideTimePicker2 = () => {
           
           <View style={styles.BedTimeContainer}> 
           <View style={styles.ModalLeftColumn}> 
-          <Ionicons name="bed" size={44} color="black" />
-          <Text style={styles.modalText}>Bed Time :</Text>
+          <Ionicons name="bed-outline" size={44} color="black" />
+          <Text style={styles.modalText}>Set Bed Time :</Text>
           </View>
           <View style={styles.ModalRightColumn}> 
-          <Text>{selectedTime1}</Text>
+          <Text>{selectedBedTime1}</Text>
           <TouchableOpacity onPress={showTimePicker1} style={styles.picker}>
           <Icon name="chevron-right" size={20} color="black" />
         </TouchableOpacity>
@@ -250,7 +386,7 @@ const hideTimePicker2 = () => {
           <Text style={styles.modalText}>Set Alarm Time :</Text>
           </View>
           <View style={styles.ModalRightColumn}>
-          <Text>{selectedTime2}</Text>
+          <Text>{selectedAlarmTime2}</Text>
           <TouchableOpacity onPress={showTimePicker2} style={styles.picker}>
           <Icon name="chevron-right" size={20} color="black" />
           </TouchableOpacity>
@@ -271,8 +407,7 @@ const hideTimePicker2 = () => {
           <Text style={styles.modalText}>Total Hours of Sleep :</Text>
           </View>
           <View style={styles.ModalRightColumn}>
-          <Text>{''}</Text>
-          
+          <Text> {timeDifference} Hours:Mins</Text>
           </View>
           </View>
 
@@ -289,25 +424,31 @@ const hideTimePicker2 = () => {
         <Ionicons name={isOpen ? 'chevron-up' : 'chevron-down'} size={24} color="#000" />
         </TouchableOpacity>
         {isOpen && (
-        <View style={styles.dropdownContent}>
-          {daysOfWeek.map((day) => (
-            <TouchableOpacity
-              key={day}
-              style={styles.dropdownItem}
-              onPress={() => handleDaySelect(day)}
-            >
-              <Text style={styles.dropdownItemText}>{day}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+       <View style={styles.dropdownContent}>
+       {daysOfWeek.map((day, index) => (
+         <TouchableOpacity
+           key={day}
+           style={styles.dropdownItem}
+           onPress={() =>  {
+            handleDaySelect(day);
+            handleDropBarDaySelect(day);
+          }}
+         >
+           <Text style={[styles.dropdownItemText, selectedDayIndex === index && styles.selectedItemText]}>
+             {day}
+           </Text>
+
+         </TouchableOpacity>
+       ))}
+     </View>
       )}
           </View>
           </View>
-          <TouchableOpacity style={styles.DoneButton} >
-                <Text style={styles.DoneText}>DONE</Text>
-              </TouchableOpacity>
+          <TouchableOpacity style={styles.DoneButton} onPress={ButtonSave}>
+      <Text style={styles.DoneText}>DONE</Text>
+          </TouchableOpacity>
         </View>
-        </Modal>
+        </Modal>  
     </View>
    
   );
@@ -324,35 +465,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection:'column',
   },
-  //HEADING===
-  
+  //HEADING
   headerContainer: {
     paddingVertical:1,
-    width:'90%',
-    height: '20%',
+    width:'99%',
+    height: '28%',
     textAlign:'left',
-    backgroundColor:"#e2cfb7",
+    backgroundColor:"#009688",
     alignItems: 'center',
     flexDirection:"row",
     borderRadius: 20,
 },
-appButtonContainer: {
-    elevation: 10,
-    backgroundColor: "#009688",
-    borderRadius: 15,
-    marginTop:10,
-    marginLeft:-30,
-    paddingVertical: 10,
-    paddingHorizontal: 25,
-    alignSelf: "center",
-  },
-  appButtonText: {
-    fontSize: 11,
-    color: "#fff",
-    fontWeight: "bold",
-    alignSelf: "center",
-    textTransform: "uppercase",
-  },
+
 RightColumn:{
   alignItems: 'center',
   height:'100%',
@@ -377,7 +501,7 @@ LeftColumn:{
     logo:{
     width:120,
     height:120,
-    resizeMode:'stretch',
+    resizeMode:'cover',
     flex: 1,
     borderRadius: 10,
   
@@ -385,17 +509,17 @@ LeftColumn:{
   ///scrollDiv
   heading2: {
     fontSize: 20,
-    padding: 20,
+    padding: 10,
     fontWeight: 'bold',
     alignSelf:'flex-start',
   },
   ScrollsDiv:{
-    padding:10,
-     height: '35%',
+     height: '23%',
+    
   }, 
   dayContainer: {
-    width: 100,
-    height: 100,
+    width: 80,
+    height: 80,
     backgroundColor: '#e0e0e0',
     borderRadius:15,
     justifyContent: 'center',
@@ -407,7 +531,7 @@ LeftColumn:{
     backgroundColor: '#009688', // Set a different background color for the current day
   },
   dayText: {
-    fontSize: 18,
+    fontSize: 13,
     fontWeight: 'bold',
   },
   highlightedDayText: {
@@ -420,8 +544,9 @@ LeftColumn:{
     marginTop: 5,
   },
   /// Slide
+
   ToggleContainer:{
-    marginTop:20,
+    marginTop:10,
     backgroundColor:"white",
     width:'85%',
     elevation:8,
@@ -443,16 +568,14 @@ Toggleheading: {
     alignSelf:'center',
     marginLeft:10,
   },
-
-
   toggleSwitch: {
-    
     transform: [{ scaleX: 1.5}, { scaleY: 1.5 }], // Adjust the scale to enlarge the toggle switch
   },
   // MODAL STYLES
   button: {
     alignSelf:'flex-end',
-    margin:20,
+    marginTop:6,
+    marginHorizontal:15,
     backgroundColor: '#009688',
     paddingHorizontal: 20,  
     elevation:8,
@@ -460,7 +583,7 @@ Toggleheading: {
   },
   buttonText: {
     color: 'white',
-    fontSize: 46,
+    fontSize: 40,
     fontWeight: 'bold',
   },
   //PARENT MODAL INSIDES STYLES
@@ -469,6 +592,7 @@ Toggleheading: {
     justifyContent:'center',
     textAlign:'center',
     position:'absolute',
+    zIndex:-1,
     bottom:50,
     backgroundColor: '#009688',
     padding: 10, 
@@ -545,23 +669,26 @@ Toggleheading: {
   },
   dropdownContent: {
     position: 'absolute',
+
     top: '100%',
     width: '100%',
     maxHeight: 200,
-    backgroundColor: '#fff',
-    zIndex: 1,
+    backgroundColor: 'white',
+    zIndex: 2 ,
   },
   dropdownItem: {
     paddingVertical: 12,
     borderBottomWidth: 1,
+    borderRadius:2,
     borderBottomColor: '#ccc',
   },
   dropdownItemText: {
     fontSize: 16,
+    backgroundColor:'white',
   },
   picker:{
-paddingLeft:20,
- marginRight:0,
+  paddingLeft:20,
+   marginRight:0,
   },
 }
 );
