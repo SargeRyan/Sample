@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { Button } from "@react-native-material/core";
 import * as Updates from "expo-updates"
-
+import ExerciseCalendar from "./ExerciseCalendar";
 
 import {
     LineChart,
@@ -98,6 +98,18 @@ export default BmiCalculator = ({ navigation, route }) => {
         // setModalVisible(true);
     }
 
+    function* yLabel() {
+        yield* [
+            1200,
+            1090,
+            901,
+            790,
+            1260,
+            1600,
+            890,
+        ];
+      }
+      const yLabelIterator = yLabel();
 
     useEffect(() => {
         fetchData();
@@ -169,34 +181,33 @@ export default BmiCalculator = ({ navigation, route }) => {
                             color="#87a3af"
                             title={"Reset BMI Details"}
                             onPress={async () => { 
-                                //await AsyncStorage.removeItem('userData');
-                                // setUserData(null);
-                                // setBmi('');
-                                // setBmiSpeedometer(0);
-                                // setDescription('');
-                                // RNRestart.Restart();
+                                await AsyncStorage.removeItem('userData');
+                                setUserData(null);
+                                setBmi('');
+                                setBmiSpeedometer(0);
+                                setDescription('');
                                 Updates.reloadAsync()
                             }} />
 
                         <View>
                             <View style={{ width: 150, left: 200, marginTop: 40 }}>
                                 <Text style={{ fontSize: 20, fontWeight: "bold", }}>Gender</Text>
-                                <TextInput style={{ width: 150, alignSelf: "center" }} value={userData.gender}></TextInput>
+                                <TextInput editable={false} selectTextOnFocus={false} style={{ width: 150, alignSelf: "center" }} value={userData.gender}></TextInput>
                             </View>
 
                             <View style={{ width: 150, left: 200, marginTop: 40 }}>
                                 <Text style={{ fontSize: 20, fontWeight: "bold", }}>Age</Text>
-                                <TextInput style={{ width: 150, alignSelf: "center" }} value={userData.age}></TextInput>
+                                <TextInput editable={false} selectTextOnFocus={false} style={{ width: 150, alignSelf: "center" }} value={userData.age}></TextInput>
                             </View>
 
                             <View style={{ width: 150, left: 200, marginTop: 40 }}>
                                 <Text style={{ fontSize: 20, fontWeight: "bold", }}>Height</Text>
-                                <TextInput style={{ width: 150, alignSelf: "center" }} value={userData.height}></TextInput>
+                                <TextInput editable={false} selectTextOnFocus={false} style={{ width: 150, alignSelf: "center" }} value={userData.height}></TextInput>
                             </View>
 
                             <View style={{ width: 150, left: 200, marginTop: 40 }}>
                                 <Text style={{ fontSize: 20, fontWeight: "bold", }}>Weight</Text>
-                                <TextInput style={{ width: 150, alignSelf: "center" }} value={userData.weight}></TextInput>
+                                <TextInput editable={false} selectTextOnFocus={false} style={{ width: 150, alignSelf: "center" }} value={userData.weight}></TextInput>
                             </View>
 
                             {/* <TouchableOpacity style={{ backgroundColor: "#009688", height: 50, width: 300, alignSelf: "center", marginTop: 15, borderRadius: 20 }} onPress={calculateBmi}>
@@ -279,7 +290,8 @@ export default BmiCalculator = ({ navigation, route }) => {
                                     }}
                                     width={Dimensions.get("window").width - 40} // from react-native
                                     height={220}
-                                    yAxisSuffix="Cal"
+                                    yAxisSuffix=" Cal"
+                                    formatYLabel={() => yLabelIterator.next().value}
                                     yAxisInterval={1} // optional, defaults to 1
                                     chartConfig={{
                                         backgroundColor: "#156d94",
@@ -305,6 +317,8 @@ export default BmiCalculator = ({ navigation, route }) => {
                                 />
                             </View>
                         </View>
+
+                        {/* <ExerciseCalendar /> */}
 
                     </View>
                 )}

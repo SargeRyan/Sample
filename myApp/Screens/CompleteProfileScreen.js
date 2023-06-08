@@ -4,7 +4,6 @@ import React from "react";
 import {
     StyleSheet,
     Text,
-    Button,
     TextInput,
     View,
     Image,
@@ -13,6 +12,7 @@ import {
     Modal,
     Pressable,
 } from "react-native";
+import { Button  } from "@react-native-material/core";
 import DropDownPicker from "react-native-dropdown-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -80,7 +80,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
 
     const [height, setHeight] = useState('');
     const [weight, setWeight] = useState('');
-    const [gender, setGender] = useState('');
+    const [gender, setGender] = useState('Male');
     const [age, setAge] = useState('');
     const [goalWeight, setGoalWeight] = useState('');
 
@@ -136,11 +136,13 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                     style={styles.genderImageContainer}
                     source={require("../image/gender.png")}
                 />
-                <TextInput
+                {/* <TextInput
                     value={gender}
                     placeholder="Male or Female"
                     onChangeText={(text) => setGender(text)}
-                    style={styles.genderTextContainer}></TextInput>
+                    style={styles.genderTextContainer}></TextInput> */}
+                <Button color={gender === "Male" ? "#146C94" : "#fff"} style={{margin: 5}} title="Male" onPress={() => {setGender("Male") }} />
+                <Button color={gender === "Female" ? "#146C94" : "#fff"} style={{margin: 5}} title="Female" onPress={() => { setGender("Female") }} />
 
             </View>
 
