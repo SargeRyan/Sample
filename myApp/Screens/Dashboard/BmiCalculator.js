@@ -1,182 +1,410 @@
 import { Touchable, TouchableOpacity } from "react-native";
 import {
-  Text,
-  View,
-  Button,
-  ScrollView,
-  Image,
-  SafeAreaView,
-  StyleSheet
+    Text,
+    View,
+    ScrollView,
+    Image,
+    SafeAreaView,
+    StyleSheet,
+    Modal,
+    Dimensions
 } from "react-native";
+import { Button } from "@react-native-material/core";
+import * as Updates from "expo-updates"
+import ExerciseCalendar from "./ExerciseCalendar";
+
+import {
+    LineChart,
+} from "react-native-chart-kit";
+import { mealDayToEat } from "../../AsyncStorageFunctions";
 import { IMAGE } from "../ExercisePlan/image/PngItem_4039383.png";
 import { render } from "react-dom";
 import { TextInput } from "@react-native-material/core";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import RNSpeedometer from 'react-native-speedometer'
 
 export default BmiCalculator = ({ navigation, route }) => {
-    const [weight, setWeight] = useState('')
-    const [height, setHeight] = useState('')
+    const [height, setHeight] = useState('');
+    const [weight, setWeight] = useState('');
+    const [gender, setGender] = useState('');
     const [bmi, setBmi] = useState('')
+    const [bmiSpeedometer, setBmiSpeedometer] = useState(0)
     const [description, setDescription] = useState('')
+    const [userData, setUserData] = useState(null);
+    const [calories, setCalories] = useState('');
+    const [modalVisible, setModalVisible] = useState(false);
 
-    const calculateBmi = () => {
-        const bmi = weight / ((height/100) * (height/100))
+    // CHART
+    const weeklyCalorieIntake = {
+        labels: Object.values(mealDayToEat),
+        datasets: [
+            {
+                data: [810, 915, 1080, 800, 998, 1504, 1200],
+                color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
+                strokeWidth: 2, // optional,
+                legend: ["Rainy Days"] // optional
+            }
+        ]
+    };
+
+    const chartConfig = {
+        backgroundColor: "#fff",
+        color: (opacity = 1) => `rgba(255,255,255, ${opacity})`,
+        strokeWidth: 2, // optional, default 3
+        barPercentage: 0.5,
+        useShadowColorFromDataset: false // optional
+    };
+
+    useEffect(() => {
+        const getData = async () => {
+            try {
+                // Retrieve data using AsyncStorage
+                const heightValue = await AsyncStorage.getItem('height');
+                const weightValue = await AsyncStorage.getItem('weight');
+                const genderValue = await AsyncStorage.getItem('gender');
+
+                // Update state with retrieved data
+                setHeight(heightValue);
+                setWeight(weightValue);
+                setGender(genderValue);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        getData();
+    }, []);
+
+    const calculateBmi = (userData) => {
+        const bmi = userData.weight / ((userData.height / 100) * (userData.height / 100))
         setBmi(bmi.toFixed(1))
 
-        if (bmi < 18.5){
-            setDescription('Underweight')
+        if (bmi < 18.5) {
+            setDescription('UNDERWEIGHT')
+            setBmiSpeedometer(30);
         }
-         else if (bmi >= 18.5 && bmi <= 24.9){
-            setDescription('Normal')
+        else if (bmi >= 18.5 && bmi <= 24.9) {
+            setDescription('NORMAL')
+            setBmiSpeedometer(50);
         }
-        else if (bmi >= 25 && bmi <= 29.9){
-            setDescription('Overweight')
+        else if (bmi >= 25 && bmi <= 29.9) {
+            setDescription('OVERWEIGHT')
+            setBmiSpeedometer(70);
         }
-          else if (bmi >= 30){
-            setDescription('Obese')
+        else if (bmi >= 30) {
+            setDescription('OBESE')
+            setBmiSpeedometer(90);
         }
+        // setModalVisible(true);
     }
 
-  return (
+    function* yLabel() {
+        yield* [
+            1200,
+            1090,
+            901,
+            790,
+            1260,
+            1600,
+            890,
+        ];
+      }
+      const yLabelIterator = yLabel();
 
-  
-    <ScrollView style={{backgroundColor: "#f9eed9"}}>
-    <View>
-        <Image
-          style={styles.imageTitleHeader}
-          source={require("../Dashboard/image/logo.png")}
-        />
-      </View>
-    <Text style={{alignSelf: "center", fontSize: 20}}>Body Mass Index Calculator</Text>
-    <View style={styles.genderContainer}>
-    <Image
-          style={styles.genderImageContainer}
-          source={require("../Dashboard/image/PngItem_4039383.png")}
-        />
-        <TextInput
-        style={styles.genderTextContainer}
-        value={weight}
-        onChangeText={(text) => setWeight(text)}
-        placeholder="Weight in kg"
-        keyboardType="numeric"
-        >
-        </TextInput>
-        </View>
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = async () => {
+        try {
+            // Retrieve the stored data from AsyncStorage
+            const storedData = await AsyncStorage.getItem('userData');
+
+            if (storedData) {
+                const parsedData = JSON.parse(storedData);
+                setUserData(parsedData);
+                calculateBmi(parsedData);
+            }
+        } catch (error) {
+            console.log('Error retrieving data:', error);
+        }
+    };
+
+    return (
+        <ScrollView style={{ backgroundColor: "#afd3e2" }}>
+            <View>
+                {userData && (
+                    <View>
+
+                        <View style={{ display: "flex", justifyContent: "center", backgroundColor: "#156d94", padding: 10, marginHorizontal: 10, marginTop: 15, borderRadius: 10 }}>
+                            <Text style={{ fontSize: 20, color: "#fff", textAlign: "center" }}>BMI SCORE</Text>
+                            <Text style={{ fontSize: 50, fontWeight: "bold", color: "#fff", textAlign: "center" }}>{bmi}</Text>
+                            <Text style={{ fontSize: 20, fontWeight: "bold", color: "#fff", textAlign: "center" }}>{description}</Text>
+                            <RNSpeedometer maxValue={40} labels={
+                                [
+                                    {
+                                        name: 'Underweight',
+                                        labelColor: '#ff2900',
+                                        activeBarColor: '#ff2900',
+                                    },
+                                    {
+                                        name: 'Underweight1',
+                                        labelColor: '#ccb700',
+                                        activeBarColor: '#ccb700',
+                                    },
+                                    {
+                                        name: 'Normal',
+                                        labelColor: '#00ff6b',
+                                        activeBarColor: '#00ff6b',
+                                    },
+                                    {
+                                        name: 'Normal2',
+                                        labelColor: '#00ff6b',
+                                        activeBarColor: '#00ff6b',
+                                    },
+                                    {
+                                        name: 'Obese1',
+                                        labelColor: '#ccb700',
+                                        activeBarColor: '#ccb700',
+                                    },
+                                    {
+                                        name: 'Obese',
+                                        labelColor: '#ff2900',
+                                        activeBarColor: '#ff2900',
+                                    }
+                                ]
 
 
-    <View style={styles.HeightTextContainer}>
+                            } value={Number(bmi)} size={200} labelStyle={{ opacity: 0 }} labelNoteStyle={{ opacity: 0 }} />
+                        </View>
+                        <Button style={{ marginHorizontal: 10, marginTop: 5 }}
+                            color="#87a3af"
+                            title={"Reset BMI Details"}
+                            onPress={async () => { 
+                                await AsyncStorage.removeItem('userData');
+                                setUserData(null);
+                                setBmi('');
+                                setBmiSpeedometer(0);
+                                setDescription('');
+                                Updates.reloadAsync()
+                            }} />
 
-    <Image
-          style={styles.genderImageContainer}
-          source={require("../Dashboard/image/computer-icons-ruler-pictogram-length-clip-art-ruler-1ccf0d3be8bd9cc8eeb2db1c88611e1a.png")}
-        />
-          <TextInput
-          style={styles.genderTextContainer}
-        value={height}
-        onChangeText={(text) => setHeight(text)}
-        placeholder="Height in cm"
-        keyboardType="numeric"
-        >
-        </TextInput>
-        </View>     
-        
-          <TouchableOpacity style = {styles.appButtonContainer} onPress={calculateBmi}>
-          <Text style = {styles.appButtonText}>Calculate</Text>
-          </TouchableOpacity>
-         
+                        <View>
+                            <View style={{ width: 150, left: 200, marginTop: 40 }}>
+                                <Text style={{ fontSize: 20, fontWeight: "bold", }}>Gender</Text>
+                                <TextInput editable={false} selectTextOnFocus={false} style={{ width: 150, alignSelf: "center" }} value={userData.gender}></TextInput>
+                            </View>
 
-           <View style={{alignSelf: "center", flexDirection: "row", marginTop: 20,}}>
-                <Text style={{alignSelf: "center"}}>BMI: </Text>
-                <Text style={{alignSelf: "center"}}>{bmi}</Text>
-        </View> 
-           <View style={{alignSelf: "center", flexDirection: "row"}}>
-                <Text style={{alignSelf: "center"}}>Classification: </Text>
-                <Text style={{alignSelf: "center"}}>{description}</Text>
-        </View> 
-        
-    </ScrollView>
-      
-  );
+                            <View style={{ width: 150, left: 200, marginTop: 40 }}>
+                                <Text style={{ fontSize: 20, fontWeight: "bold", }}>Age</Text>
+                                <TextInput editable={false} selectTextOnFocus={false} style={{ width: 150, alignSelf: "center" }} value={userData.age}></TextInput>
+                            </View>
+
+                            <View style={{ width: 150, left: 200, marginTop: 40 }}>
+                                <Text style={{ fontSize: 20, fontWeight: "bold", }}>Height</Text>
+                                <TextInput editable={false} selectTextOnFocus={false} style={{ width: 150, alignSelf: "center" }} value={userData.height}></TextInput>
+                            </View>
+
+                            <View style={{ width: 150, left: 200, marginTop: 40 }}>
+                                <Text style={{ fontSize: 20, fontWeight: "bold", }}>Weight</Text>
+                                <TextInput editable={false} selectTextOnFocus={false} style={{ width: 150, alignSelf: "center" }} value={userData.weight}></TextInput>
+                            </View>
+
+                            {/* <TouchableOpacity style={{ backgroundColor: "#009688", height: 50, width: 300, alignSelf: "center", marginTop: 15, borderRadius: 20 }} onPress={calculateBmi}>
+                                <Text style={{ alignSelf: "center", marginTop: 10, fontSize: 20, fontWeight: "bold", color: "#fff" }}>Calculate</Text>
+                            </TouchableOpacity> */}
+
+                            <View style={{ position: "absolute", height: 600 }}>
+
+                                <Image
+                                    style={{ height: 410, width: 142, top: 70, left: 40 }}
+                                    source={require("../Dashboard/image/pngaaa.com-1130346.png")}
+                                />
+                            </View>
+                        </View>
+
+                        {/* <Modal visible={modalVisible} animationType="slide">
+                            <ScrollView style={{ backgroundColor: "#f9eed9" }}>
+                                <View style={{ height: 70, backgroundColor: "#fff", flexDirection: "row", borderTopLeftRadius: 10, borderTopRightRadius: 10 }}>
+                                    <TouchableOpacity onPress={() => setModalVisible(false)}>
+                                        <Image
+                                            style={{ height: 20, width: 27, marginTop: 25, marginLeft: 10 }}
+                                            source={require("../Dashboard/image/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}
+                                        />
+                                    </TouchableOpacity>
+                                    <Text style={{ fontSize: 20, fontWeight: "bold", marginLeft: 10, marginTop: 22, }}>CALCULATION RESULT</Text>
+                                </View>
+
+                                <View style={{ alignSelf: "center", marginTop: 80 }}>
+                                    <Text style={{ fontSize: 20, fontWeight: "bold" }}>BMI SCORE</Text>
+                                </View>
+
+                                <View style={{ alignSelf: "center", marginTop: 20 }}>
+                                    <Text style={{ fontSize: 70, fontWeight: "bold", alignSelf: "center", marginRight: 10 }}>{bmi}</Text>
+                                    <Text style={{ fontSize: 20, fontWeight: "bold", alignSelf: "center", marginRight: 10 }}>{description}</Text>
+                                </View>
+
+                                <View style={{ alignSelf: "center", marginTop: 40, flexDirection: "row" }}>
+                                    <Text style={{ fontSize: 15, fontWeight: "bold", alignSelf: "center", marginRight: 10 }}>GENDER: </Text>
+                                    <Text style={{ fontSize: 15, fontWeight: "bold", alignSelf: "center", marginRight: 10 }}>{userData.gender}</Text>
+                                </View>
+
+                                <View style={{ alignSelf: "center", marginTop: 20, flexDirection: "row" }}>
+                                    <Text style={{ fontSize: 15, fontWeight: "bold", alignSelf: "center", marginRight: 10 }}>AGE: </Text>
+                                    <Text style={{ fontSize: 15, fontWeight: "bold", alignSelf: "center", marginRight: 10 }}>{userData.age}</Text>
+                                </View>
+
+                                <View style={{ alignSelf: "center", marginTop: 20, flexDirection: "row" }}>
+                                    <Text style={{ fontSize: 15, fontWeight: "bold", alignSelf: "center", marginRight: 10 }}>HEIGHT: </Text>
+                                    <Text style={{ fontSize: 15, fontWeight: "bold", alignSelf: "center", marginRight: 10 }}>{userData.height}</Text>
+                                </View>
+
+                                <View style={{ alignSelf: "center", marginTop: 20, flexDirection: "row" }}>
+                                    <Text style={{ fontSize: 15, fontWeight: "bold", alignSelf: "center", marginRight: 10 }}>WEIGHT: </Text>
+                                    <Text style={{ fontSize: 15, fontWeight: "bold", alignSelf: "center", marginRight: 10 }}>{userData.weight}</Text>
+                                </View>
+
+                            </ScrollView>
+
+                        </Modal> */}
+
+                        <View style={{ backgroundColor: "#156d94", padding: 10, marginHorizontal: 10, marginTop: 35, marginBottom: 50, borderRadius: 10 }}>
+                            <Text style={{ fontSize: 20, color: "#fff", textAlign: "center" }}>DAILY CALORIE INTAKE</Text>
+                            <View>
+                                <LineChart
+                                    data={{
+                                        labels: ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"],
+                                        datasets: [
+                                            {
+                                                data: [
+                                                    1200,
+                                                    1090,
+                                                    901,
+                                                    790,
+                                                    1260,
+                                                    1600,
+                                                    890,
+                                                ]
+                                            }
+                                        ]
+                                    }}
+                                    width={Dimensions.get("window").width - 40} // from react-native
+                                    height={220}
+                                    yAxisSuffix=" Cal"
+                                    formatYLabel={() => yLabelIterator.next().value}
+                                    yAxisInterval={1} // optional, defaults to 1
+                                    chartConfig={{
+                                        backgroundColor: "#156d94",
+                                        backgroundGradientFrom: "#156d94",
+                                        backgroundGradientTo: "#156d94",
+                                        decimalPlaces: 2, // optional, defaults to 2dp
+                                        color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                                        labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                                        style: {
+                                            borderRadius: 16
+                                        },
+                                        propsForDots: {
+                                            r: "6",
+                                            strokeWidth: "2",
+                                            stroke: "#000"
+                                        }
+                                    }}
+                                    bezier
+                                    style={{
+                                        marginVertical: 8,
+                                        borderRadius: 16
+                                    }}
+                                />
+                            </View>
+                        </View>
+
+                        {/* <ExerciseCalendar /> */}
+
+                    </View>
+                )}
+            </View>
+        </ScrollView>
+    );
 };
 
 const styles = StyleSheet.create({
-imageTitleHeader: {
-    marginTop: 30,
-    width: 240,
-    height: 240,
-    alignSelf: "center"
-  },
-appButtonContainer: {
-    elevation: 8,
-    backgroundColor: "#009688",
-    borderRadius: 20,
-    width: 340,
-    paddingVertical: 11,
-    paddingHorizontal: 10,
-    alignSelf: "center",
-  },
-  appButtonText: {
-    fontSize: 18,
-    color: "#fff",
-    fontWeight: "bold",
-    alignSelf: "center",
-    textTransform: "uppercase",
-  },
+    imageTitleHeader: {
+        marginTop: 30,
+        width: 240,
+        height: 240,
+        alignSelf: "center"
+    },
+    appButtonContainer: {
+        elevation: 8,
+        backgroundColor: "#009688",
+        borderRadius: 20,
+        width: 340,
+        paddingVertical: 11,
+        paddingHorizontal: 10,
+        alignSelf: "center",
+    },
+    appButtonText: {
+        fontSize: 18,
+        color: "#fff",
+        fontWeight: "bold",
+        alignSelf: "center",
+        textTransform: "uppercase",
+    },
 
-HeightTextContainer: {
+    HeightTextContainer: {
 
-    flexDirection: "row",
-    borderBottomColor: "#ccc",
-    marginBottom: 15,
-    backgroundColor: "#f9eed9",
-    borderRadius: 18,
-    width: 320,
-    height: 70,
-    alignSelf: "center",  
-},
+        flexDirection: "row",
+        borderBottomColor: "#ccc",
+        marginBottom: 15,
+        backgroundColor: "#f9eed9",
+        borderRadius: 18,
+        width: 320,
+        height: 70,
+        alignSelf: "center",
+    },
 
-genderTextContainer: {
-   marginLeft: 10,
-   height: 5,
-   width: 250,
-   marginTop: 7,
-   backgroundColor:"#f9eed9",
+    genderTextContainer: {
+        marginLeft: 10,
+        height: 5,
+        width: 250,
+        marginTop: 7,
+        backgroundColor: "#f9eed9",
 
-  },
-genderContainer: {
-    marginTop: 20,
-    flexDirection: "row",
-    borderBottomColor: "#ccc",
-    marginBottom: 15,
-    backgroundColor: "#f9eed9",
-    borderRadius: 18,
-    width: 320,
-    height: 70,
-    alignSelf: "center",
-  },
- genderImageContainer: {
-    marginTop: 20,
-    height: 25,
-    marginRight: 12,
-    width: 25,
-    marginLeft: 16,
-  },
+    },
+    genderContainer: {
+        marginTop: 20,
+        flexDirection: "row",
+        borderBottomColor: "#ccc",
+        marginBottom: 15,
+        backgroundColor: "#f9eed9",
+        borderRadius: 18,
+        width: 320,
+        height: 70,
+        alignSelf: "center",
+    },
+    genderImageContainer: {
+        marginTop: 20,
+        height: 25,
+        marginRight: 12,
+        width: 25,
+        marginLeft: 16,
+    },
 
-  ExerciseImage: {
-    height: 27,
-    width: 345,
-    flex: 1,
-    borderRadius: 10,
-    marginTop: 1,
-  },
-  TextContainer: {
-    width: 350,
-    height: 30,
-    textAlign: "center",
-    backgroundColor: "#146c94",
-    borderRadius: 10,
-    paddingVertical: 6,
-    color: "white",
-    fontWeight: "bold",
-  },
+    ExerciseImage: {
+        height: 27,
+        width: 345,
+        flex: 1,
+        borderRadius: 10,
+        marginTop: 1,
+    },
+    TextContainer: {
+        width: 350,
+        height: 30,
+        textAlign: "center",
+        backgroundColor: "#146c94",
+        borderRadius: 10,
+        paddingVertical: 6,
+        color: "white",
+        fontWeight: "bold",
+    },
 });

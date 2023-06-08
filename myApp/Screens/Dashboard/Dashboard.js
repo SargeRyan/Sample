@@ -38,11 +38,8 @@ export default Dashboard = ({ navigation, route }) => {
     }
 
     return (
-
-
         <ScrollView>
             <View>
-
                 <Text>Weight</Text>
                 <TextInput
                     value={weight}
