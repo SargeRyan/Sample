@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import React from "react";
 import {
     StyleSheet,
@@ -15,7 +15,6 @@ import {
 } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
 
 TouchableOpacity.defaultProps = { ActiveOpacity: 0.8 };
 
@@ -81,37 +80,38 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
 
     const [height, setHeight] = useState('');
     const [weight, setWeight] = useState('');
-    const[gender, setGender]= useState('');
-    const[age, setAge]= useState('');
-    const[goalWeight, setGoalWeight]= useState('');
-    
+    const [gender, setGender] = useState('');
+    const [age, setAge] = useState('');
+    const [goalWeight, setGoalWeight] = useState('');
+
 
     const saveData = async () => {
-    try {
-      const userData = {
-        height,
-        weight,
-        age,
-        gender,
-        goalWeight
-      };
+        console.log('Saving data');
+        try {
+            const userData = {
+                height,
+                weight,
+                age,
+                gender,
+                goalWeight
+            };
 
-      // Save the data to AsyncStorage
-      await AsyncStorage.setItem('userData', JSON.stringify(userData));
-      console.log('Data saved successfully!', userData);
+            // Save the data to AsyncStorage
+            await AsyncStorage.setItem('userData', JSON.stringify(userData));
+            console.log('Data saved successfully!', userData);
 
-      // Navigate to the other screen
-     
-    } catch (error) {
-      console.log('Error saving data:', error);
-    }
-  };
+            // Navigate to the other screen
+
+        } catch (error) {
+            console.log('Error saving data:', error);
+        }
+    };
 
     return (
         <SafeAreaView
-            style={{ flex: 1, display: "flex", alignItems: "center", justifyContent : "center", padding: 20 }}
+            style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}
         >
-    
+
             {/*Logo*/}
             <View>
                 <Image
@@ -137,11 +137,11 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                     source={require("../image/gender.png")}
                 />
                 <TextInput
-                value={gender}
-                placeholder="Male or Female"
-                onChangeText={(text) => setGender(text)}
-                 style={styles.genderTextContainer}></TextInput>
-                
+                    value={gender}
+                    placeholder="Male or Female"
+                    onChangeText={(text) => setGender(text)}
+                    style={styles.genderTextContainer}></TextInput>
+
             </View>
 
             <Text style={{ width: 320, marginBottom: 5 }}>
@@ -201,7 +201,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
 
 
 
-            
+
 
 
 
@@ -326,9 +326,9 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                         <Text style={{ marginTop: 18, fontSize: 18, marginLeft: 15, fontWeight: "bold" }}>WEEKLY GOAL</Text>
                     </View>
 
-                     <TouchableOpacity onPress={saveData} style={{position: "absolute", top: 17, height: 50, right: 20 }}>
-                         <Text style = {{fontSize: 18, fontWeight: "bold"}}>SAVE</Text>
-                     </TouchableOpacity>
+                    <TouchableOpacity onPress={saveData} style={{ position: "absolute", top: 17, height: 50, right: 20 }}>
+                        <Text style={{ fontSize: 18, fontWeight: "bold" }}>SAVE</Text>
+                    </TouchableOpacity>
 
                     <Text style={{ fontSize: 15, fontWeight: "bold", marginTop: 50, marginLeft: 20 }}>What's your goal weight</Text>
                     <Text style={{ fontSize: 12, marginTop: 70, marginLeft: 20, marginRight: 15 }}>Don't worry. This doesn't affect your daily calorie goal and can always change it later</Text>
@@ -361,12 +361,13 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                         containerStyle={{ width: 320, backgroundColor: "#f9eed9", position: "absolute", top: 320, right: 20 }}
                     />
 
-
-
                     <View style={styles.screenContainer}>
                         <AppButton
                             title="Create Account"
-                            onPress={() => setShowMainScreen(false)}
+                            onPress={async () => {
+                                await saveData();
+                                setShowMainScreen(false)
+                            }}
                         ></AppButton>
                     </View>
                 </View>
@@ -441,7 +442,7 @@ const styles = StyleSheet.create({
         height: 35,
         fontSize: 17,
         marginTop: 7,
-        
+
     },
     birthDateContainer: {
         flexDirection: "row",

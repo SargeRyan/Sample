@@ -1,5 +1,6 @@
 {
   "expo": {
+    "runtimeVersion": { "policy": "nativeVersion" },
     "plugins": [
       [
         "expo-image-picker",
