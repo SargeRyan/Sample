@@ -23,6 +23,8 @@ import { TextInput } from "@react-native-material/core";
 import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import RNSpeedometer from 'react-native-speedometer'
+import {getEatenMealAsync} from "../../AsyncStorageFunctions";
+import { useIsFocused } from "@react-navigation/native";
 
 export default BmiCalculator = ({ navigation, route }) => {
     const [height, setHeight] = useState('');
@@ -34,7 +36,7 @@ export default BmiCalculator = ({ navigation, route }) => {
     const [userData, setUserData] = useState(null);
     const [calories, setCalories] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
-
+    const [calorieIntake, setCalorieIntake] = useState([0,0,0,0,0,0]);
     // CHART
     const weeklyCalorieIntake = {
         labels: Object.values(mealDayToEat),
@@ -73,6 +75,7 @@ export default BmiCalculator = ({ navigation, route }) => {
             }
         };
         getData();
+        fetchData();
     }, []);
 
     const calculateBmi = (userData) => {
@@ -98,22 +101,23 @@ export default BmiCalculator = ({ navigation, route }) => {
         // setModalVisible(true);
     }
 
-    function* yLabel() {
-        yield* [
-            1200,
-            1090,
-            901,
-            790,
-            1260,
-            1600,
-            890,
-        ];
-      }
-      const yLabelIterator = yLabel();
-
+    const isFocused = useIsFocused();
     useEffect(() => {
-        fetchData();
-    }, []);
+        const getEatenMeal = async () => {
+            const meal = await getEatenMealAsync();
+            const mealEaten = JSON.parse(meal);
+            const mealGraph = [0,0,0,0,0,0,0];
+            for (let i = 0; i < mealEaten.length; i++) {
+                const meal = mealEaten[i];
+                const mealValues = JSON.parse(meal[1]);
+                console.log(mealValues.eatenDate);
+                mealGraph[mealValues.eatenDate] += Number(mealValues.calories);
+            }
+            setCalorieIntake(mealGraph);
+            console.log(mealGraph);
+        };
+        getEatenMeal();
+    }, [isFocused]);
 
     const fetchData = async () => {
         try {
@@ -276,22 +280,14 @@ export default BmiCalculator = ({ navigation, route }) => {
                                         labels: ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"],
                                         datasets: [
                                             {
-                                                data: [
-                                                    1200,
-                                                    1090,
-                                                    901,
-                                                    790,
-                                                    1260,
-                                                    1600,
-                                                    890,
-                                                ]
+                                                data: calorieIntake
                                             }
                                         ]
                                     }}
                                     width={Dimensions.get("window").width - 40} // from react-native
                                     height={220}
-                                    yAxisSuffix=" Cal"
-                                    formatYLabel={() => yLabelIterator.next().value}
+                                    // yAxisSuffix=" Cal"
+                                    // formatYLabel={() => yLabelIterator.next().value}
                                     yAxisInterval={1} // optional, defaults to 1
                                     chartConfig={{
                                         backgroundColor: "#156d94",

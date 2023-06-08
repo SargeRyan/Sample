@@ -9,8 +9,32 @@ import {
 } from "react-native-chart-kit";
 import { StyleSheet, Text, SafeAreaView, ScrollView, View, Image, Dimensions } from "react-native";
 const screenWidth = Dimensions.get("window").width - 50;
-export default MealChart = () => {
-
+import { getEatenMealAsync } from "../../../AsyncStorageFunctions";
+export default MealChart = ({indexRefresh}) => {
+    const [calorieIntake, setCalorieIntake] = useState({
+        Breakfast: 0,
+        Lunch: 0,
+        Dinner: 0,
+    });
+    useEffect(() => {
+        const getEatenMeal = async () => {
+            const meal = await getEatenMealAsync();
+            const mealEaten = JSON.parse(meal);
+            const mealGraph = {
+                Breakfast: 0,
+                Lunch: 0,
+                Dinner: 0,
+            };
+            for (let i = 0; i < mealEaten.length; i++) {
+                const meal = mealEaten[i];
+                const mealValues = JSON.parse(meal[1]);
+                mealGraph[mealValues.timeToEat] += Number(mealValues.calories);
+            }
+            setCalorieIntake(mealGraph);
+            console.log(mealGraph);
+        };
+        getEatenMeal();
+    }, [indexRefresh]);
     const chartConfig = {
         backgroundColor: "#156d94",
         color: (opacity = 1) => `rgba(255,255,255, ${opacity})`,
@@ -22,19 +46,19 @@ export default MealChart = () => {
     const data = [
         {
             name: "Cal | Breakfast",
-            population: 300,
+            population: calorieIntake.Breakfast,
             color: "#ffffff",
             legendFontColor: "#ffffff",
         },
         {
             name: "Cal | Lunch",
-            population: 800,
+            population: calorieIntake.Lunch,
             color: "#e0fbfc",
             legendFontColor: "#ffffff",
         },
         {
             name: "Cal | Dinner",
-            population: 700,
+            population: calorieIntake.Dinner,
             color: "#1c4c85",
             legendFontColor: "#ffffff",
         }

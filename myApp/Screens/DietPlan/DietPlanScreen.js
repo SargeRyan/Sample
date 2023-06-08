@@ -54,17 +54,19 @@ export default DietPlanScreen = ({ navigation, route }) => {
             return 'unknown';
         }
     }
-
+    const [indexRefresh, setIndexRefresh] = useState(1);
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView style={styles.scrollView}>
-                <MealChart></MealChart>
+                <MealChart indexRefresh={indexRefresh}></MealChart>
                 <MealSettings fetchMeals={fetchMeals}></MealSettings>
                 <View style={styles.headingContainer}>
                     <Text style={styles.heading}>{mealDay.toUpperCase()} Meals</Text>
                     <MealTimeDropDown value={mealTime} setValue={setMealTime} />
                 </View>
-                <MealList mealsToday={mealsToday} />
+                <MealList mealsToday={mealsToday} setIndexRefresh={()=>{
+                    setIndexRefresh(indexRefresh+1);
+                }} />
                 {
                     Object.keys(mealsToday).length === 0 &&
                     <View style={{
