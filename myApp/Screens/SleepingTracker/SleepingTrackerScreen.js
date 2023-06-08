@@ -391,7 +391,7 @@ LeftColumn:{
   },
   ScrollsDiv:{
     padding:10,
-     height: '30%',
+     height: '35%',
   }, 
   dayContainer: {
     width: 100,
