@@ -12,8 +12,8 @@ export async function schedulePushNotification(hour , minute, title, body ) {
     Notifications.setNotificationHandler({
         handleNotification: async () => ({
             shouldShowAlert: true,
-            shouldPlaySound: false,
-            shouldSetBadge: false,
+            shouldPlaySound: true,
+            shouldSetBadge: true,
         }),
     });
     
