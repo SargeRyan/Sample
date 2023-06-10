@@ -28,6 +28,11 @@ export default MealChart = ({indexRefresh}) => {
             for (let i = 0; i < mealEaten.length; i++) {
                 const meal = mealEaten[i];
                 const mealValues = JSON.parse(meal[1]);
+
+                const d = new Date();
+                let day = d.getDay()
+                if (mealValues.eatenDate !== day) continue; // skip other days
+                console.log("MEAL VALUES ===========", mealValues);
                 mealGraph[mealValues.timeToEat] += Number(mealValues.calories);
             }
             setCalorieIntake(mealGraph);

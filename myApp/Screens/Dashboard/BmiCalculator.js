@@ -23,8 +23,9 @@ import { TextInput } from "@react-native-material/core";
 import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import RNSpeedometer from 'react-native-speedometer'
-import {getEatenMealAsync} from "../../AsyncStorageFunctions";
+import { getEatenMealAsync } from "../../AsyncStorageFunctions";
 import { useIsFocused } from "@react-navigation/native";
+import BmiGoal from "./BmiGoal";
 
 export default BmiCalculator = ({ navigation, route }) => {
     const [height, setHeight] = useState('');
@@ -36,7 +37,8 @@ export default BmiCalculator = ({ navigation, route }) => {
     const [userData, setUserData] = useState(null);
     const [calories, setCalories] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
-    const [calorieIntake, setCalorieIntake] = useState([0,0,0,0,0,0]);
+    const [calorieIntake, setCalorieIntake] = useState([0, 0, 0, 0, 0, 0,0]);
+    const [calorieIntakeToday, setCalorieIntakeToday] = useState(0);
     const [bmr, setBmr] = useState('');
     // CHART
     const weeklyCalorieIntake = {
@@ -100,12 +102,12 @@ export default BmiCalculator = ({ navigation, route }) => {
             setBmiSpeedometer(90);
         }
         // setModalVisible(true);
-        if(userData.gender){
-            if(userData.gender == "Male"){
+        if (userData.gender) {
+            if (userData.gender == "Male") {
                 let bmr = 66.47 + 13.75 * userData.weight + 5.003 * userData.height - 6.755 * userData.age;
                 setBmr(bmr.toFixed(1));
             }
-            else{
+            else {
                 let bmr = 66.47 + 13.75 * userData.weight + 5.003 * userData.height - 6.755 * userData.age;
                 setBmr(bmr.toFixed(1));
             }
@@ -117,7 +119,7 @@ export default BmiCalculator = ({ navigation, route }) => {
         const getEatenMeal = async () => {
             const meal = await getEatenMealAsync();
             const mealEaten = JSON.parse(meal);
-            const mealGraph = [0,0,0,0,0,0,0];
+            const mealGraph = [0, 0, 0, 0, 0, 0, 0];
             for (let i = 0; i < mealEaten.length; i++) {
                 const meal = mealEaten[i];
                 const mealValues = JSON.parse(meal[1]);
@@ -125,6 +127,8 @@ export default BmiCalculator = ({ navigation, route }) => {
                 mealGraph[mealValues.eatenDate] += Number(mealValues.calories);
             }
             setCalorieIntake(mealGraph);
+
+            setCalorieIntakeToday(mealGraph[new Date().getDay()]);
             console.log(mealGraph);
         };
         getEatenMeal();
@@ -195,7 +199,7 @@ export default BmiCalculator = ({ navigation, route }) => {
                         <Button style={{ marginHorizontal: 10, marginTop: 5 }}
                             color="#87a3af"
                             title={"Reset BMI Details"}
-                            onPress={async () => { 
+                            onPress={async () => {
                                 await AsyncStorage.removeItem('userData');
                                 setUserData(null);
                                 setBmi('');
@@ -282,14 +286,7 @@ export default BmiCalculator = ({ navigation, route }) => {
                             </ScrollView>
 
                         </Modal> */}
-                        <View style={{ display: "flex", justifyContent: "center", backgroundColor: "#156d94", padding: 10, marginHorizontal: 10, marginTop: 15, borderRadius: 10 }}>
-                            <Text style={{ fontSize: 20, color: "#fff", textAlign: "center" }}>YOUR DAILY CALORIE NET GOAL</Text>
-                        <View style = {{flexDirection: "row", alignSelf: "center"}}>
-                            <Text style={{ fontSize: 50, fontWeight: "bold", color: "#fff", textAlign: "center", alignSelf: "center"}}>{bmr}</Text>
-                            <Text style={{ fontSize: 20, fontWeight: "bold", color: "#fff", textAlign: "center", alignSelf: "center" }}>KCAL</Text>
-                        </View>   
-                            
-                        </View>
+                        <BmiGoal bmr={bmr} calorieIntake={calorieIntakeToday}/>
 
                         <View style={{ backgroundColor: "#156d94", padding: 10, marginHorizontal: 10, marginTop: 35, marginBottom: 50, borderRadius: 10 }}>
                             <Text style={{ fontSize: 20, color: "#fff", textAlign: "center" }}>DAILY CALORIE INTAKE</Text>

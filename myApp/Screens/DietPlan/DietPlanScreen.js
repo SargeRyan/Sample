@@ -9,6 +9,8 @@ import {
     mealTimeToEat,
     getMealsToday,
 } from "../../AsyncStorageFunctions";
+import MealNotification from "./MealNotification";
+
 export default DietPlanScreen = ({ navigation, route }) => {
     const [mealTime, setMealTime] = useState(mealTimeToEat.breakfast);
     const [mealDay, setMealDay] = useState(mealDayToEat.monday);
