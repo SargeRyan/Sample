@@ -1,4 +1,4 @@
-import { Touchable, TouchableOpacity } from "react-native";
+import { Modal, Touchable, TouchableOpacity, useState } from "react-native";
 import {
   Text,
   View,
@@ -14,28 +14,9 @@ import be from "date-fns/locale/be";
 
 export default ExercisePlanScreen = ({ navigation, route }) => {
 
-  const [modalVisible, setModalVisible] = useState(false);
-   const [modalVisible1, setModalVisible1] = useState(false);
-  
-  //first Modal
-  const openModal = () => {
-    setModalVisible(true);
-  };
-
-  const closeModal = () => {
-    setModalVisible(false);
-  };
  
-  //2nd Modal
-  const openModal1 = () => {
-    setModalVisible1(true);
-  };
 
-  const closeModal1 = () => {
-    setModalVisible1(false);
-  };
-
-
+ 
   return (
     <ScrollView
       style={{
@@ -54,6 +35,8 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
         <Image style={styles.ImageContainer} source={require("../ExercisePlan/picture/jogging.gif")}/>
         </View>
      </TouchableOpacity>
+
+    
 
      <TouchableOpacity style={styles.ButtonContainer}>
       <View style={styles.exerciseContainer}>
