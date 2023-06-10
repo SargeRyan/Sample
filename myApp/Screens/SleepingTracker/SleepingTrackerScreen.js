@@ -417,18 +417,39 @@ const ButtonSave = () => {
      
   }
   //ALARM AND BED FUNCTION
- let [selectedDashBoardBedTime1, setSelectedDashBoardBedTime1] = React.useState('12:00 AM');
- let [selectedDashBoardAlarmTime1, setSelectedDashBoardAlarmTime1] = React.useState('12:00 AM');
- const [bedTimeHours, bedTimeMinutes] = selectedDashBoardBedTime1.split(':');
-  const [alarmTimeHours, alarmTimeMinutes] = selectedDashBoardAlarmTime1.split(':');
-  const bedTimeHoursInt = parseInt(bedTimeHours, 10);
-  const bedTimeMinutesInt = parseInt(bedTimeMinutes, 10);
-  const alarmTimeHoursInt = parseInt(alarmTimeHours, 10);
-  const alarmTimeMinutesInt = parseInt(alarmTimeMinutes, 10);
 
+  let [selectedDashBoardBedTime1, setSelectedDashBoardBedTime1] = React.useState('12:00 AM');
+  let [selectedDashBoardAlarmTime1, setSelectedDashBoardAlarmTime1] = React.useState('12:00 AM');
+  
+  const convertTo24HourFormat = (timeString) => {
+    const [time, meridiem] = timeString.split(' ');
+    const [hours, minutes] = time.split(':');
+    let convertedHours = parseInt(hours, 10);
+  
+    if (meridiem === 'PM' && convertedHours !== 12) {
+      convertedHours += 12;
+    } else if (meridiem === 'AM' && convertedHours === 12) {
+      convertedHours = 0;
+    }
+  
+    return {
+      hours: convertedHours,
+      minutes: parseInt(minutes, 10),
+    };
+  };
+  
+  const FunctionbedTime = convertTo24HourFormat(selectedDashBoardBedTime1);
+  const FunctionalarmTime = convertTo24HourFormat(selectedDashBoardAlarmTime1);
+  
+  // Access the converted values
+  const bedTimeHoursInt = FunctionbedTime.hours;
+  const bedTimeMinutesInt = FunctionbedTime.minutes;
+  const alarmTimeHoursInt = FunctionalarmTime.hours;
+  const alarmTimeMinutesInt = FunctionalarmTime.minutes;
+  
   useState(() => {
-  schedulePushNotification(bedTimeHoursInt,bedTimeMinutesInt, "Time for Bed ", "Be on time For your Bed!"); ///Bedtime Alarm
-  schedulePushNotification(alarmTimeHoursInt,alarmTimeMinutesInt, "Time for Bed ", "Be on time For your Bed!");//AlarmTime Alarm  
+    schedulePushNotification(bedTimeHoursInt,bedTimeMinutesInt, "Time for Bed ", "Be on time For your Bed!"); ///Bedtime Alarm
+    schedulePushNotification(alarmTimeHoursInt,alarmTimeMinutesInt, "Time for Bed ", "Be on time For your Bed!");//AlarmTime Alarm  
     }, []);
 
     return (
