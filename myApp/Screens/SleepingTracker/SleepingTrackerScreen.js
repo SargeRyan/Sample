@@ -262,6 +262,7 @@ const ButtonSave = () => {
 
 
   return (
+    <ScrollView style={{ backgroundColor: "#afd3e2" }}>
     <View style={styles.container}>
    
          <LineChart
@@ -450,7 +451,7 @@ const ButtonSave = () => {
         </View>
         </Modal>  
     </View>
-   
+    </ScrollView>
   );
       
 };
@@ -573,17 +574,17 @@ Toggleheading: {
   },
   // MODAL STYLES
   button: {
-    alignSelf:'flex-end',
-    marginTop:6,
     marginHorizontal:15,
+    alignSelf:'flex-end',
     backgroundColor: '#009688',
     paddingHorizontal: 20,  
-    elevation:8,
+    margin:20,
+    marginBottom:45,
     borderRadius: 100,
   },
   buttonText: {
     color: 'white',
-    fontSize: 40,
+    fontSize: 50,
     fontWeight: 'bold',
   },
   //PARENT MODAL INSIDES STYLES
