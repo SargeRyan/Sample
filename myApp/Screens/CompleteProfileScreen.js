@@ -141,8 +141,8 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                     placeholder="Male or Female"
                     onChangeText={(text) => setGender(text)}
                     style={styles.genderTextContainer}></TextInput> */}
-                <Button color={gender === "Male" ? "#146C94" : "#fff"} style={{margin: 5}} title="Male" onPress={() => {setGender("Male") }} />
-                <Button color={gender === "Female" ? "#146C94" : "#fff"} style={{margin: 5}} title="Female" onPress={() => { setGender("Female") }} />
+                <Button color={gender === "Male" ? "#146C94" : "#fff"} style={{margin: 5, width: 120}} title="Male" onPress={() => {setGender("Male") }} />
+                <Button color={gender === "Female" ? "#146C94" : "#fff"} style={{margin: 5, width:120}} title="Female" onPress={() => { setGender("Female") }} />
 
             </View>
 
@@ -327,10 +327,6 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                         </Pressable>
                         <Text style={{ marginTop: 18, fontSize: 18, marginLeft: 15, fontWeight: "bold" }}>WEEKLY GOAL</Text>
                     </View>
-
-                    <TouchableOpacity onPress={saveData} style={{ position: "absolute", top: 17, height: 50, right: 20 }}>
-                        <Text style={{ fontSize: 18, fontWeight: "bold" }}>SAVE</Text>
-                    </TouchableOpacity>
 
                     <Text style={{ fontSize: 15, fontWeight: "bold", marginTop: 50, marginLeft: 20 }}>What's your goal weight</Text>
                     <Text style={{ fontSize: 12, marginTop: 70, marginLeft: 20, marginRight: 15 }}>Don't worry. This doesn't affect your daily calorie goal and can always change it later</Text>

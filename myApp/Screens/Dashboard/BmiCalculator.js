@@ -37,6 +37,7 @@ export default BmiCalculator = ({ navigation, route }) => {
     const [calories, setCalories] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
     const [calorieIntake, setCalorieIntake] = useState([0,0,0,0,0,0]);
+    const [bmr, setBmr] = useState('');
     // CHART
     const weeklyCalorieIntake = {
         labels: Object.values(mealDayToEat),
@@ -99,6 +100,16 @@ export default BmiCalculator = ({ navigation, route }) => {
             setBmiSpeedometer(90);
         }
         // setModalVisible(true);
+        if(userData.gender){
+            if(userData.gender == "Male"){
+                let bmr = 66.47 + 13.75 * userData.weight + 5.003 * userData.height - 6.755 * userData.age;
+                setBmr(bmr.toFixed(1));
+            }
+            else{
+                let bmr = 66.47 + 13.75 * userData.weight + 5.003 * userData.height - 6.755 * userData.age;
+                setBmr(bmr.toFixed(1));
+            }
+        }
     }
 
     const isFocused = useIsFocused();
@@ -271,6 +282,14 @@ export default BmiCalculator = ({ navigation, route }) => {
                             </ScrollView>
 
                         </Modal> */}
+                        <View style={{ display: "flex", justifyContent: "center", backgroundColor: "#156d94", padding: 10, marginHorizontal: 10, marginTop: 15, borderRadius: 10 }}>
+                            <Text style={{ fontSize: 20, color: "#fff", textAlign: "center" }}>YOUR DAILY CALORIE NET GOAL</Text>
+                        <View style = {{flexDirection: "row", alignSelf: "center"}}>
+                            <Text style={{ fontSize: 50, fontWeight: "bold", color: "#fff", textAlign: "center", alignSelf: "center"}}>{bmr}</Text>
+                            <Text style={{ fontSize: 20, fontWeight: "bold", color: "#fff", textAlign: "center", alignSelf: "center" }}>KCAL</Text>
+                        </View>   
+                            
+                        </View>
 
                         <View style={{ backgroundColor: "#156d94", padding: 10, marginHorizontal: 10, marginTop: 35, marginBottom: 50, borderRadius: 10 }}>
                             <Text style={{ fontSize: 20, color: "#fff", textAlign: "center" }}>DAILY CALORIE INTAKE</Text>
