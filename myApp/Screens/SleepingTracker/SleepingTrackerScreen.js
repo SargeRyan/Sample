@@ -8,7 +8,7 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Dimensions } from "react-native";
 import {LineChart} from "react-native-chart-kit";
-import {schedulePushNotification} from "./Screens/DietPlan/MealNotification";
+
 
 
 import {
