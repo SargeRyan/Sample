@@ -7,15 +7,27 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { storeDataObject } from "../../../AsyncStorageFunctions";
+import { storeDataObject, removeValue } from "../../../AsyncStorageFunctions";
 
-export default MealCard = ({ mealData }) => {
+export default MealCard = ({ mealData, setIndexRefresh }) => {
   const [isChecked, setChecked] = useState(mealData.isChecked);
   const toggleChecked = async () => {
     setChecked(!isChecked);
-    mealData.isChecked = !isChecked;
-    await storeDataObject(mealData.id, mealData);
+    const currentCheckStatus = !isChecked;
+    mealData.isChecked = currentCheckStatus;
+    const d = new Date();
+    let day = d.getDay()
+    mealData.eatenDate = day;
+    
+    if(currentCheckStatus){
+        await storeDataObject(`eaten_${day}_${mealData.id}`, mealData);
+    }else{
+        await removeValue(`eaten_${day}_${mealData.id}`);
+    }
+
+    await storeDataObject(mealData.id, mealData); // store the meal data as mark as checked
     console.log("Checked========", mealData.id);
+    setIndexRefresh();
   };
 
   return (
