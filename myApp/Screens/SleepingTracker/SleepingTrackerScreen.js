@@ -22,6 +22,7 @@ import {
     
 const SleepingTrackerTab = () => {
  
+
 ////SCROLL BAR DATES
 
 const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -32,7 +33,6 @@ const currentDay = currentDate.getDate();
 
 // Create a ref for the ScrollView
 const scrollViewRef = useRef(null);
-
 // Scroll to the current day on initial render
 useEffect(() => {
  if (scrollViewRef.current && currentDayIndex > 0) {
@@ -128,19 +128,21 @@ if (alarmAMPM === 'PM' && alarmHours !== 12) {
   alarmHours = 0;
 }
 
+let hoursDiff=0;
   // Calculate the difference in hours and minutes
-  let hoursDiff=0;
+
 
   if (alarmHours > bedHours) {
     hoursDiff = alarmHours - bedHours  ;
+   
   }
-    if (alarmHours < bedHours) {
+   else if (alarmHours < bedHours) {
     hoursDiff = bedHours - alarmHours ;
-  }
-
+   }
+  
+  
 
   let minutesDiff = alarmMinutes - bedMinutes;
-
   // Handle cases where minutes difference is negative
   if (minutesDiff < 0) {
     minutesDiff += 60;
@@ -149,11 +151,8 @@ if (alarmAMPM === 'PM' && alarmHours !== 12) {
  
   // Convert the difference to a formatted string
   const diffString = `${hoursDiff}:${minutesDiff.toString().padStart(2, '0') }`;
-
   return diffString;
 };
-
-
 // Call the calculateTimeDifference function whenever needed
 const timeDifference = calculateTimeDifference();
 
@@ -182,10 +181,115 @@ const hideTimePicker2 = () => {
 const [selectedDayIndex, setSelectedDayIndex] = useState(-1);
 
 const handleDropBarDaySelect = (day) => {
-  const index = daysOfWeek.indexOf(day);
+  let index = daysOfWeek.indexOf(day);
   setSelectedDayIndex(index);
 };
+ 
+/// hoursDiff,selectedBedTime1,selectedAlarmTime2,selectedDAyIndex
+
+   // Generate the ID using selectedDayIndex
+  const id = selectedDayIndex.toString();
+  const alarmTime = selectedAlarmTime2;
+  const bedTime = selectedBedTime1;
+  const FinalhoursDiff = FinalGraphHours.toString();
+
+  
+ // GraphData ();
+const saveSleepingData = async () => {
+  try {
+    // Create an object with the data to be saved
+    const data = {
+      id,
+      alarmTime,
+      bedTime,
+      FinalhoursDiff,
+    };
+    /// set chart data 
+    
+
+    // Save the data to AsyncStorage
+    await AsyncStorage.setItem(id, JSON.stringify(data));
+    console.log("Saved Sleeping Data:");
+    console.log("Alarm Time:", alarmTime);
+    console.log("Bed Time:", bedTime);
+    console.log("Hours Difference:", FinalhoursDiff);
+    console.log("ID:",id );
+  } catch (error) {
+    console.log('Error saving data:', error);
+  }
+}
+const fetchSleepingData = async () => {
+  try {
+    // Fetch the data from AsyncStorage
+    const dataString = await AsyncStorage.getItem(id);
+
+    if (dataString) {
+      // Parse the data as JSON
+      const data = JSON.parse(dataString);
+
+      // Access the individual properties
+      const { alarmTime, bedTime, FinalhoursDiff } = data;
+
+      console.log("Fetched Sleeping Data:");
+      console.log("Alarm Time:", alarmTime);
+      console.log("Bed Time:", bedTime);
+      console.log("Hours Difference:", FinalhoursDiff);
+      console.log("ID:", id);
+    } else {
+      console.log("No data found for the provided ID:", id);
+    }
+  } catch (error) {
+    console.log('Error fetching data:', error);
+  }
+}
 ///Chart 
+
+let finalHoursDiffValues =[0];
+
+const fetchAllData = async () => {
+  try {
+    // Get all the keys stored in AsyncStorage
+    const keys = await AsyncStorage.getAllKeys();
+    // Fetch the data for each key
+    const dataPairs = await AsyncStorage.multiGet(keys);
+
+    // Create an array to store the FinalhoursDiff values for each day of the week
+
+    // Process each data pair
+    dataPairs.forEach(([key, value]) => {
+      // Parse the value as JSON
+      const data = JSON.parse(value);
+
+      // Access the individual properties
+      const { id, alarmTime, bedTime, FinalhoursDiff } = data;
+      console.log("---------------------------");
+      console.log("Fetched Sleeping Data for ID:", id);
+      console.log("Alarm Time:", alarmTime);
+      console.log("Bed Time:", bedTime);
+      console.log("Hours Difference:", FinalhoursDiff);
+      console.log("---------------------------");
+
+     // Check if id matches the index in daysOfWeek array
+     if (id === currentDayIndex.toString()) {
+      setSelectedDashBoardAlarmTime1(alarmTime);
+      setSelectedDashBoardBedTime1(bedTime);
+    }
+
+     // Update the finalHoursDiffValues array with the FinalhoursDiff value for this day
+     finalHoursDiffValues[parseInt(id)] = FinalhoursDiff;
+    });
+
+    // Update the data property of Graphdata to use the finalHoursDiffValues array
+    Graphdata.datasets[1].data = finalHoursDiffValues;
+    let updatedData = Graphdata.datasets[0].data;
+    console.log('Updated data:', Graphdata.datasets[0].data);
+    console.log('Rendering LineChart with data:', Graphdata);
+    finalHoursDiffValues = updatedData;
+  } catch (error) {
+    console.log('Error fetching data:', error);
+  }
+}
+fetchAllData();
 const chartConfig = {
   backgroundGradientFrom: "#009688", // Set background color to full black
   backgroundGradientFromOpacity: 1,
@@ -200,73 +304,120 @@ const screenWidth = Dimensions.get("window").width;
 const chartWidth = screenWidth * 0.9; // Adjust the chart width as desired
 const chartHeight = 170; // Adjust the chart height as desired
 
-const data = {
-  labels: ["Sun", "Mon", "Tues", "Weds", "Thurs", "Sat"],
+const Graphdata = {
+  labels: ["Sun", "Mon", "Tues", "Weds", "Thurs", "Fri" ,"Sat"],
   datasets: [
     {
-      data: [1,2,3,5,6,7,8],
-      color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
-      strokeWidth: 2 // optional
-    }
+      data: finalHoursDiffValues,// Initialize an empty array for FinalhoursDiff values
+      color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`,
+      strokeWidth: 2,
+    },
   ],
-  legend: ["Sleeping Hours"] // optional
-};
-
-/// hoursDiff,selectedBedTime1,selectedAlarmTime2,selectedDAyIndex
-
-   // Generate the ID using selectedDayIndex
-  const id = selectedDayIndex.toString();
-  const alarmTime = selectedAlarmTime2;
-  const bedTime = selectedBedTime1;
-  const FinalhoursDiff = FinalGraphHours.toString();
-
-const saveSleepingData = async () => {
+  legend: ["Sleeping Hours"],
+}; 
+const clearAllData = async () => {
   try {
-    // Create an object with the data to be saved
-    const data = {
-      id,
-      alarmTime,
-      bedTime,
-      FinalhoursDiff,
-    };
-
-    // Save the data to AsyncStorage
-    await AsyncStorage.setItem(id, JSON.stringify(data));
-    console.log('Data saved:', data);
+    // Clear all data from AsyncStorage
+    await AsyncStorage.clear();
+    console.log("Cleared all data from AsyncStorage.");
   } catch (error) {
-    console.log('Error saving data:', error);
-  }
-};
-
-const getData = async () => {
-  try {
-    const value = await AsyncStorage.getItem(id)
-    if(value !== null) {
-      saveSleepingData();
-    }
-  } catch(e) {
-    console.log('Time already Set', error);
+    console.log('Error clearing data:', error);
   }
 }
 
+//ALARM AND BED FUNCTION
+let [selectedDashBoardBedTime1, setSelectedDashBoardBedTime1] = React.useState('12:00 AM');
+let [selectedDashBoardAlarmTime1, setSelectedDashBoardAlarmTime1] = React.useState('12:00 AM');
+
+const BedtimeTimerCal=()=>{
+  // Separate hours, minutes, and AM/PM from selectedDashBoardAlarmTime1
+  const [selectedHours, selectedMinutes, selectedAMPM] = selectedDashBoardBedTime1.split(/:| /);
+
+  // Convert selected hours to 24-hour format
+  let selectedAlarmHours = parseInt(selectedHours, 10);
+  if (selectedAMPM === 'PM' && selectedAlarmHours !== 12) {
+    selectedAlarmHours += 12;
+  } else if (selectedAMPM === 'AM' && selectedAlarmHours === 12) {
+    selectedAlarmHours = 0;
+  }
+
+  // Get the current time in 24-hour format
+  const now = new Date();
+  const currentHours = now.getHours();
+  const currentMinutes = now.getMinutes();
+
+  // Calculate the difference in hours and minutes
+  let hoursDiff = Math.abs(currentHours - selectedAlarmHours);
+  let minutesDiff = Math.abs(currentMinutes - parseInt(selectedMinutes, 10));
+
+  // Handle cases where minutes difference is negative
+  if (minutesDiff < 0) {
+    minutesDiff += 60;
+    hoursDiff -= 1;
+  }
+
+  // Convert the difference to a formatted string
+  const formattedDiff = `${hoursDiff-1}:${minutesDiff.toString().padStart(2, '0')}`;
+
+  return formattedDiff;
+}
+
+const AlarmtimeTimerCal = () => {
+  // Separate hours, minutes, and AM/PM from selectedDashBoardAlarmTime1
+  const [selectedHours, selectedMinutes, selectedAMPM] = selectedDashBoardAlarmTime1.split(/:| /);
+
+  // Convert selected hours to 24-hour format
+  let selectedAlarmHours = parseInt(selectedHours, 10);
+  if (selectedAMPM === 'PM' && selectedAlarmHours !== 12) {
+    selectedAlarmHours += 12;
+  } else if (selectedAMPM === 'AM' && selectedAlarmHours === 12) {
+    selectedAlarmHours = 0;
+  }
+
+  // Get the current time in 24-hour format
+  const now = new Date();
+  const currentHours = now.getHours();
+  const currentMinutes = now.getMinutes();
+
+  // Calculate the difference in hours and minutes
+  let hoursDiff = Math.abs(currentHours - selectedAlarmHours);
+  let minutesDiff = Math.abs(currentMinutes - parseInt(selectedMinutes, 10));
+
+  // Handle cases where minutes difference is negative
+  if (minutesDiff < 0) {
+    minutesDiff += 60;
+    hoursDiff -= 1;
+  }
+
+  // Convert the difference to a formatted string
+  const formattedDiff = `${hoursDiff-1}:${minutesDiff.toString().padStart(2, '0')}`;
+  return formattedDiff;
+};
+
+
+//DASH BOAD TIMERS display VALUE
+const CurrentBedTimer = BedtimeTimerCal();
+const CurrentAlarmTimer = AlarmtimeTimerCal();
+BedtimeTimerCal();
+AlarmtimeTimerCal();  
+
+// this will set ALARM FUNCTION
 
 const ButtonSave = () => {
- 
+  saveSleepingData();
+  fetchAllData();
+  //clearAllData();
+  //fetchSleepingData();
   toggleParentModal();
-    console.log("Saved Sleeping Data:");
-    console.log("Alarm Time:", alarmTime);
-    console.log("Bed Time:", bedTime);
-    console.log("Hours Difference:", FinalhoursDiff);
-    console.log("ID:",id );
-}
-
+     
+  }
 
   return (
     <ScrollView style={{ backgroundColor: "#afd3e2" }}>
     <View style={styles.container}>
    
          <LineChart
-          data={data}
+          data={Graphdata}
           style={{ borderRadius: 20 ,color:'white'}}
           width={chartWidth}
           height={chartHeight}
@@ -307,7 +458,7 @@ const ButtonSave = () => {
     <Text style={styles.Toggleheading}>BedTime :</Text>
     <Text style={{flexDirection:'column',paddingHorizontal:5,}}>in 14hours 30min</Text>
     </View>
-    <Text style={{fontSize:15,marginTop:17,paddingRight:5,}}>00:00 AM</Text>
+    <Text style={{fontSize:15,marginTop:17,paddingRight:5,}}>{selectedDashBoardBedTime1}</Text>
       <View style={styles.slideContainer}>
         <Switch 
           trackColor={{ false: '#767577', true: '#81b0ff' }}
@@ -334,7 +485,7 @@ const ButtonSave = () => {
     <Text style={styles.Toggleheading}>AlarmTime :</Text>
     <Text style={{flexDirection:'column',paddingHorizontal:5,}}>in 14hours 30min</Text>
     </View>
-    <Text style={{fontSize:15,marginTop:17,paddingRight:5,}}>00:00 AM</Text>
+    <Text style={{fontSize:15,marginTop:17,paddingRight:5,}}>{selectedDashBoardAlarmTime1}</Text>
       <View style={styles.slideContainer}>
         <Switch 
           trackColor={{ false: '#767577', true: '#81b0ff' }}
