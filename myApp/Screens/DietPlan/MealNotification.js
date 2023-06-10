@@ -16,6 +16,7 @@ export async function schedulePushNotification(hour , minute, title, body ) {
             shouldSetBadge: false,
         }),
     });
+    
     console.log("Scheduling notification");
     registerForPushNotificationsAsync();
     const notificationListener = Notifications.addNotificationReceivedListener(notification => {

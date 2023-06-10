@@ -8,6 +8,7 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Dimensions } from "react-native";
 import {LineChart} from "react-native-chart-kit";
+import {schedulePushNotification} from "./Screens/DietPlan/MealNotification";
 
 
 import {
@@ -19,9 +20,13 @@ import {
     Modal,
     Image,
     } from 'react-native';  
+
     
 const SleepingTrackerTab = () => {
- 
+
+
+
+  
 
 ////SCROLL BAR DATES
 
@@ -325,9 +330,9 @@ const clearAllData = async () => {
   }
 }
 
-//ALARM AND BED FUNCTION
-let [selectedDashBoardBedTime1, setSelectedDashBoardBedTime1] = React.useState('12:00 AM');
-let [selectedDashBoardAlarmTime1, setSelectedDashBoardAlarmTime1] = React.useState('12:00 AM');
+
+
+
 
 const BedtimeTimerCal=()=>{
   // Separate hours, minutes, and AM/PM from selectedDashBoardAlarmTime1
@@ -411,8 +416,22 @@ const ButtonSave = () => {
   toggleParentModal();
      
   }
+  //ALARM AND BED FUNCTION
+ let [selectedDashBoardBedTime1, setSelectedDashBoardBedTime1] = React.useState('12:00 AM');
+ let [selectedDashBoardAlarmTime1, setSelectedDashBoardAlarmTime1] = React.useState('12:00 AM');
+ const [bedTimeHours, bedTimeMinutes] = selectedDashBoardBedTime1.split(':');
+  const [alarmTimeHours, alarmTimeMinutes] = selectedDashBoardAlarmTime1.split(':');
+  const bedTimeHoursInt = parseInt(bedTimeHours, 10);
+  const bedTimeMinutesInt = parseInt(bedTimeMinutes, 10);
+  const alarmTimeHoursInt = parseInt(alarmTimeHours, 10);
+  const alarmTimeMinutesInt = parseInt(alarmTimeMinutes, 10);
 
-  return (
+  useState(() => {
+  schedulePushNotification(bedTimeHoursInt,bedTimeMinutesInt, "Time for Bed ", "Be on time For your Bed!"); ///Bedtime Alarm
+  schedulePushNotification(alarmTimeHoursInt,alarmTimeMinutesInt, "Time for Bed ", "Be on time For your Bed!");//AlarmTime Alarm  
+    }, []);
+
+    return (
     <ScrollView style={{ backgroundColor: "#afd3e2" }}>
     <View style={styles.container}>
    
