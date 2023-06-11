@@ -403,7 +403,7 @@ const SleepingTrackerTab = () => {
                     />
                     <View style={{ flexDirection: 'column' }}>
                         <Text style={styles.Toggleheading}>BedTime :</Text>
-                        <Text style={{ flexDirection: 'column', paddingHorizontal: 5, }}>in 14hours 30min</Text>
+                        <Text style={{ flexDirection: 'column', paddingHorizontal: 8, }}>in 14hours 30min</Text>
                     </View>
                     <Text style={{ fontSize: 15, marginTop: 17, }}>{selectedDashBoardBedTime1}</Text>
                     <View style={styles.slideContainer}>
@@ -656,20 +656,21 @@ const styles = StyleSheet.create({
     },
     slideContainer: {
         alignSelf: 'center',
-       
+
+       marginLeft:20,
     },
   
     // MODAL STYLES
     button: {
         alignSelf: 'flex-end',
         backgroundColor: '#009688',
-        borderRadius: 10,
+        borderRadius: 20,
         marginHorizontal:10
     },
     buttonText: {
-        paddingHorizontal: 20,
+        paddingHorizontal: 15,
         color: 'white',
-        fontSize: 25,
+        fontSize: 30,
         fontWeight: 'bold',
     },
     //PARENT MODAL INSIDES STYLES
