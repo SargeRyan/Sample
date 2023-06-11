@@ -31,6 +31,7 @@ export async function schedulePushNotification(hour , minute, weekday,title, bod
             title: title,
             body: body,
             data: {  },
+            sound: 'default',
 
         },
         trigger: { 

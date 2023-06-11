@@ -63,37 +63,8 @@ const SleepingTrackerTab = () => {
     }
     fetchAllData();
     //ALARM AND BED FUNCTION
-
     const [selectedDashBoardBedTime1, setSelectedDashBoardBedTime1] = useState('12:00 AM');
     const [selectedDashBoardAlarmTime1, setSelectedDashBoardAlarmTime1] = useState('12:00 AM');
-
-    const convertTo24HourFormat = (timeString) => {
-        const [time, meridiem] = timeString.split(' ');
-        const [hours, minutes] = time.split(':');
-        let convertedHours = parseInt(hours, 10);
-
-        if (meridiem === 'PM' && convertedHours !== 12) {
-            convertedHours += 12;
-        } else if (meridiem === 'AM' && convertedHours === 12) {
-            convertedHours = 0;
-        }
-
-        return {
-            hours: convertedHours,
-            minutes: parseInt(minutes, 10),
-        };
-    };
-
-    let FunctionbedTime = convertTo24HourFormat(selectedDashBoardBedTime1);
-    let FunctionalarmTime = convertTo24HourFormat(selectedDashBoardAlarmTime1);
-
-    // Access the converted values
-    let bedTimeHoursInt = FunctionbedTime.hours;
-    let bedTimeMinutesInt = FunctionbedTime.minutes;
-    let alarmTimeHoursInt = FunctionalarmTime.hours;
-    let alarmTimeMinutesInt = FunctionalarmTime.minutes;
-
-
     useEffect(() => {
         
 
@@ -134,18 +105,6 @@ const SleepingTrackerTab = () => {
     const toggleParentModal = () => {
         setParentModalVisible(!isParentModalVisible);
     };
-
-    ////RADIO BUTTONS
-    const [isEnabled1, setIsEnabled] = useState(false);
-    const toggleSwitch1 = () => {
-        setIsEnabled(previousState => !previousState);
-
-    };
-    const [isEnabled2, setIsEnabled2] = useState(false);
-    const toggleSwitch2 = () => {
-        setIsEnabled2(previousState => !previousState);
-    };
-
 
     ///datepicker
 
@@ -269,6 +228,23 @@ const SleepingTrackerTab = () => {
 
 
     // GraphData ();
+    const convertTo24HourFormat = (timeString) => {
+        const [time, meridiem] = timeString.split(' ');
+        const [hours, minutes] = time.split(':');
+        let convertedHours = parseInt(hours, 10);
+      
+        if (meridiem === 'PM' && convertedHours !== 12) {
+          convertedHours += 12;
+        } else if (meridiem === 'AM' && convertedHours === 12) {
+          convertedHours = 0;
+        }
+      
+        return {
+          hours: convertedHours,
+          minutes: parseInt(minutes, 10),
+        };
+      };
+
     const saveSleepingData = async () => {
         try {
             // Create an object with the data to be saved
@@ -283,15 +259,18 @@ const SleepingTrackerTab = () => {
 
             // Save the data to AsyncStorage
             await AsyncStorage.setItem(id, JSON.stringify(data));
+            console.log(" =============================================");
             console.log("Saved Sleeping Data:");
             console.log("Alarm Time:", alarmTime);
             console.log("Bed Time:", bedTime);
             console.log("Hours Difference:", FinalhoursDiff);
             console.log("ID:", id);
+            console.log(" =============================================");
 
             console.log("SET ALARM =============================================");
             const intBedTime = convertTo24HourFormat(data.bedTime);
             const intAlarmTime = convertTo24HourFormat(data.alarmTime);
+            console.log(" =============================================");
             // SET THE ALARM NOTIFICATION
             const dayRepeat = Number(data.id) + 1;
             console.log(dayRepeat);
@@ -331,10 +310,6 @@ const SleepingTrackerTab = () => {
         }
     }
     ///Chart 
-
-    let finalHoursDiffValues = [0];
-
-
     const chartConfig = {
         backgroundGradientFrom: "#009688", // Set background color to full black
         backgroundGradientFromOpacity: 1,
@@ -348,6 +323,7 @@ const SleepingTrackerTab = () => {
     const screenWidth = Dimensions.get("window").width;
     const chartWidth = screenWidth * 0.9; // Adjust the chart width as desired
     const chartHeight = 170; // Adjust the chart height as desired
+    const fullScreenHieght = Dimensions.get('window').height;
 
     const Graphdata = {
         labels: ["Sun", "Mon", "Tues", "Weds", "Thurs", "Fri", "Sat"],
@@ -381,11 +357,12 @@ const SleepingTrackerTab = () => {
         //fetchSleepingData();
         toggleParentModal();
     }
+    const ScrollHieght= Dimensions.get('window').height;
 
     return (
-        <ScrollView>
+    
             <View style={styles.container}>
-
+             <Text style={styles.heading2}>Your Sleeping Data</Text>
                 <LineChart
                     data={Graphdata}
                     style={{ borderRadius: 20, color: 'white' }}
@@ -562,19 +539,21 @@ const SleepingTrackerTab = () => {
                     </View>
                 </Modal>
             </View>
-        </ScrollView>
+
     );
 
 };
 const styles = StyleSheet.create({
-
+    
     container: {
         flex: 1,
-        backgroundColor: "#fffff",
+        backgroundColor: "#afd3e2",
         paddingTop: 10,
         alignItems: 'center',
         flexDirection: 'column',
+        alignContent:'center',
         height:'100%'
+        
     },
     //HEADING
     headerContainer: {
@@ -622,10 +601,11 @@ const styles = StyleSheet.create({
         fontSize: 20,
         padding: 10,
         fontWeight: 'bold',
+        color:'black',
         alignSelf: 'flex-start',
     },
     ScrollsDiv: {
-        height: '30%',
+        height: '24%',
 
     },
     dayContainer: {
@@ -657,13 +637,13 @@ const styles = StyleSheet.create({
     /// Slide
 
     ToggleContainer: {
-        marginVertical: 10,
+        marginVertical: 5,
         backgroundColor: "white",
-        width: '85%',
+        width: '90%',
+        height:'13%',
         elevation: 8,
         padding: 10,
         borderRadius: 15,
-        backgroundColor:'red',
         flexDirection: 'row'
     },
     Toggleheading: {
@@ -675,20 +655,19 @@ const styles = StyleSheet.create({
 
     },
     slideContainer: {
-        alignSelf: 'stretch',
         alignSelf: 'center',
-        marginLeft: 10,
+       
     },
   
     // MODAL STYLES
     button: {
         alignSelf: 'flex-end',
         backgroundColor: '#009688',
-        paddingHorizontal: 10,
         borderRadius: 10,
         marginHorizontal:10
     },
     buttonText: {
+        paddingHorizontal: 20,
         color: 'white',
         fontSize: 25,
         fontWeight: 'bold',
