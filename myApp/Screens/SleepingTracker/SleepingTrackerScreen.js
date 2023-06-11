@@ -351,7 +351,7 @@ const SleepingTrackerTab = () => {
         labels: ["Sun", "Mon", "Tues", "Weds", "Thurs", "Fri", "Sat"],
         datasets: [
             {
-                data: finalHoursDiffValues,// Initialize an empty array for FinalhoursDiff values
+                data: [1,3,4,5,6,6],// Initialize an empty array for FinalhoursDiff values
                 color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`,
                 strokeWidth: 2,
             },
@@ -381,7 +381,7 @@ const SleepingTrackerTab = () => {
     }
 
     return (
-        <ScrollView style={{ backgroundColor: "#afd3e2" }}>
+        <ScrollView>
             <View style={styles.container}>
 
                 <LineChart
@@ -426,15 +426,11 @@ const SleepingTrackerTab = () => {
                         <Text style={styles.Toggleheading}>BedTime :</Text>
                         <Text style={{ flexDirection: 'column', paddingHorizontal: 5, }}>in 14hours 30min</Text>
                     </View>
-                    <Text style={{ fontSize: 15, marginTop: 17, paddingRight: 5, }}>{selectedDashBoardBedTime1}</Text>
+                    <Text style={{ fontSize: 15, marginTop: 17, }}>{selectedDashBoardBedTime1}</Text>
                     <View style={styles.slideContainer}>
-                        <Switch
-                            trackColor={{ false: '#767577', true: '#81b0ff' }}
-                            thumbColor={isEnabled1 ? '#f5dd4b' : '#f4f3f4'}
-                            style={styles.toggleSwitch}
-                            onValueChange={toggleSwitch1}
-                            value={isEnabled1}
-                        />
+                    <TouchableOpacity style={styles.button} onPress={toggleParentModal}>
+                    <Text style={styles.buttonText}>+</Text>
+                   </TouchableOpacity>
                     </View>
                 </View>
 
@@ -453,22 +449,16 @@ const SleepingTrackerTab = () => {
                         <Text style={styles.Toggleheading}>AlarmTime :</Text>
                         <Text style={{ flexDirection: 'column', paddingHorizontal: 5, }}>in 14hours 30min</Text>
                     </View>
-                    <Text style={{ fontSize: 15, marginTop: 17, paddingRight: 5, }}>{selectedDashBoardAlarmTime1}</Text>
+                         <Text style={{ fontSize: 15, marginTop: 17, paddingRight: 5, }}>{selectedDashBoardAlarmTime1}</Text>
                     <View style={styles.slideContainer}>
-                        <Switch
-                            trackColor={{ false: '#767577', true: '#81b0ff' }}
-                            thumbColor={isEnabled2 ? '#f5dd4b' : '#f4f3f4'}
-                            style={styles.toggleSwitch}
-                            onValueChange={toggleSwitch2}
-                            value={isEnabled2}
-                        />
+                     <TouchableOpacity style={styles.button} onPress={toggleParentModal}>
+                         <Text style={styles.buttonText}>+</Text>
+                      </TouchableOpacity>
                     </View>
                 </View>
 
                 {/*PARENT MODAL */}
-                <TouchableOpacity style={styles.button} onPress={toggleParentModal}>
-                    <Text style={styles.buttonText}>+</Text>
-                </TouchableOpacity>
+                  
                 <Modal visible={isParentModalVisible} animationType="slide" transparent>
                     <View style={styles.modalContainer}>
                         <TouchableOpacity style={styles.closeButton} onPress={toggleParentModal}>
@@ -582,6 +572,7 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         alignItems: 'center',
         flexDirection: 'column',
+        height:'100%'
     },
     //HEADING
     headerContainer: {
@@ -632,12 +623,12 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
     },
     ScrollsDiv: {
-        height: '23%',
+        height: '30%',
 
     },
     dayContainer: {
-        width: 80,
-        height: 80,
+        width: 100,
+        height: 100,
         backgroundColor: '#e0e0e0',
         borderRadius: 15,
         justifyContent: 'center',
@@ -649,7 +640,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#009688', // Set a different background color for the current day
     },
     dayText: {
-        fontSize: 13,
+        fontSize: 18,
         fontWeight: 'bold',
     },
     highlightedDayText: {
@@ -664,12 +655,13 @@ const styles = StyleSheet.create({
     /// Slide
 
     ToggleContainer: {
-        marginTop: 10,
+        marginVertical: 10,
         backgroundColor: "white",
         width: '85%',
         elevation: 8,
         padding: 10,
         borderRadius: 15,
+        backgroundColor:'red',
         flexDirection: 'row'
     },
     Toggleheading: {
@@ -678,7 +670,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         justifyContent: 'center',
-        padding: 8,
 
     },
     slideContainer: {
@@ -686,22 +677,18 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginLeft: 10,
     },
-    toggleSwitch: {
-        transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }], // Adjust the scale to enlarge the toggle switch
-    },
+  
     // MODAL STYLES
     button: {
-        marginHorizontal: 15,
         alignSelf: 'flex-end',
         backgroundColor: '#009688',
-        paddingHorizontal: 20,
-        margin: 20,
-        marginBottom: 45,
-        borderRadius: 100,
+        paddingHorizontal: 10,
+        borderRadius: 10,
+        marginHorizontal:10
     },
     buttonText: {
         color: 'white',
-        fontSize: 50,
+        fontSize: 25,
         fontWeight: 'bold',
     },
     //PARENT MODAL INSIDES STYLES
