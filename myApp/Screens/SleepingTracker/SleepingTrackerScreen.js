@@ -601,7 +601,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         padding: 10,
         fontWeight: 'bold',
-        color:'black',
+        color:'#333333',
         alignSelf: 'flex-start',
     },
     ScrollsDiv: {
