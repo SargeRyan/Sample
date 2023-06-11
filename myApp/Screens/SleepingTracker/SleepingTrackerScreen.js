@@ -293,8 +293,10 @@ const SleepingTrackerTab = () => {
             const intBedTime = convertTo24HourFormat(data.bedTime);
             const intAlarmTime = convertTo24HourFormat(data.alarmTime);
             // SET THE ALARM NOTIFICATION
-            schedulePushNotification(Number(intBedTime.hours), Number(intBedTime.minutes), "Time for Bed ", "Be on time For your Bed!"); // Bedtime Alarm
-            schedulePushNotification(Number(intAlarmTime.hours), Number(intAlarmTime.minutes), "Time to wakeUp ", "Be on time to Wake Up!"); // AlarmTime Alarm
+            const dayRepeat = Number(data.id) + 1;
+            console.log(dayRepeat);
+            schedulePushNotification(Number(intBedTime.hours), Number(intBedTime.minutes),dayRepeat, "Time for Bed ", "Be on time For your Bed!"); // Bedtime Alarm
+            schedulePushNotification(Number(intAlarmTime.hours), Number(intAlarmTime.minutes),dayRepeat, "Time to wakeUp ", "Be on time to Wake Up!"); // AlarmTime Alarm
             // console.log("BED HOURS: " + bedTimeHoursInt);
             // console.log("BED MIN:" + bedTimeMinutesInt);
             // console.log("ALARM HOUR: " + alarmTimeHoursInt);

@@ -8,7 +8,7 @@ import * as Notifications from 'expo-notifications';
 
 
 
-export async function schedulePushNotification(hour , minute, title, body ) {
+export async function schedulePushNotification(hour , minute, weekday,title, body ) {
     Notifications.setNotificationHandler({
         handleNotification: async () => ({
             shouldShowAlert: true,
@@ -31,11 +31,13 @@ export async function schedulePushNotification(hour , minute, title, body ) {
             title: title,
             body: body,
             data: {  },
+
         },
         trigger: { 
             hour: hour,
             minute: minute,
-            repeats: true
+            repeats: true,
+            weekday: weekday,
          },
     });
     Notifications.removeNotificationSubscription(notificationListener);
