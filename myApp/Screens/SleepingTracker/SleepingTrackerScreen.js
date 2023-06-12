@@ -641,7 +641,7 @@ const styles = StyleSheet.create({
     /// Slide
 
     ToggleContainer: {
-        marginVertical: 5,
+        marginTop: 20,
         backgroundColor: "white",
         width: '90%',
         height:'13%',
