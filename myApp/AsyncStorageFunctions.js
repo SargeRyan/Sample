@@ -150,7 +150,6 @@ export const removeValue = async (key) => {
 
 export const getEatenMealAsync = async () => {
     try {
-    
         // get meal keys
         let mealKeys = [];
         let allKeys = await AsyncStorage.getAllKeys();
@@ -166,4 +165,22 @@ export const getEatenMealAsync = async () => {
       } catch (e) {
         console.error(e);
       }
+};
+export const getIDgraph = async () => {
+  try {
+      // get meal keys
+      let mealKeys = [];
+      let allKeys = await AsyncStorage.getAllKeys();
+      for (let i = 0; i < allKeys.length; i++) {
+        if (allKeys[i].startsWith("eaten_")) {
+          mealKeys.push(allKeys[i]);
+        }
+      }
+      // get meal values
+      let mealValues = await AsyncStorage.multiGet(mealKeys);
+
+      return JSON.stringify(mealValues);
+    } catch (e) {
+      console.error(e);
+    }
 };

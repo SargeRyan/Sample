@@ -304,10 +304,11 @@ const SleepingTrackerTab = () => {
                 console.log("Bed Time:", bedTime);
                 console.log("Hours Difference:", FinalhoursDiff);
                 console.log("ID:", id);
-
             } else {
                     console.log("No data found for the provided ID:", id);
             }
+            Graphdata.datasets[0].data[id] = parseInt(FinalhoursDiff);
+            
         } catch (error) {
             console.log('Error fetching data:', error);
         }
@@ -326,9 +327,8 @@ const SleepingTrackerTab = () => {
     const screenWidth = Dimensions.get("window").width;
     const chartWidth = screenWidth * 0.9; // Adjust the chart width as desired
     const chartHeight = 170; // Adjust the chart height as desired
-    const fullScreenHieght = Dimensions.get('window').height;
- 
     const Graphdata = {
+
         labels: ["Sun", "Mon", "Tues", "Weds", "Thurs", "Fri", "Sat"],
         datasets: [
             {
