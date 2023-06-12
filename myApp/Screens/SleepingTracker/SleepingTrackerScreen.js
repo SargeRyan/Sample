@@ -7,6 +7,7 @@ import { Touchable, TouchableOpacity } from "react-native";
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Dimensions } from "react-native";
+import { useIsFocused } from "@react-navigation/native";
 import { LineChart } from "react-native-chart-kit";
 import { schedulePushNotification } from "../SleepingTracker/AlarmNotification";
 
@@ -67,7 +68,7 @@ const SleepingTrackerTab = () => {
     const [selectedDashBoardAlarmTime1, setSelectedDashBoardAlarmTime1] = useState('12:00 AM');
     useEffect(() => {
         
-
+   
         if (scrollViewRef.current && currentDayIndex > 0) {
             const containerWidth = 100; // Width of each day container
             const offset = currentDayIndex * containerWidth;
@@ -270,12 +271,13 @@ const SleepingTrackerTab = () => {
             console.log("SET ALARM =============================================");
             const intBedTime = convertTo24HourFormat(data.bedTime);
             const intAlarmTime = convertTo24HourFormat(data.alarmTime);
-            console.log(" =============================================");
+           
             // SET THE ALARM NOTIFICATION
             const dayRepeat = Number(data.id) + 1;
             console.log(dayRepeat);
             schedulePushNotification(Number(intBedTime.hours), Number(intBedTime.minutes),dayRepeat, "Time for Bed ", "Be on time For your Bed!"); // Bedtime Alarm
             schedulePushNotification(Number(intAlarmTime.hours), Number(intAlarmTime.minutes),dayRepeat, "Time to wakeUp ", "Be on time to Wake Up!"); // AlarmTime Alarm
+            console.log(" =============================================");
             // console.log("BED HOURS: " + bedTimeHoursInt);
             // console.log("BED MIN:" + bedTimeMinutesInt);
             // console.log("ALARM HOUR: " + alarmTimeHoursInt);
@@ -302,8 +304,9 @@ const SleepingTrackerTab = () => {
                 console.log("Bed Time:", bedTime);
                 console.log("Hours Difference:", FinalhoursDiff);
                 console.log("ID:", id);
+
             } else {
-                console.log("No data found for the provided ID:", id);
+                    console.log("No data found for the provided ID:", id);
             }
         } catch (error) {
             console.log('Error fetching data:', error);
@@ -324,18 +327,19 @@ const SleepingTrackerTab = () => {
     const chartWidth = screenWidth * 0.9; // Adjust the chart width as desired
     const chartHeight = 170; // Adjust the chart height as desired
     const fullScreenHieght = Dimensions.get('window').height;
-
+ 
     const Graphdata = {
         labels: ["Sun", "Mon", "Tues", "Weds", "Thurs", "Fri", "Sat"],
         datasets: [
             {
                 data: [1,3,4,5,6,6],// Initialize an empty array for FinalhoursDiff values
-                color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`,
+                color: (opacity = 1) => `white`,
                 strokeWidth: 2,
             },
         ],
         legend: ["Sleeping Hours"],
     };
+
     const clearAllData = async () => {
         try {
             // Clear all data from AsyncStorage
@@ -345,6 +349,7 @@ const SleepingTrackerTab = () => {
             console.log('Error clearing data:', error);
         }
     }
+ 
 
     //DASH BOAD TIMERS display VALUE
 
@@ -352,12 +357,11 @@ const SleepingTrackerTab = () => {
 
     const ButtonSave = () => {
         saveSleepingData();
-        fetchAllData();
-        //clearAllData();
-        //fetchSleepingData();
+       fetchAllData();
+       // clearAllData();
+       // //fetchSleepingData();
         toggleParentModal();
     }
-    const ScrollHieght= Dimensions.get('window').height;
 
     return (
     
