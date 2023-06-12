@@ -1,6 +1,6 @@
 {
   "expo": {
-    "runtimeVersion": { "policy": "nativeVersion" },
+    "exposdk":"44.0.0",
     "plugins": [
       [
         "expo-image-picker",
