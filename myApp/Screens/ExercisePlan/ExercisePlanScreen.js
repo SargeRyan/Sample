@@ -47,7 +47,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
   };
 
   const handleStart = () => {
-    setCount(300); // 10 minutes in seconds
+    setCount(1800); // 10 minutes in seconds
     setIsRunning(true);
   };
 
@@ -55,7 +55,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
     setIsRunning(false);
   };
   const resetStart = () => {
-    setCount(300); // 10 minutes in seconds
+    setCount(1800); // 10 minutes in seconds
     setIsRunning(false);
    
   };
@@ -90,33 +90,60 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
 
                   setModalVisible(!modalVisible);
               }}>
+              <TouchableOpacity style={{marginTop: 20, position: "absolute", marginLeft: 20}} onPress={() => setModalVisible(false)}>
+                <Image style={{ height: 20, width: 25, resizeMode: "stretch"}} source={require("../ExercisePlan/picture/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}/>  
+              </TouchableOpacity>
+              
                <Image style={styles.ImageContainerInfo} source={require("../ExercisePlan/picture/jogging.gif")}/>
-              <ScrollView>
-                  <View style={{backgroundColor: "#AFD3E2", height: 1300, borderRadius: 20}}>
-                      <Text style={{marginLeft: 20, fontSize: 25, fontWeight: "bold", marginTop: 10}}>Jogging</Text>
+            
+             <TouchableOpacity style={{marginTop: 15, position: "absolute", marginLeft: 20, right: 20}}>
+                    <Text style={{fontSize: 20}}>Done</Text>  
+              </TouchableOpacity>
+
+                  <View style={styles.modalMainContainer}>
+                      <Text style={styles.exerciseName}>Jogging</Text>
                  {/*Exercise Timer*/}
-                 <View style={{flexDirection: "row"}}>
-                 <View style= {{backgroundColor: "#adadc9", width: 80, alignItems: "center", height: 30, borderRadius: 20, marginLeft: 10}}>
+                 <View style={styles.subModalContainer}>
+                 <View style= {styles.HeadersContainer}>
+                      <Image style={styles.timeClock} source={require("../ExercisePlan/picture/clock.png")}/>
                       <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4}}>
-                      {count > 0 ? formatTime(count) : 'Countdown Finished'}
+                        30mins
                       </Text>
                  </View>     
-                    <View style= {{backgroundColor: "#adadc9", width: 140, alignItems: "center", height: 30, borderRadius: 20, marginLeft: 10}}>
+                    <View style= {styles.CaloriesContainer}>
+                     <Image style={styles.calorieLogo} source={require("../ExercisePlan/picture/calories.png")}/>
                       <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4}}>
                             Calories Burn: 93
                       </Text>
                    </View> 
                 </View>
+
+                <View style = {{alignSelf: "center", marginTop: 40, flexDirection: "row", marginBottom: 20,}}>
+                    <Text style={{ fontSize: 80, marginBottom: 10, marginTop: 4, fontWeight: "bold"}}>
+                      {count > 0 ? formatTime(count) : '30:00'}
+                      </Text>
+                </View>
+                  
+
+                         <View style = {{flexDirection: "row", alignSelf: "center"}}>
                         {!isRunning ? (
-                <Button style={{backgroundColor: "green"}} title="Start Countdown" onPress={handleStart} />
+                        
+                          <TouchableOpacity onPress={handleStart} style={{backgroundColor: "green", height: 50, width: 100, borderRadius: 30, margin:10}}>
+                              <Text style = {{alignSelf: "center", marginTop: 3, fontSize: 30, fontWeight: 'bold', color: "#fff"}}>Start</Text>
+                          </TouchableOpacity>
+                
              ) : (
-                 <Button title="Stop Countdown" onPress={handleStop} />
+                       <TouchableOpacity style={{backgroundColor: "green", height: 50, width: 100, borderRadius: 30, margin: 10}} onPress={handleStop}>
+                              <Text style = {{alignSelf: "center", marginTop: 3, fontSize: 30, fontWeight: 'bold', color: "#fff"}}>Stop</Text>
+                          </TouchableOpacity>
+                
               )}
-                 <Button title="Reset" onPress={resetStart} />
-
-
+                       <TouchableOpacity style={{backgroundColor: "red", height: 50, width: 100, borderRadius: 30, margin: 10}} onPress={resetStart}>
+                              <Text style = {{alignSelf: "center", marginTop: 3, fontSize: 30, fontWeight: 'bold', color: "#fff"}}>Reset</Text>
+                          </TouchableOpacity>
+                  </View>
+                
     </View>
-              </ScrollView>
     </Modal>
 
       {/*  //Second Exercise */}
@@ -345,8 +372,8 @@ const styles = StyleSheet.create({
         resizeMode: "stretch"
       },
       ImageContainerInfo : {
-        height: 200,
-        width: 170,
+        height: 300,
+        width: 260,
         borderRadius: 10,
         resizeMode: "stretch",
         alignSelf: "center"
@@ -375,5 +402,54 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: "bold"
       },
-      
+    modalMainContainer : {
+      backgroundColor: "#AFD3E2", 
+      height: 1300, 
+      borderTopRightRadius: 20,
+     borderTopLeftRadius: 20,
+    },
+    subModalContainer : {
+      flexDirection: "row"
+    },
+    HeadersContainer: {
+      backgroundColor: "#adadc9", 
+      width: 80, 
+      alignItems: "center", 
+      height: 30, 
+      borderRadius: 20, 
+      marginLeft: 10, 
+      flexDirection: "row",
+    }, 
+  exerciseName: {
+      marginLeft: 20, 
+      fontSize: 25, 
+      fontWeight: "bold", 
+      marginTop: 20,
+      marginBottom: 20
+},
+  timeClock : {
+    height: 15, 
+    width: 15, 
+    marginLeft: 9, 
+    resizeMode: "stretch",
+    marginRight: 2
+  },
+  calorieLogo: {
+    height: 15, 
+    width: 15, 
+    marginLeft: 15, 
+    resizeMode: "stretch",
+    marginRight: 2
+  },
+  CaloriesContainer : {
+    backgroundColor: "#adadc9", 
+    width: 160, 
+    alignItems: "center", 
+    height: 30, 
+    borderRadius: 20, 
+    marginLeft: 10, 
+    flexDirection: "row"
+  },
+  
+
 });
