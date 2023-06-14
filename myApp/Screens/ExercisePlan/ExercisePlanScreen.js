@@ -24,24 +24,24 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
     const [modalVisible8, setModalVisible8] = useState(false);
     const [modalVisible9, setModalVisible9] = useState(false);
     const [count, setCount] = useState(0);
-  const [isRunning, setIsRunning] = useState(false);
+    const [isRunning, setIsRunning] = useState(false);
+    const [count1, setCount1] = useState(0);
+    const [isRunning1, setIsRunning1] = useState(false);
 
-  //Exercise Count 
   useEffect(() => {
     let interval;
 
-    if (isRunning) {
-      interval = setInterval(() => {
-        setCount((prevCount) => prevCount - 1);
-      }, 1000);
-    }
-
-    return () => clearInterval(interval);
-  }, [isRunning]);
+      if (isRunning) {
+          interval = setInterval(() => {
+          setCount((prevCount) => prevCount - 1);
+          }, 1000);
+                    }
+      return () => clearInterval(interval);
+    }, [isRunning]);
 
   const formatTime = (timeInSeconds) => {
-    const minutes = Math.floor(timeInSeconds / 60);
-    const seconds = timeInSeconds % 60;
+  const minutes = Math.floor(timeInSeconds / 60);
+  const seconds = timeInSeconds % 60;
 
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
@@ -59,8 +59,179 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
     setIsRunning(false);
    
   };
+  const handleStart1 = () => {
+    setCount1(600); // 10 minutes in seconds
+    setIsRunning(true);
+  };
+
+  const handleStop1 = () => {
+    setIsRunning(false);
+  };
+  const resetStart1 = () => {
+    setCount(600); // 10 minutes in seconds
+    setIsRunning(false);
+  };
   
+  const handleStart2 = () => {
+    setCount(300); // 10 minutes in seconds
+    setIsRunning(true);
+  };
+
+  const handleStop2 = () => {
+    setIsRunning(false);
+  };
+  const resetStart2 = () => {
+    setCount(300); // 10 minutes in seconds
+    setIsRunning(false);
    
+  };
+
+   const handleStart3 = () => {
+    setCount(300); // 10 minutes in seconds
+    setIsRunning(true);
+  };
+
+  const handleStop3 = () => {
+    setIsRunning(false);
+  };
+  const resetStart3 = () => {
+    setCount(300); // 10 minutes in seconds
+    setIsRunning(false);
+   
+  };
+
+   const handleStart4 = () => {
+    setCount(300); // 10 minutes in seconds
+    setIsRunning(true);
+  };
+
+  const handleStop4 = () => {
+    setIsRunning(false);
+  };
+  const resetStart4 = () => {
+    setCount(300); // 10 minutes in seconds
+    setIsRunning(false);
+  };
+
+   const handleStart5 = () => {
+    setCount(300); // 10 minutes in seconds
+    setIsRunning(true);
+  };
+
+  const handleStop5 = () => {
+    setIsRunning(false);
+  };
+  const resetStart5 = () => {
+    setCount(300); // 10 minutes in seconds
+    setIsRunning(false);
+  };
+
+    const handleStart6 = () => {
+    setCount(300); // 10 minutes in seconds
+    setIsRunning(true);
+  };
+
+  const handleStop6 = () => {
+    setIsRunning(false);
+  };
+  const resetStart6 = () => {
+    setCount(300); // 10 minutes in seconds
+    setIsRunning(false);
+  };
+
+    const handleStart7 = () => {
+    setCount(300); // 10 minutes in seconds
+    setIsRunning(true);
+  };
+
+  const handleStop7 = () => {
+    setIsRunning(false);
+  };
+  const resetStart7 = () => {
+    setCount(300); // 10 minutes in seconds
+    setIsRunning(false);
+  };
+
+    const handleStart8 = () => {
+    setCount(300); // 10 minutes in seconds
+    setIsRunning(true);
+  };
+
+  const handleStop8 = () => {
+    setIsRunning(false);
+  };
+  const resetStart8 = () => {
+    setCount(300); // 10 minutes in seconds
+    setIsRunning(false);
+  };
+    const handleStart9 = () => {
+    setCount(300); // 10 minutes in seconds
+    setIsRunning(true);
+  };
+
+  const handleStop9 = () => {
+    setIsRunning(false);
+  };
+  const resetStart9 = () => {
+    setCount(300); // 10 minutes in seconds
+    setIsRunning(false);
+  };
+
+
+
+
+
+
+  const backBtn = () => {
+    handleStop();
+    resetStart();
+
+    setModalVisible(false);
+  };
+  const open = () => {
+    resetStart();
+    setModalVisible(true);
+  };
+  const open1 = () => {
+    resetStart1();
+    setModalVisible1(true);
+  };
+  const open2 = () => {
+    resetStart2();
+    setModalVisible2(true);
+  };
+   const open3 = () => {
+    resetStart3();
+    setModalVisible3(true);
+  };
+   const open4 = () => {
+    resetStart4();
+    setModalVisible4(true);
+  };
+ 
+   const open5 = () => {
+    resetStart5();
+    setModalVisible5(true);
+  };
+
+   const open6 = () => {
+    resetStart6();
+    setModalVisible6(true);
+  };
+   const open7 = () => {
+    resetStart7();
+    setModalVisible7(true);
+  };
+   const open8 = () => {
+    resetStart8();
+    setModalVisible8(true);
+  };
+   const open9 = () => {
+    resetStart9();
+    setModalVisible9(true);
+  };
+
+
     return (
         <ScrollView
     style={{
@@ -68,9 +239,10 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
       display: "flex",
       flexDirection: "column",
     }}
-  >
+  > 
+   
 {/*  //First Exercise */}
-    <TouchableOpacity style={styles.ButtonContainer} onPress={() => setModalVisible(true)}>
+    <TouchableOpacity style={styles.ButtonContainer} onPress={open}>
     
     <View style={styles.exerciseContainer}>
       <View style={styles.textContainer}>
@@ -147,7 +319,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
     </Modal>
 
       {/*  //Second Exercise */}
-  <TouchableOpacity style={styles.ButtonContainer} onPress={() => setModalVisible1(true)}>
+  <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
     <View style={styles.exerciseContainer}>
       <View style={styles.textContainer}>
       <Text style= {styles.textHeaderContainer}>Walking</Text>
@@ -165,18 +337,69 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               onRequestClose={() => {
                   setModalVisible1(!modalVisible1);
               }}>
-              <View>
-              <Text>Walking</Text>
-              </View>
+              <TouchableOpacity style={{marginTop: 20, position: "absolute", marginLeft: 20}} onPress={() => setModalVisible1(false)}>
+                <Image style={{ height: 20, width: 25, resizeMode: "stretch"}} source={require("../ExercisePlan/picture/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}/>  
+              </TouchableOpacity>
+              
+               <Image style={styles.ImageContainerInfo} source={require("../ExercisePlan/picture/exercise-walk.gif")}/>
+            
+             <TouchableOpacity style={{marginTop: 15, position: "absolute", marginLeft: 20, right: 20}}>
+                    <Text style={{fontSize: 20}}>Done</Text>  
+              </TouchableOpacity>
+
+                  <View style={styles.modalMainContainer}>
+                      <Text style={styles.exerciseName}>Walking</Text>
+                 {/*Exercise Timer*/}
+                 <View style={styles.subModalContainer}>
+                 <View style= {styles.HeadersContainer}>
+                      <Image style={styles.timeClock} source={require("../ExercisePlan/picture/clock.png")}/>
+                      <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4}}>
+                        10mins
+                      </Text>
+                 </View>     
+                    <View style= {styles.CaloriesContainer}>
+                     <Image style={styles.calorieLogo} source={require("../ExercisePlan/picture/calories.png")}/>
+                      <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4}}>
+                            Calories Burn: 67
+                      </Text>
+                   </View> 
+                </View>
+
+                <View style = {{alignSelf: "center", marginTop: 40, flexDirection: "row", marginBottom: 20,}}>
+                    <Text style={{ fontSize: 80, marginBottom: 10, marginTop: 4, fontWeight: "bold"}}>
+                      {count > 0 ? formatTime(count) : '10:00'}
+                      </Text>
+                </View>
+                  
+
+                         <View style = {{flexDirection: "row", alignSelf: "center"}}>
+                        {!isRunning ? (
+                        
+                          <TouchableOpacity onPress={handleStart1} style={{backgroundColor: "green", height: 50, width: 100, borderRadius: 30, margin:10}}>
+                              <Text style = {{alignSelf: "center", marginTop: 3, fontSize: 30, fontWeight: 'bold', color: "#fff"}}>Start</Text>
+                          </TouchableOpacity>
+                
+             ) : (
+                       <TouchableOpacity style={{backgroundColor: "green", height: 50, width: 100, borderRadius: 30, margin: 10}} onPress={handleStop1}>
+                              <Text style = {{alignSelf: "center", marginTop: 3, fontSize: 30, fontWeight: 'bold', color: "#fff"}}>Stop</Text>
+                          </TouchableOpacity>
+                
+              )}
+                       <TouchableOpacity style={{backgroundColor: "red", height: 50, width: 100, borderRadius: 30, margin: 10}} onPress={resetStart1}>
+                              <Text style = {{alignSelf: "center", marginTop: 3, fontSize: 30, fontWeight: 'bold', color: "#fff"}}>Reset</Text>
+                          </TouchableOpacity>
+                  </View>
+                
+    </View>
     </Modal>
 
               {/*  //Third Exercise */}
-<TouchableOpacity style={styles.ButtonContainer} onPress={() => setModalVisible2(true)}>
+<TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
     <View style={styles.exerciseContainer}>
       <View style={styles.textContainer}>
       <Text style= {styles.textHeaderContainer}>Light Dumbbell</Text>
       <Text>Calories Burn: 36</Text>
-        <Text>Duration: 10 Minutes</Text>
+        <Text>Duration: 5 Minutes</Text>
       </View>
       <Image style={styles.ImageContainer} source={require("../ExercisePlan/picture/Front-Raise-2.gif.pagespeed.ce.ZJdDV-2er6.gif")}/>
       </View>
@@ -189,13 +412,64 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               onRequestClose={() => {
                   setModalVisible2(!modalVisible2);
               }}>
-              <View>
-              <Text>Light Dumbbell</Text>
-              </View>
+              <TouchableOpacity style={{marginTop: 20, position: "absolute", marginLeft: 20}} onPress={() => setModalVisible2(false)}>
+                <Image style={{ height: 20, width: 25, resizeMode: "stretch"}} source={require("../ExercisePlan/picture/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}/>  
+              </TouchableOpacity>
+              
+               <Image style={styles.ImageContainerInfo} source={require("../ExercisePlan/picture/Front-Raise-2.gif.pagespeed.ce.ZJdDV-2er6.gif")}/>
+            
+             <TouchableOpacity style={{marginTop: 15, position: "absolute", marginLeft: 20, right: 20}}>
+                    <Text style={{fontSize: 20}}>Done</Text>  
+              </TouchableOpacity>
+
+                  <View style={styles.modalMainContainer}>
+                      <Text style={styles.exerciseName}>Light Dumbbell</Text>
+                 {/*Exercise Timer*/}
+                 <View style={styles.subModalContainer}>
+                 <View style= {styles.HeadersContainer}>
+                      <Image style={styles.timeClock} source={require("../ExercisePlan/picture/clock.png")}/>
+                      <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4}}>
+                        5mins
+                      </Text>
+                 </View>     
+                    <View style= {styles.CaloriesContainer}>
+                     <Image style={styles.calorieLogo} source={require("../ExercisePlan/picture/calories.png")}/>
+                      <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4}}>
+                            Calories Burn: 36
+                      </Text>
+                   </View> 
+                </View>
+
+                <View style = {{alignSelf: "center", marginTop: 40, flexDirection: "row", marginBottom: 20,}}>
+                    <Text style={{ fontSize: 80, marginBottom: 10, marginTop: 4, fontWeight: "bold"}}>
+                      {count > 0 ? formatTime(count) : '5:00'}
+                      </Text>
+                </View>
+                  
+
+                         <View style = {{flexDirection: "row", alignSelf: "center"}}>
+                        {!isRunning ? (
+                        
+                          <TouchableOpacity onPress={handleStart2} style={{backgroundColor: "green", height: 50, width: 100, borderRadius: 30, margin:10}}>
+                              <Text style = {{alignSelf: "center", marginTop: 3, fontSize: 30, fontWeight: 'bold', color: "#fff"}}>Start</Text>
+                          </TouchableOpacity>
+                
+             ) : (
+                       <TouchableOpacity style={{backgroundColor: "green", height: 50, width: 100, borderRadius: 30, margin: 10}} onPress={handleStop2}>
+                              <Text style = {{alignSelf: "center", marginTop: 3, fontSize: 30, fontWeight: 'bold', color: "#fff"}}>Stop</Text>
+                          </TouchableOpacity>
+                
+              )}
+                       <TouchableOpacity style={{backgroundColor: "red", height: 50, width: 100, borderRadius: 30, margin: 10}} onPress={resetStart2}>
+                              <Text style = {{alignSelf: "center", marginTop: 3, fontSize: 30, fontWeight: 'bold', color: "#fff"}}>Reset</Text>
+                          </TouchableOpacity>
+                  </View>
+                
+    </View>
     </Modal>
 
 {/*  //Fourth Exercise */}
-  <TouchableOpacity style={styles.ButtonContainer} onPress={() => setModalVisible3(true)}>
+  <TouchableOpacity style={styles.ButtonContainer} onPress={open3}>
     <View style={styles.exerciseContainer}>
       <View style={styles.textContainer}>
       <Text style= {styles.textHeaderContainer}>Jumping Jack</Text>
@@ -213,13 +487,64 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               onRequestClose={() => {
                   setModalVisible3(!modalVisible3);
               }}>
-              <View>
-              <Text>Jumping Jack</Text>
-              </View>
+              <TouchableOpacity style={{marginTop: 20, position: "absolute", marginLeft: 20}} onPress={() => setModalVisible3(false)}>
+                <Image style={{ height: 20, width: 25, resizeMode: "stretch"}} source={require("../ExercisePlan/picture/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}/>  
+              </TouchableOpacity>
+              
+               <Image style={styles.ImageContainerInfo} source={require("../ExercisePlan/picture/jumping-jack-icegif.gif")}/>
+            
+             <TouchableOpacity style={{marginTop: 15, position: "absolute", marginLeft: 20, right: 20}}>
+                    <Text style={{fontSize: 20}}>Done</Text>  
+              </TouchableOpacity>
+
+                  <View style={styles.modalMainContainer}>
+                      <Text style={styles.exerciseName}>Jumping Jack</Text>
+                 {/*Exercise Timer*/}
+                 <View style={styles.subModalContainer}>
+                 <View style= {styles.HeadersContainer}>
+                      <Image style={styles.timeClock} source={require("../ExercisePlan/picture/clock.png")}/>
+                      <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4}}>
+                        5mins
+                      </Text>
+                 </View>     
+                    <View style= {styles.CaloriesContainer}>
+                     <Image style={styles.calorieLogo} source={require("../ExercisePlan/picture/calories.png")}/>
+                      <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4}}>
+                            Calories Burn: 80
+                      </Text>
+                   </View> 
+                </View>
+
+                <View style = {{alignSelf: "center", marginTop: 40, flexDirection: "row", marginBottom: 20,}}>
+                    <Text style={{ fontSize: 80, marginBottom: 10, marginTop: 4, fontWeight: "bold"}}>
+                      {count > 0 ? formatTime(count) : '5:00'}
+                      </Text>
+                </View>
+                  
+
+                         <View style = {{flexDirection: "row", alignSelf: "center"}}>
+                        {!isRunning ? (
+                        
+                          <TouchableOpacity onPress={handleStart3} style={{backgroundColor: "green", height: 50, width: 100, borderRadius: 30, margin:10}}>
+                              <Text style = {{alignSelf: "center", marginTop: 3, fontSize: 30, fontWeight: 'bold', color: "#fff"}}>Start</Text>
+                          </TouchableOpacity>
+                
+             ) : (
+                       <TouchableOpacity style={{backgroundColor: "green", height: 50, width: 100, borderRadius: 30, margin: 10}} onPress={handleStop3}>
+                              <Text style = {{alignSelf: "center", marginTop: 3, fontSize: 30, fontWeight: 'bold', color: "#fff"}}>Stop</Text>
+                          </TouchableOpacity>
+                
+              )}
+                       <TouchableOpacity style={{backgroundColor: "red", height: 50, width: 100, borderRadius: 30, margin: 10}} onPress={resetStart3}>
+                              <Text style = {{alignSelf: "center", marginTop: 3, fontSize: 30, fontWeight: 'bold', color: "#fff"}}>Reset</Text>
+                          </TouchableOpacity>
+                  </View>
+                
+    </View>
     </Modal>
             
               {/* Fifth Exercise */}
-      <TouchableOpacity style={styles.ButtonContainer} onPress={() => setModalVisible4(true)}>
+      <TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
     <View style={styles.exerciseContainer}>
       <View style={styles.textContainer}>
       <Text style= {styles.textHeaderContainer}>Hip Rotation</Text>
@@ -236,12 +561,63 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               onRequestClose={() => {
                   setModalVisible4(!modalVisible4);
               }}>
-              <View>
-              <Text>Hip Rotation</Text>
-              </View>
+               <TouchableOpacity style={{marginTop: 20, position: "absolute", marginLeft: 20}} onPress={setModalVisible4}>
+                <Image style={{ height: 20, width: 25, resizeMode: "stretch"}} source={require("../ExercisePlan/picture/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}/>  
+              </TouchableOpacity>
+              
+               <Image style={styles.ImageContainerInfo} source={require("../ExercisePlan/picture/hip-circles-exercise-illustration.gif")}/>
+            
+             <TouchableOpacity style={{marginTop: 15, position: "absolute", marginLeft: 20, right: 20}}>
+                    <Text style={{fontSize: 20}}>Done</Text>  
+              </TouchableOpacity>
+
+                  <View style={styles.modalMainContainer}>
+                      <Text style={styles.exerciseName}>Hip Rotation</Text>
+                 {/*Exercise Timer*/}
+                 <View style={styles.subModalContainer}>
+                 <View style= {styles.HeadersContainer}>
+                      <Image style={styles.timeClock} source={require("../ExercisePlan/picture/clock.png")}/>
+                      <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4}}>
+                        5mins
+                      </Text>
+                 </View>     
+                    <View style= {styles.CaloriesContainer}>
+                     <Image style={styles.calorieLogo} source={require("../ExercisePlan/picture/calories.png")}/>
+                      <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4}}>
+                            Calories Burn: 20
+                      </Text>
+                   </View> 
+                </View>
+
+                <View style = {{alignSelf: "center", marginTop: 40, flexDirection: "row", marginBottom: 20,}}>
+                    <Text style={{ fontSize: 80, marginBottom: 10, marginTop: 4, fontWeight: "bold"}}>
+                      {count > 0 ? formatTime(count) : '5:00'}
+                      </Text>
+                </View>
+                  
+
+                         <View style = {{flexDirection: "row", alignSelf: "center"}}>
+                        {!isRunning ? (
+                        
+                          <TouchableOpacity onPress={handleStart4} style={{backgroundColor: "green", height: 50, width: 100, borderRadius: 30, margin:10}}>
+                              <Text style = {{alignSelf: "center", marginTop: 3, fontSize: 30, fontWeight: 'bold', color: "#fff"}}>Start</Text>
+                          </TouchableOpacity>
+                
+             ) : (
+                       <TouchableOpacity style={{backgroundColor: "green", height: 50, width: 100, borderRadius: 30, margin: 10}} onPress={handleStop4}>
+                              <Text style = {{alignSelf: "center", marginTop: 3, fontSize: 30, fontWeight: 'bold', color: "#fff"}}>Stop</Text>
+                          </TouchableOpacity>
+                
+              )}
+                       <TouchableOpacity style={{backgroundColor: "red", height: 50, width: 100, borderRadius: 30, margin: 10}} onPress={resetStart4}>
+                              <Text style = {{alignSelf: "center", marginTop: 3, fontSize: 30, fontWeight: 'bold', color: "#fff"}}>Reset</Text>
+                          </TouchableOpacity>
+                  </View>
+                
+    </View>
     </Modal>
       {/* sixth Exercise */}
-      <TouchableOpacity style={styles.ButtonContainer} onPress={() => setModalVisible5(true)}>
+      <TouchableOpacity style={styles.ButtonContainer} onPress={open5}>
     <View style={styles.exerciseContainer}>
       <View style={styles.textContainer}>
       <Text style= {styles.textHeaderContainer}>Head Rotation</Text>
@@ -258,9 +634,60 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               onRequestClose={() => {
                   setModalVisible5(!modalVisible5);
               }}>
-              <View>
-              <Text>Head Rotation</Text>
-              </View>
+              <TouchableOpacity style={{marginTop: 20, position: "absolute", marginLeft: 20}} onPress={setModalVisible4}>
+                <Image style={{ height: 20, width: 25, resizeMode: "stretch"}} source={require("../ExercisePlan/picture/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}/>  
+              </TouchableOpacity>
+              
+               <Image style={styles.ImageContainerInfo} source={require("../ExercisePlan/picture/neck.gif")}/>
+            
+             <TouchableOpacity style={{marginTop: 15, position: "absolute", marginLeft: 20, right: 20}}>
+                    <Text style={{fontSize: 20}}>Done</Text>  
+              </TouchableOpacity>
+
+                  <View style={styles.modalMainContainer}>
+                      <Text style={styles.exerciseName}>Head Rotation</Text>
+                 {/*Exercise Timer*/}
+                 <View style={styles.subModalContainer}>
+                 <View style= {styles.HeadersContainer}>
+                      <Image style={styles.timeClock} source={require("../ExercisePlan/picture/clock.png")}/>
+                      <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4}}>
+                        5mins
+                      </Text>
+                 </View>     
+                    <View style= {styles.CaloriesContainer}>
+                     <Image style={styles.calorieLogo} source={require("../ExercisePlan/picture/calories.png")}/>
+                      <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4}}>
+                            Calories Burn: 20
+                      </Text>
+                   </View> 
+                </View>
+
+                <View style = {{alignSelf: "center", marginTop: 40, flexDirection: "row", marginBottom: 20,}}>
+                    <Text style={{ fontSize: 80, marginBottom: 10, marginTop: 4, fontWeight: "bold"}}>
+                      {count > 0 ? formatTime(count) : '5:00'}
+                      </Text>
+                </View>
+                  
+
+                         <View style = {{flexDirection: "row", alignSelf: "center"}}>
+                        {!isRunning ? (
+                        
+                          <TouchableOpacity onPress={handleStart4} style={{backgroundColor: "green", height: 50, width: 100, borderRadius: 30, margin:10}}>
+                              <Text style = {{alignSelf: "center", marginTop: 3, fontSize: 30, fontWeight: 'bold', color: "#fff"}}>Start</Text>
+                          </TouchableOpacity>
+                
+             ) : (
+                       <TouchableOpacity style={{backgroundColor: "green", height: 50, width: 100, borderRadius: 30, margin: 10}} onPress={handleStop4}>
+                              <Text style = {{alignSelf: "center", marginTop: 3, fontSize: 30, fontWeight: 'bold', color: "#fff"}}>Stop</Text>
+                          </TouchableOpacity>
+                
+              )}
+                       <TouchableOpacity style={{backgroundColor: "red", height: 50, width: 100, borderRadius: 30, margin: 10}} onPress={resetStart4}>
+                              <Text style = {{alignSelf: "center", marginTop: 3, fontSize: 30, fontWeight: 'bold', color: "#fff"}}>Reset</Text>
+                          </TouchableOpacity>
+                  </View>
+                
+    </View>
     </Modal>
       {/* seventh Exercise */}
       <TouchableOpacity style={styles.ButtonContainer} onPress={() => setModalVisible6(true)}>
@@ -280,9 +707,60 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               onRequestClose={() => {
                   setModalVisible6(!modalVisible6);
               }}>
-              <View>
-              <Text>Arm Rotation</Text>
-              </View>
+               <TouchableOpacity style={{marginTop: 20, position: "absolute", marginLeft: 20}} onPress={setModalVisible4}>
+                <Image style={{ height: 20, width: 25, resizeMode: "stretch"}} source={require("../ExercisePlan/picture/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}/>  
+              </TouchableOpacity>
+              
+               <Image style={styles.ImageContainerInfo} source={require("../ExercisePlan/picture/arm-circles-exercise-illustration.gif")}/>
+            
+             <TouchableOpacity style={{marginTop: 15, position: "absolute", marginLeft: 20, right: 20}}>
+                    <Text style={{fontSize: 20}}>Done</Text>  
+              </TouchableOpacity>
+
+                  <View style={styles.modalMainContainer}>
+                      <Text style={styles.exerciseName}>Arm Rotation</Text>
+                 {/*Exercise Timer*/}
+                 <View style={styles.subModalContainer}>
+                 <View style= {styles.HeadersContainer}>
+                      <Image style={styles.timeClock} source={require("../ExercisePlan/picture/clock.png")}/>
+                      <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4}}>
+                        5mins
+                      </Text>
+                 </View>     
+                    <View style= {styles.CaloriesContainer}>
+                     <Image style={styles.calorieLogo} source={require("../ExercisePlan/picture/calories.png")}/>
+                      <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4}}>
+                            Calories Burn: 20
+                      </Text>
+                   </View> 
+                </View>
+
+                <View style = {{alignSelf: "center", marginTop: 40, flexDirection: "row", marginBottom: 20,}}>
+                    <Text style={{ fontSize: 80, marginBottom: 10, marginTop: 4, fontWeight: "bold"}}>
+                      {count > 0 ? formatTime(count) : '5:00'}
+                      </Text>
+                </View>
+                  
+
+                         <View style = {{flexDirection: "row", alignSelf: "center"}}>
+                        {!isRunning ? (
+                        
+                          <TouchableOpacity onPress={handleStart4} style={{backgroundColor: "green", height: 50, width: 100, borderRadius: 30, margin:10}}>
+                              <Text style = {{alignSelf: "center", marginTop: 3, fontSize: 30, fontWeight: 'bold', color: "#fff"}}>Start</Text>
+                          </TouchableOpacity>
+                
+             ) : (
+                       <TouchableOpacity style={{backgroundColor: "green", height: 50, width: 100, borderRadius: 30, margin: 10}} onPress={handleStop4}>
+                              <Text style = {{alignSelf: "center", marginTop: 3, fontSize: 30, fontWeight: 'bold', color: "#fff"}}>Stop</Text>
+                          </TouchableOpacity>
+                
+              )}
+                       <TouchableOpacity style={{backgroundColor: "red", height: 50, width: 100, borderRadius: 30, margin: 10}} onPress={resetStart4}>
+                              <Text style = {{alignSelf: "center", marginTop: 3, fontSize: 30, fontWeight: 'bold', color: "#fff"}}>Reset</Text>
+                          </TouchableOpacity>
+                  </View>
+                
+    </View>
     </Modal>
       {/* eighth Exercise */}
       <TouchableOpacity style={styles.ButtonContainer } onPress={() => setModalVisible7(true)}>
@@ -303,9 +781,60 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               onRequestClose={() => {
                   setModalVisible7(!modalVisible7);
               }}>
-              <View>
-              <Text>Knee Rotation</Text>
-              </View>
+               <TouchableOpacity style={{marginTop: 20, position: "absolute", marginLeft: 20}} onPress={setModalVisible4}>
+                <Image style={{ height: 20, width: 25, resizeMode: "stretch"}} source={require("../ExercisePlan/picture/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}/>  
+              </TouchableOpacity>
+              
+               <Image style={styles.ImageContainerInfo} source={require("../ExercisePlan/picture/knee-circles-exercise-illustration.gif")}/>
+            
+             <TouchableOpacity style={{marginTop: 15, position: "absolute", marginLeft: 20, right: 20}}>
+                    <Text style={{fontSize: 20}}>Done</Text>  
+              </TouchableOpacity>
+
+                  <View style={styles.modalMainContainer}>
+                      <Text style={styles.exerciseName}>Hip Rotation</Text>
+                 {/*Exercise Timer*/}
+                 <View style={styles.subModalContainer}>
+                 <View style= {styles.HeadersContainer}>
+                      <Image style={styles.timeClock} source={require("../ExercisePlan/picture/clock.png")}/>
+                      <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4}}>
+                        5mins
+                      </Text>
+                 </View>     
+                    <View style= {styles.CaloriesContainer}>
+                     <Image style={styles.calorieLogo} source={require("../ExercisePlan/picture/calories.png")}/>
+                      <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4}}>
+                            Calories Burn: 20
+                      </Text>
+                   </View> 
+                </View>
+
+                <View style = {{alignSelf: "center", marginTop: 40, flexDirection: "row", marginBottom: 20,}}>
+                    <Text style={{ fontSize: 80, marginBottom: 10, marginTop: 4, fontWeight: "bold"}}>
+                      {count > 0 ? formatTime(count) : '5:00'}
+                      </Text>
+                </View>
+                  
+
+                         <View style = {{flexDirection: "row", alignSelf: "center"}}>
+                        {!isRunning ? (
+                        
+                          <TouchableOpacity onPress={handleStart4} style={{backgroundColor: "green", height: 50, width: 100, borderRadius: 30, margin:10}}>
+                              <Text style = {{alignSelf: "center", marginTop: 3, fontSize: 30, fontWeight: 'bold', color: "#fff"}}>Start</Text>
+                          </TouchableOpacity>
+                
+             ) : (
+                       <TouchableOpacity style={{backgroundColor: "green", height: 50, width: 100, borderRadius: 30, margin: 10}} onPress={handleStop4}>
+                              <Text style = {{alignSelf: "center", marginTop: 3, fontSize: 30, fontWeight: 'bold', color: "#fff"}}>Stop</Text>
+                          </TouchableOpacity>
+                
+              )}
+                       <TouchableOpacity style={{backgroundColor: "red", height: 50, width: 100, borderRadius: 30, margin: 10}} onPress={resetStart4}>
+                              <Text style = {{alignSelf: "center", marginTop: 3, fontSize: 30, fontWeight: 'bold', color: "#fff"}}>Reset</Text>
+                          </TouchableOpacity>
+                  </View>
+                
+    </View>
     </Modal>
       {/* ninth Exercise */}
       <TouchableOpacity style={styles.ButtonContainer} onPress={() => setModalVisible8(true)}>
@@ -325,9 +854,60 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               onRequestClose={() => {
                   setModalVisible8(!modalVisible8);
               }}>
-              <View>
-              <Text>Standing March</Text>
-              </View>
+             <TouchableOpacity style={{marginTop: 20, position: "absolute", marginLeft: 20}} onPress={setModalVisible4}>
+                <Image style={{ height: 20, width: 25, resizeMode: "stretch"}} source={require("../ExercisePlan/picture/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}/>  
+              </TouchableOpacity>
+              
+               <Image style={styles.ImageContainerInfo} source={require("../ExercisePlan/picture/march-in-place-exercise-illustration.gif")}/>
+            
+             <TouchableOpacity style={{marginTop: 15, position: "absolute", marginLeft: 20, right: 20}}>
+                    <Text style={{fontSize: 20}}>Done</Text>  
+              </TouchableOpacity>
+
+                  <View style={styles.modalMainContainer}>
+                      <Text style={styles.exerciseName}>Standing March</Text>
+                 {/*Exercise Timer*/}
+                 <View style={styles.subModalContainer}>
+                 <View style= {styles.HeadersContainer}>
+                      <Image style={styles.timeClock} source={require("../ExercisePlan/picture/clock.png")}/>
+                      <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4}}>
+                        5mins
+                      </Text>
+                 </View>     
+                    <View style= {styles.CaloriesContainer}>
+                     <Image style={styles.calorieLogo} source={require("../ExercisePlan/picture/calories.png")}/>
+                      <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4}}>
+                            Calories Burn: 20
+                      </Text>
+                   </View> 
+                </View>
+
+                <View style = {{alignSelf: "center", marginTop: 40, flexDirection: "row", marginBottom: 20,}}>
+                    <Text style={{ fontSize: 80, marginBottom: 10, marginTop: 4, fontWeight: "bold"}}>
+                      {count > 0 ? formatTime(count) : '5:00'}
+                      </Text>
+                </View>
+                  
+
+                         <View style = {{flexDirection: "row", alignSelf: "center"}}>
+                        {!isRunning ? (
+                        
+                          <TouchableOpacity onPress={handleStart4} style={{backgroundColor: "green", height: 50, width: 100, borderRadius: 30, margin:10}}>
+                              <Text style = {{alignSelf: "center", marginTop: 3, fontSize: 30, fontWeight: 'bold', color: "#fff"}}>Start</Text>
+                          </TouchableOpacity>
+                
+             ) : (
+                       <TouchableOpacity style={{backgroundColor: "green", height: 50, width: 100, borderRadius: 30, margin: 10}} onPress={handleStop4}>
+                              <Text style = {{alignSelf: "center", marginTop: 3, fontSize: 30, fontWeight: 'bold', color: "#fff"}}>Stop</Text>
+                          </TouchableOpacity>
+                
+              )}
+                       <TouchableOpacity style={{backgroundColor: "red", height: 50, width: 100, borderRadius: 30, margin: 10}} onPress={resetStart4}>
+                              <Text style = {{alignSelf: "center", marginTop: 3, fontSize: 30, fontWeight: 'bold', color: "#fff"}}>Reset</Text>
+                          </TouchableOpacity>
+                  </View>
+                
+    </View>
     </Modal>
       {/* tenth Exercise */}
       <TouchableOpacity style={styles.ButtonContainer} onPress={() => setModalVisible9(true)}>
@@ -337,7 +917,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
       <Text>Calories Burn: 93</Text>
         <Text>Duration: 10 Minutes</Text>
       </View>
-      <Image style={styles.ImageContainer} source={require("../ExercisePlan/picture/march-in-place-exercise-illustration.gif")}/>
+      <Image style={styles.ImageContainer} source={require("../ExercisePlan/picture/neck.gif ")}/>
       </View>
     </TouchableOpacity>
       <Modal
@@ -347,16 +927,61 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               onRequestClose={() => {
                   setModalVisible9(!modalVisible9);
               }}>
-              <View>
-              <Text>Shoulder Roll</Text>
-              </View>
+            <TouchableOpacity style={{marginTop: 20, position: "absolute", marginLeft: 20}} onPress={setModalVisible4}>
+                <Image style={{ height: 20, width: 25, resizeMode: "stretch"}} source={require("../ExercisePlan/picture/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}/>  
+              </TouchableOpacity>
+              
+               <Image style={styles.ImageContainerInfo} source={require("../ExercisePlan/picture/shoulder-rolls-exercise-illustration.gif")}/>
+            
+             <TouchableOpacity style={{marginTop: 15, position: "absolute", marginLeft: 20, right: 20}}>
+                    <Text style={{fontSize: 20}}>Done</Text>  
+              </TouchableOpacity>
+
+                  <View style={styles.modalMainContainer}>
+                      <Text style={styles.exerciseName}>Shoulder Roll</Text>
+                 {/*Exercise Timer*/}
+                 <View style={styles.subModalContainer}>
+                 <View style= {styles.HeadersContainer}>
+                      <Image style={styles.timeClock} source={require("../ExercisePlan/picture/clock.png")}/>
+                      <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4}}>
+                        5mins
+                      </Text>
+                 </View>     
+                    <View style= {styles.CaloriesContainer}>
+                     <Image style={styles.calorieLogo} source={require("../ExercisePlan/picture/calories.png")}/>
+                      <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4}}>
+                            Calories Burn: 20
+                      </Text>
+                   </View> 
+                </View>
+
+                <View style = {{alignSelf: "center", marginTop: 40, flexDirection: "row", marginBottom: 20,}}>
+                    <Text style={{ fontSize: 80, marginBottom: 10, marginTop: 4, fontWeight: "bold"}}>
+                      {count > 0 ? formatTime(count) : '5:00'}
+                      </Text>
+                </View>
+                  
+
+                         <View style = {{flexDirection: "row", alignSelf: "center"}}>
+                        {!isRunning ? (
+                        
+                          <TouchableOpacity onPress={handleStart4} style={{backgroundColor: "green", height: 50, width: 100, borderRadius: 30, margin:10}}>
+                              <Text style = {{alignSelf: "center", marginTop: 3, fontSize: 30, fontWeight: 'bold', color: "#fff"}}>Start</Text>
+                          </TouchableOpacity>
+                
+             ) : (
+                       <TouchableOpacity style={{backgroundColor: "green", height: 50, width: 100, borderRadius: 30, margin: 10}} onPress={handleStop4}>
+                              <Text style = {{alignSelf: "center", marginTop: 3, fontSize: 30, fontWeight: 'bold', color: "#fff"}}>Stop</Text>
+                          </TouchableOpacity>
+                
+              )}
+                       <TouchableOpacity style={{backgroundColor: "red", height: 50, width: 100, borderRadius: 30, margin: 10}} onPress={resetStart4}>
+                              <Text style = {{alignSelf: "center", marginTop: 3, fontSize: 30, fontWeight: 'bold', color: "#fff"}}>Reset</Text>
+                          </TouchableOpacity>
+                  </View>
+                
+    </View>
     </Modal>
-
-
-
-
-
-
   </ScrollView>
             
   );
@@ -374,9 +999,10 @@ const styles = StyleSheet.create({
       ImageContainerInfo : {
         height: 300,
         width: 260,
-        borderRadius: 10,
+        borderRadius: 20,
         resizeMode: "stretch",
-        alignSelf: "center"
+        alignSelf: "center",
+        
       },
       ButtonContainer: {
         backgroundColor: "#fff",
@@ -450,6 +1076,41 @@ const styles = StyleSheet.create({
     marginLeft: 10, 
     flexDirection: "row"
   },
-  
 
+   container: {
+    flex: 1,
+    padding: 20,
+    
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  daysContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 20,
+  },
+  dayButton: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 5,
+    marginHorizontal: 5,
+    borderWidth: 1,
+    borderColor: 'gray',
+  },
+  selectedDayButton: {
+    backgroundColor: 'blue',
+  },
+  dayButtonText: {
+    fontSize: 16,
+  },
+  selectedDayButtonText: {
+    color: 'white',
+  },
+  selectedDayText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
 });
