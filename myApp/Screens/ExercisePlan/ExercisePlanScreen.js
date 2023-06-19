@@ -8,9 +8,33 @@ import { ScrollView,
           Modal, 
           Pressable,
           Button,} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default ExercisePlanScreen = ({ navigation, route }) => {
+
+  const [exercise1, setExercise1] = useState(0);
+
+const saveData = async () => {
+        console.log('Saving data');
+        try {
+            const userData = {
+                exercise1
+            };
+
+            // Save the data to AsyncStorage
+            await AsyncStorage.setItem('userData', JSON.stringify(userData));
+            console.log('Data saved successfully!', userData);
+
+            // Navigate to the other screen
+
+        } catch (error) {
+            console.log('Error saving data:', error);
+        }
+        setModalVisible(false);
+    };
+
+
 
   //Exercise Modal
     const [modalVisible, setModalVisible] = useState(false);
@@ -262,13 +286,13 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
 
                   setModalVisible(!modalVisible);
               }}>
-              <TouchableOpacity style={{marginTop: 20, position: "absolute", marginLeft: 20}} onPress={() => setModalVisible(false)}>
+              <TouchableOpacity style={{marginTop: 20, position: "absolute", marginLeft: 20}} onPress={saveData}>
                 <Image style={{ height: 20, width: 25, resizeMode: "stretch"}} source={require("../ExercisePlan/picture/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}/>  
               </TouchableOpacity>
               
                <Image style={styles.ImageContainerInfo} source={require("../ExercisePlan/picture/jogging.gif")}/>
             
-             <TouchableOpacity style={{marginTop: 15, position: "absolute", marginLeft: 20, right: 20}}>
+             <TouchableOpacity style={{marginTop: 15, position: "absolute", marginLeft: 20, right: 20}} onPress={() => {setExercise1("93") }}>
                     <Text style={{fontSize: 20}}>Done</Text>  
               </TouchableOpacity>
 
