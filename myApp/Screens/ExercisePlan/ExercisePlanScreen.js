@@ -1,18 +1,23 @@
 import { ca } from 'date-fns/locale';
 import React, { useState, useEffect } from 'react';
-import { ScrollView, 
-          StyleSheet, 
-          TouchableOpacity, 
-          View, 
-          Text, 
-          Image, 
-          Modal, 
-          Pressable,
-          Button,} from 'react-native';
-
+import {
+    ScrollView,
+    StyleSheet,
+    TouchableOpacity,
+    View,
+    Text,
+    Image,
+    Modal,
+    Pressable,
+    Button,
+} from 'react-native';
+import ExerciseDone from './ExerciseDone';
+import { getData, storeData } from '../../AsyncStorageFunctions';
 export default ExercisePlanScreen = ({ navigation, route }) => {
 
-  //Exercise Modal
+    const [isBurnedCaloriesModalVisible, setIsBurnedCaloriesModalVisible] = useState(false);
+    const [exerciseBurnedDetails, setExerciseBurnedDetails] = useState({burnedCalories: 0});
+    //Exercise Modal
     const [modalVisible, setModalVisible] = useState(false);
     const [modalVisible1, setModalVisible1] = useState(false);
     const [modalVisible2, setModalVisible2] = useState(false);
@@ -243,7 +248,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
         const currentDate = new Date();
         const currentDayIndex = currentDate.getDay();
         let storage_Key = `${currentDayIndex}_exerciseBurnedCalories`;
-        
+
         const previousBurned = await getData(storage_Key);
         let currentBurned = burnedCalories;
         if (previousBurned) currentBurned += Number(previousBurned);
@@ -278,17 +283,20 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
                 visible={modalVisible}
                 onRequestClose={() => {
 
-                  setModalVisible(!modalVisible);
-              }}>
-              <TouchableOpacity style={{marginTop: 20, position: "absolute", marginLeft: 20}} onPress={() => setModalVisible(false)}>
-                <Image style={{ height: 20, width: 25, resizeMode: "stretch"}} source={require("../ExercisePlan/picture/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}/>  
-              </TouchableOpacity>
-              
-               <Image style={styles.ImageContainerInfo} source={require("../ExercisePlan/picture/jogging.gif")}/>
-            
-             <TouchableOpacity style={{marginTop: 15, position: "absolute", marginLeft: 20, right: 20}}>
-                    <Text style={{fontSize: 20}}>Done</Text>  
-              </TouchableOpacity>
+                    setModalVisible(!modalVisible);
+                }}>
+                <TouchableOpacity style={{ marginTop: 20, position: "absolute", marginLeft: 20 }} onPress={() => setModalVisible(false)}>
+                    <Image style={{ height: 20, width: 25, resizeMode: "stretch" }} source={require("../ExercisePlan/picture/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")} />
+                </TouchableOpacity>
+
+                <Image style={styles.ImageContainerInfo} source={require("../ExercisePlan/picture/jogging.gif")} />
+
+                <TouchableOpacity onPress={() => {
+                    setModalVisible(false);
+                    markExerciseDone(93, "10 minutes", "Jogging");
+                }} style={{ marginTop: 15, position: "absolute", marginLeft: 20, right: 20 }}>
+                    <Text style={{ fontSize: 20 }}>Done</Text>
+                </TouchableOpacity>
 
                 <View style={styles.modalMainContainer}>
                     <Text style={styles.exerciseName}>Jogging</Text>
