@@ -917,7 +917,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
       <Text>Calories Burn: 93</Text>
         <Text>Duration: 10 Minutes</Text>
       </View>
-      <Image style={styles.ImageContainer} source={require("../ExercisePlan/picture/neck.gif ")}/>
+      <Image style={styles.ImageContainer} source={require("../ExercisePlan/picture/neck.gif")}/>
       </View>
     </TouchableOpacity>
       <Modal
