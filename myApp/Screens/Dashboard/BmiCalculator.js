@@ -23,7 +23,7 @@ import { TextInput } from "@react-native-material/core";
 import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import RNSpeedometer from 'react-native-speedometer'
-import { getEatenMealAsync } from "../../AsyncStorageFunctions";
+import { getEatenMealAsync, getData } from "../../AsyncStorageFunctions";
 import { useIsFocused } from "@react-navigation/native";
 import BmiGoal from "./BmiGoal";
 
@@ -40,6 +40,7 @@ export default BmiCalculator = ({ navigation, route }) => {
     const [calorieIntake, setCalorieIntake] = useState([0, 0, 0, 0, 0, 0,0]);
     const [calorieIntakeToday, setCalorieIntakeToday] = useState(0);
     const [bmr, setBmr] = useState('');
+    const [burnedCalorie, setBurnedCalorie] = useState(0);
     // CHART
     const weeklyCalorieIntake = {
         labels: Object.values(mealDayToEat),
@@ -130,9 +131,20 @@ export default BmiCalculator = ({ navigation, route }) => {
 
             setCalorieIntakeToday(mealGraph[new Date().getDay()]);
             console.log(mealGraph);
+            fetchBurnedCalorie();
         };
         getEatenMeal();
     }, [isFocused]);
+
+    const fetchBurnedCalorie = async () => {
+        let burnedCalorie = 0;
+        const currentDate = new Date();
+        const currentDayIndex = currentDate.getDay();
+        let storage_Key = `${currentDayIndex}_exerciseBurnedCalories`;
+        const previousBurned = await getData(storage_Key);
+        if (previousBurned)burnedCalorie = Number(previousBurned);
+        setBurnedCalorie(burnedCalorie);
+    };
 
     const fetchData = async () => {
         try {
@@ -234,11 +246,18 @@ export default BmiCalculator = ({ navigation, route }) => {
                             </TouchableOpacity> */}
 
                             <View style={{ position: "absolute", height: 600 }}>
-
-                                <Image
+                                {userData.gender === "Male" &&
+                                    <Image
                                     style={{ height: 410, width: 142, top: 70, left: 40 }}
                                     source={require("../Dashboard/image/pngaaa.com-1130346.png")}
-                                />
+                                    />
+                                }
+                                {userData.gender === "Female" &&
+                                    <Image
+                                    style={{ height: 410, width: 142, top: 70, left: 40 }}
+                                    source={require("../Dashboard/image/female-workout.png")}
+                                    />
+                                }
                             </View>
                         </View>
 
@@ -286,7 +305,7 @@ export default BmiCalculator = ({ navigation, route }) => {
                             </ScrollView>
 
                         </Modal> */}
-                        <BmiGoal bmr={bmr} calorieIntake={calorieIntakeToday}/>
+                        <BmiGoal bmr={bmr} calorieIntake={calorieIntakeToday} burnedCalorie={burnedCalorie}/>
 
                         <View style={{ backgroundColor: "#156d94", padding: 10, marginHorizontal: 10, marginTop: 35, marginBottom: 50, borderRadius: 10 }}>
                             <Text style={{ fontSize: 20, color: "#fff", textAlign: "center" }}>DAILY CALORIE INTAKE</Text>

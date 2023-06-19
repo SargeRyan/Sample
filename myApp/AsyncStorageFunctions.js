@@ -56,7 +56,7 @@ export const getDataObject = async (storage_Key) => {
 
 export const getMealsToday = async (dayToEat, timeToEat) => {
   try {
-    // await AsyncStorage.clear()
+    // await AsyncStorage.clear();
     let toGetMeals = [];
 
     // get meal keys
