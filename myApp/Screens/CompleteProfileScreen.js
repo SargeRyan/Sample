@@ -18,12 +18,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 TouchableOpacity.defaultProps = { ActiveOpacity: 0.8 };
 
-const AppButton = ({ onPress, title }) => (
-    <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
+
+
+export default CompleteProfileScreen = ({ setShowMainScreen }) => {
+    const AppButton = ({ onPress, title }) => (
+    <TouchableOpacity disabled={goalWeight === ''} onPress={onPress} style={styles.appButtonContainer}>
         <Text style={styles.appButtonText}>{title}</Text>
     </TouchableOpacity>
 );
-export default CompleteProfileScreen = ({ setShowMainScreen }) => {
 
     const [modalVisible, setModalVisible] = useState(false);
     const [modalSampleVisible, setSampleVisible] = useState(false);
@@ -83,6 +85,10 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
     const [gender, setGender] = useState('Male');
     const [age, setAge] = useState('');
     const [goalWeight, setGoalWeight] = useState('');
+
+    const validate = () => {
+        height === '' || weight === '' || age === '';
+    }
 
 
     const saveData = async () => {
@@ -201,15 +207,9 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                 ></TextInput>
             </View>
 
-
-
-
-
-
-
             <Pressable
                 style={{ backgroundColor: "#009688", height: 50, width: 320, borderRadius: 10, marginTop: 20 }}
-                onPress={() => setModalVisible(true)}>
+                onPress={() => setModalVisible(true)} disabled={age === '' || height === '' || weight === ''}>
                 <Text style={{ alignSelf: "center", marginTop: 10, fontSize: 20, fontWeight: "bold", color: "#fff" }}>NEXT</Text>
             </Pressable>
 
@@ -365,7 +365,8 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                             onPress={async () => {
                                 await saveData();
                                 setShowMainScreen(false)
-                            }}
+                            }
+                            }
                         ></AppButton>
                     </View>
                 </View>
