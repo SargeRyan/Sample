@@ -86,11 +86,6 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
     const [age, setAge] = useState('');
     const [goalWeight, setGoalWeight] = useState('');
 
-    const validate = () => {
-        height === '' || weight === '' || age === '';
-    }
-
-
     const saveData = async () => {
         console.log('Saving data');
         try {
