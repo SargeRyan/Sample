@@ -254,7 +254,7 @@ export default BmiCalculator = ({ navigation, route }) => {
                                 }
                                 {userData.gender === "Female" &&
                                     <Image
-                                    style={{ height: 410, width: 142, top: 70, left: 40 }}
+                                    style={{ height: 430, width: 280, top: 70, left: -50, resizeMode: "stretch" }}
                                     source={require("../Dashboard/image/female-workout.png")}
                                     />
                                 }

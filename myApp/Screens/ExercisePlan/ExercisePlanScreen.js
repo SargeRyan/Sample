@@ -506,7 +506,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
                     <View style={styles.textContainer}>
                         <Text style={styles.textHeaderContainer}>Jumping Jack</Text>
                         <Text>Calories Burn: 80</Text>
-                        <Text>Duration: 10 Minutes</Text>
+                        <Text>Duration: 5 Minutes</Text>
                     </View>
                     <Image style={styles.ImageContainer} source={require("../ExercisePlan/picture/jumping-jack-icegif.gif")} />
                 </View>
@@ -584,7 +584,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
                     <View style={styles.textContainer}>
                         <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
                         <Text>Calories Burn: 20</Text>
-                        <Text>Duration: 3 Minutes</Text>
+                        <Text>Duration: 5 Minutes</Text>
                     </View>
                     <Image style={styles.ImageContainer} source={require("../ExercisePlan/picture/hip-circles-exercise-illustration.gif")} />
                 </View>
@@ -660,7 +660,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
                     <View style={styles.textContainer}>
                         <Text style={styles.textHeaderContainer}>Head Rotation</Text>
                         <Text>Calories Burn: 10</Text>
-                        <Text>Duration: 3 Minutes</Text>
+                        <Text>Duration: 5 Minutes</Text>
                     </View>
                     <Image style={styles.ImageContainer} source={require("../ExercisePlan/picture/neck.gif")} />
                 </View>
@@ -672,7 +672,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
                 onRequestClose={() => {
                     setModalVisible5(!modalVisible5);
                 }}>
-                <TouchableOpacity style={{ marginTop: 20, position: "absolute", marginLeft: 20 }} onPress={setModalVisible4}>
+                <TouchableOpacity style={{ marginTop: 20, position: "absolute", marginLeft: 20 }} onPress={setModalVisible5}>
                     <Image style={{ height: 20, width: 25, resizeMode: "stretch" }} source={require("../ExercisePlan/picture/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")} />
                 </TouchableOpacity>
 
@@ -680,7 +680,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
 
                 <TouchableOpacity onPress={() => {
                     setModalVisible5(false);
-                    markExerciseDone(10, "3 minutes", "Head Rotation");
+                    markExerciseDone(10, "5 minutes", "Head Rotation");
                 }} style={{ marginTop: 15, position: "absolute", marginLeft: 20, right: 20 }}>
                     <Text style={{ fontSize: 20 }}>Done</Text>
                 </TouchableOpacity>
@@ -698,7 +698,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
                         <View style={styles.CaloriesContainer}>
                             <Image style={styles.calorieLogo} source={require("../ExercisePlan/picture/calories.png")} />
                             <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4 }}>
-                                Calories Burn: 20
+                                Calories Burn: 10
                             </Text>
                         </View>
                     </View>
@@ -735,8 +735,8 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
                 <View style={styles.exerciseContainer}>
                     <View style={styles.textContainer}>
                         <Text style={styles.textHeaderContainer}>Arm Rotation</Text>
-                        <Text>Calories Burn: 93</Text>
-                        <Text>Duration: 10 Minutes</Text>
+                        <Text>Calories Burn: 10</Text>
+                        <Text>Duration: 5 Minutes</Text>
                     </View>
                     <Image style={styles.ImageContainer} source={require("../ExercisePlan/picture/arm-circles-exercise-illustration.gif")} />
                 </View>
@@ -748,7 +748,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
                 onRequestClose={() => {
                     setModalVisible6(!modalVisible6);
                 }}>
-                <TouchableOpacity style={{ marginTop: 20, position: "absolute", marginLeft: 20 }} onPress={setModalVisible4}>
+                <TouchableOpacity style={{ marginTop: 20, position: "absolute", marginLeft: 20 }} onPress={setModalVisible6}>
                     <Image style={{ height: 20, width: 25, resizeMode: "stretch" }} source={require("../ExercisePlan/picture/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")} />
                 </TouchableOpacity>
 
@@ -756,7 +756,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
 
                 <TouchableOpacity onPress={() => {
                     setModalVisible6(false);
-                    markExerciseDone(93, "10 minutes", "Arm Rotation");
+                    markExerciseDone(10, "5 minutes", "Arm Rotation");
                 }} style={{ marginTop: 15, position: "absolute", marginLeft: 20, right: 20 }}>
                     <Text style={{ fontSize: 20 }}>Done</Text>
                 </TouchableOpacity>
@@ -774,7 +774,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
                         <View style={styles.CaloriesContainer}>
                             <Image style={styles.calorieLogo} source={require("../ExercisePlan/picture/calories.png")} />
                             <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4 }}>
-                                Calories Burn: 20
+                                Calories Burn: 10
                             </Text>
                         </View>
                     </View>
@@ -811,8 +811,8 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
                 <View style={styles.exerciseContainer}>
                     <View style={styles.textContainer}>
                         <Text style={styles.textHeaderContainer}>Knee Rotation</Text>
-                        <Text>Calories Burn: 93</Text>
-                        <Text>Duration: 10 Minutes</Text>
+                        <Text>Calories Burn: 20</Text>
+                        <Text>Duration: 5 Minutes</Text>
                     </View>
                     <Image style={styles.ImageContainer} source={require("../ExercisePlan/picture/knee-circles-exercise-illustration.gif")} />
                 </View>
@@ -825,7 +825,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
                 onRequestClose={() => {
                     setModalVisible7(!modalVisible7);
                 }}>
-                <TouchableOpacity style={{ marginTop: 20, position: "absolute", marginLeft: 20 }} onPress={setModalVisible4}>
+                <TouchableOpacity style={{ marginTop: 20, position: "absolute", marginLeft: 20 }} onPress={setModalVisible7}>
                     <Image style={{ height: 20, width: 25, resizeMode: "stretch" }} source={require("../ExercisePlan/picture/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")} />
                 </TouchableOpacity>
 
@@ -833,7 +833,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
 
                 <TouchableOpacity onPress={() => {
                     setModalVisible7(false);
-                    markExerciseDone(93, "10 minutes", "Jogging");
+                    markExerciseDone(20, "5 minutes", "Jogging");
                 }} style={{ marginTop: 15, position: "absolute", marginLeft: 20, right: 20 }}>
                     <Text style={{ fontSize: 20 }}>Done</Text>
                 </TouchableOpacity>
@@ -884,12 +884,12 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
                 </View>
             </Modal>
             {/* ninth Exercise */}
-            <TouchableOpacity style={styles.ButtonContainer} onPress={() => setModalVisible8(true)}>
+            <TouchableOpacity style={styles.ButtonContainer} onPress={open8}>
                 <View style={styles.exerciseContainer}>
                     <View style={styles.textContainer}>
                         <Text style={styles.textHeaderContainer}>Standing March</Text>
-                        <Text>Calories Burn: 93</Text>
-                        <Text>Duration: 10 Minutes</Text>
+                        <Text>Calories Burn: 20</Text>
+                        <Text>Duration: 5 Minutes</Text>
                     </View>
                     <Image style={styles.ImageContainer} source={require("../ExercisePlan/picture/march-in-place-exercise-illustration.gif")} />
                 </View>
@@ -901,7 +901,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
                 onRequestClose={() => {
                     setModalVisible8(!modalVisible8);
                 }}>
-                <TouchableOpacity style={{ marginTop: 20, position: "absolute", marginLeft: 20 }} onPress={setModalVisible4}>
+                <TouchableOpacity style={{ marginTop: 20, position: "absolute", marginLeft: 20 }} onPress={setModalVisible8}>
                     <Image style={{ height: 20, width: 25, resizeMode: "stretch" }} source={require("../ExercisePlan/picture/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")} />
                 </TouchableOpacity>
 
@@ -909,7 +909,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
 
                 <TouchableOpacity onPress={() => {
                     setModalVisible8(false);
-                    markExerciseDone(93, "10 minutes", "Standing March");
+                    markExerciseDone(20, "5 minutes", "Standing March");
                 }} style={{ marginTop: 15, position: "absolute", marginLeft: 20, right: 20 }}>
                     <Text style={{ fontSize: 20 }}>Done</Text>
                 </TouchableOpacity>
@@ -960,12 +960,12 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
                 </View>
             </Modal>
             {/* tenth Exercise */}
-            <TouchableOpacity style={styles.ButtonContainer} onPress={() => setModalVisible9(true)}>
+            <TouchableOpacity style={styles.ButtonContainer} onPress={open9}>
                 <View style={styles.exerciseContainer}>
                     <View style={styles.textContainer}>
                         <Text style={styles.textHeaderContainer}>Shoulder Roll</Text>
-                        <Text>Calories Burn: 93</Text>
-                        <Text>Duration: 10 Minutes</Text>
+                        <Text>Calories Burn: 20</Text>
+                        <Text>Duration: 5 Minutes</Text>
                     </View>
                     <Image style={styles.ImageContainer} source={require("../ExercisePlan/picture/neck.gif")} />
                 </View>
@@ -977,7 +977,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
                 onRequestClose={() => {
                     setModalVisible9(!modalVisible9);
                 }}>
-                <TouchableOpacity style={{ marginTop: 20, position: "absolute", marginLeft: 20 }} onPress={setModalVisible4}>
+                <TouchableOpacity style={{ marginTop: 20, position: "absolute", marginLeft: 20 }} onPress={setModalVisible9}>
                     <Image style={{ height: 20, width: 25, resizeMode: "stretch" }} source={require("../ExercisePlan/picture/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")} />
                 </TouchableOpacity>
 
@@ -985,7 +985,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
 
                 <TouchableOpacity onPress={() => {
                     setModalVisible9(false);
-                    markExerciseDone(93, "10 minutes", "Shoulder Roll");
+                    markExerciseDone(20, "5 minutes", "Shoulder Roll");
                 }} style={{ marginTop: 15, position: "absolute", marginLeft: 20, right: 20 }}>
                     <Text style={{ fontSize: 20 }}>Done</Text>
                 </TouchableOpacity>
