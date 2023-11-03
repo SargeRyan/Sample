@@ -53,8 +53,6 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
         { label: 'Lose Weight', value: 'Lose Weight' },
         { label: 'Maintain Weight', value: 'Maintain Weight' },
         { label: 'Gain Weight', value: 'Gain Weight' },
-        { label: 'Gain Muscles', value: 'Gain Muscles' },
-        { label: 'Modify My Diet', value: 'Modify My Diet' },
         { label: 'Manage Stress', value: 'Manage Stress' },
         { label: 'Increase My Step Count', value: 'Increase My Step Count' },
     ]);
@@ -77,7 +75,11 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
         { label: 'Lose 0.25kg per week', value: '0.25' },
         { label: 'Lose 0.5 per week', value: '0.50' },
         { label: 'Lose 0.75 per week', value: '0.75' },
-        { label: 'Loss 1kg per week', value: '1' },
+        { label: 'Loss 1kg per week', value: '01' },
+        { label: 'Gain 0.25kg per week', value: '.25' },
+        { label: 'Gain 0.5 per week', value: '.50' },
+        { label: 'Gain 0.75 per week', value: '.75' },
+        { label: 'Gain 1kg per week', value: '1' },
 
     ]);
 
@@ -374,6 +376,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                             onChangeText={setGoalWeight}
                             placeholder="Weight(Kilograms/kg)"
                             style={styles.WeightTextContainer}
+                            inputMode="numeric"
                         ></TextInput>
                     </View>
 
@@ -387,7 +390,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                         zIndex={3000}
                         placeholder="Set Weekly Goal"
                         zIndexInverse={1000}
-                        containerStyle={{ width: 320, backgroundColor: "#f9eed9", position: "absolute", top: 320, right: 20 }}
+                        containerStyle={{ width: 320, height: 200,  position: "absolute", top: 320, right: 20 }}
                     />
 
                     <View style={styles.screenContainer}>
