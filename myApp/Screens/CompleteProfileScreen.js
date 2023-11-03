@@ -4,6 +4,7 @@ import React from "react";
 import {
     StyleSheet,
     Text,
+    ScrollView,
     TextInput,
     View,
     Image,
@@ -84,12 +85,21 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
     const [weight, setWeight] = useState('');
     const [gender, setGender] = useState('Male');
     const [age, setAge] = useState('');
+    const [name, setName] = useState('');
     const [goalWeight, setGoalWeight] = useState('');
+    const [suggestedWeight, setSuggestedWeight] = useState(0);
+
+    useEffect(() => {
+        if(!age || !height) return;
+        const suggestedWeight = calculateSuggestedWeight(age, height);
+        setSuggestedWeight(suggestedWeight);
+    }, [age, height]);
 
     const saveData = async () => {
         console.log('Saving data');
         try {
             const userData = {
+                name,
                 height,
                 weight,
                 age,
@@ -109,9 +119,13 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
     };
 
     return (
-        <SafeAreaView
-            style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}
+        <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
         >
+        <SafeAreaView
+            style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#f6f6f6"}}
+        >
+           
 
             {/*Logo*/}
             <View>
@@ -126,9 +140,23 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
             <Text style={styles.subTitleText}>
                 It will help us to know about you!
             </Text>
-            <Text style={{ alignSelf: "baseline", fontSize: 17, fontWeight: "bold", marginBottom: 20 }}>
-                Personal Information
+            
+            <Text style={{ width: 320, marginBottom: 5 }}>
+                What is your Name?
             </Text>
+
+            <View style={styles.birthDateContainer}>
+                <Image
+                    style={styles.birthDateImageContainer}
+                    source={require("../image/user.png")}
+                />
+                <TextInput
+                    placeholder="Enter your name"
+                    value={name}
+                    onChangeText={(text) => setName(text)}
+                    style={styles.birthDateTextContainer}
+                ></TextInput>
+            </View>
             <Text style={{ width: 320 }}>
                 Please select which sex we should use to calculate your calorie needs:
             </Text>
@@ -164,25 +192,6 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                     style={styles.birthDateTextContainer}
                 ></TextInput>
             </View>
-
-            <Text style={{ width: 320, marginBottom: 5 }}>
-                How much do you weigh?
-            </Text>
-
-            <View style={styles.weightContainer}>
-                <Image
-                    style={styles.weightImageContainer}
-                    source={require("../image/PngItem_4039383.png")}
-                />
-
-                <TextInput
-                    placeholder="Weight(Kilograms/kg)"
-                    inputMode="numeric"
-                    style={styles.WeightTextContainer}
-                    value={weight}
-                    onChangeText={(text) => setWeight(text)}
-                ></TextInput>
-            </View>
             <Text style={{ width: 320, marginBottom: 5 }}>
                 How tall are you?
             </Text>
@@ -199,6 +208,33 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                     onChangeText={(text) => setHeight(text)}
                     value={height}
                     style={styles.heightTextContainer}
+                ></TextInput>
+            </View>
+            <View style={{display: !age || !height ? "none" : "flex", flexDirection : "row",width: 320, justifyContent: "flex-start", marginBottom: 10}}>
+                <Text style={{marginRight: 10}}>
+                        Suggested weight: {suggestedWeight}kg
+                </Text>
+                <Pressable
+                onPress={() => {setWeight(suggestedWeight.toString())}}>
+                <Text style={{ fontWeight: "800", color: "#156d94"}}>ACCEPT</Text>
+            </Pressable>
+            </View>
+
+            <Text style={{ width: 320, marginBottom: 5 }}>
+                How much do you weigh?
+            </Text>
+
+            <View style={styles.weightContainer}>
+                <Image
+                    style={styles.weightImageContainer}
+                    source={require("../image/PngItem_4039383.png")}
+                />
+                <TextInput
+                    placeholder="Weight(Kilograms/kg)"
+                    inputMode="numeric"
+                    style={styles.WeightTextContainer}
+                    value={weight}
+                    onChangeText={(text) => setWeight(text)}
                 ></TextInput>
             </View>
 
@@ -367,11 +403,26 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                 </View>
             </Modal>
 
-
+            
         </SafeAreaView>
+        </ScrollView>
     );
 };
-
+function calculateSuggestedWeight(age, height) {
+    // Convert height from cm to meters
+    const heightInMeters = height / 100;
+    // Calculate BMI based on a standard BMI formula
+    const bmi = 22; // You can adjust this to your preferred BMI value
+    // Calculate suggested weight using BMI formula: weight = BMI * (height in meters)^2
+    let suggestedWeight = bmi * Math.pow(heightInMeters, 2);
+    // Adjust suggested weight based on age (optional)
+    if (age < 18) {
+      // Adjust for children/adolescents if needed
+      suggestedWeight = suggestedWeight * 0.85;
+    }
+    // Round the suggested weight to the nearest integer
+    return Math.round(suggestedWeight);
+}
 const styles = StyleSheet.create({
     imageTitleHeader: {
         marginTop: 50,
