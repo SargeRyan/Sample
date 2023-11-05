@@ -1,81 +1,140 @@
-import {
-    Text,
-    View,
-} from "react-native";
+import { Text, View } from "react-native";
 import { useState, useEffect } from "react";
-import NetInfo from '@react-native-community/netinfo';
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { db } from "./firebaseConfig";
-import { get, set, ref,push, child } from "firebase/database";
+import { saveDataToCloud } from "./global";
 
-export default SyncDataToCloud = ({isFocused}) => {
-    const [userData, setUserData] = useState({isSaved: false});
+export default SyncDataToCloud = ({ isFocused }) => {
+    const toSaveDataKey = [
+        "userData",
+    ];
+
+    const [userId, setUserId] = useState("");
+    const [storedData, setStoredData] = useState({});
+    const [savedElement, setSavedElement] = useState(() => (
+        <View></View>
+    ));
+
     useEffect(() => {
-        NetInfo.fetch().then(state => {
-            if(!state.isConnected)return;
-            console.log("Connected to the Internet! Syncing Data to Cloud");
-            fetchUserData();
-        });
-    },[isFocused]);
-
-    const fetchUserData = async () => {
-        try {
-            // Retrieve the stored data from AsyncStorage
-            const storedData = await AsyncStorage.getItem('userData');
-            if (storedData) {
-                const parsedData = JSON.parse(storedData);
-                console.log("User Data:", parsedData);
-                
-                const userRef = ref(db, 'users');
-
-                // Check if the user data already exists in Cloud
-                if(parsedData.id){
-                    get(ref(db, `users/${parsedData.id}`))
-                    .then((snapshot) => {
-                        if (snapshot.exists()) {
-                            setUserData(parsedData);
-                            console.log("User Data already exists in Cloud");
-                            return;
-                        } else {
-                            saveData();
+        const fetchData = async () => {
+            try {
+                toSaveDataKey.forEach(async (dataKey) => {
+                    try {
+                        const newData = await saveDataToCloud(dataKey);
+                        if(dataKey == "userData"){
+                            setUserId(newData.id);
                         }
-                    }).catch((error) => {
-                        console.error(error);
-                    });
-                }else{
-                    saveData();
-                }
-
-                const saveData = () => {
-                    console.log("Saving Data to Cloud");
-                    const newUserRef = push(userRef);
-                    parsedData.isSaved = true;
-                    set(newUserRef, parsedData)
-                    .then(async () => {
-                        const newUserID = newUserRef.key;
-                        parsedData.id = newUserID;
-                        await AsyncStorage.setItem('userData', JSON.stringify(parsedData));
-                        setUserData(parsedData);
-                        console.log("User Data Saved to Cloud");
-                    })
-                    .catch((error) => {
-                        console.error("Error adding new post: " + error);
-                    });
-                };
+                        else{
+                            console.log(`Cannot save ${dataKey} to cloud - no user data`);
+                            return;
+                        }
+                        // Create a new copy of storedData and update it
+                        setStoredData((prevStoredData) => ({
+                            ...prevStoredData,
+                            [dataKey]: newData,
+                        }));
+                    } catch (error) {
+                        console.error(
+                            "Error fetching and setting data for",
+                            dataKey,
+                            error
+                        );
+                    }
+                });
+            } catch (error) {
+                console.error("Error fetching and setting data: " + error);
             }
-        } catch (error) {
-            console.log('Error retrieving data:', error);
-        }
-    };
+        };
+        fetchData();
+    }, [isFocused]);
+
+    // Use another useEffect to trigger component updates when storedData changes
+    useEffect(() => {
+        // This code will be executed whenever storedData changes
+        console.log("storedData has changed:", storedData);
+        // You can also perform any other updates to your component here
+
+        // For example, update the loop based on changes in storedData
+        // Here's an updated version of your loop:
+        const updatedLoop = toSaveDataKey.map((dataKey, index) => (
+            <View key={index} style={{ flexDirection: "row", marginHorizontal: 10 }}>
+                <Text
+                    style={{
+                        fontSize: 15,
+                        fontWeight: "bold",
+                        color: "#fff",
+                        textAlign: "center",
+                        marginRight: 5,
+                    }}
+                >
+                    {storedData[dataKey] && storedData[dataKey].isSaved
+                        ? "✓"
+                        : "Saving...  "}
+                </Text>
+                <Text
+                    style={{
+                        fontSize: 15,
+                        fontWeight: "bold",
+                        color: "#fff",
+                        textAlign: "center",
+                    }}
+                >
+                    {dataKey}
+                </Text>
+            </View>
+        ));
+
+        // Set the updated loop in your component state, which will trigger a re-render
+        setSavedElement(updatedLoop);
+    }, [storedData]);
 
     return (
-        <View style={{ display: "flex", justifyContent: "center", backgroundColor: "#156d94", padding: 10, marginHorizontal: 10, marginTop: -20, marginBottom: 40, borderRadius: 10 }}>
-            <Text style={{ fontSize: 20, color: "#fff", textAlign: "center", marginBottom: 10 }}>Cloud Data Save</Text>
-            <View style={{ flexDirection: "row", alignSelf: "center" }}>
-                <Text style={{ fontSize: 15,fontWeight: "bold",marginRight: 5, color: "#afd3e2", textAlign: "center", alignSelf: "center" }}>
-                    {userData.isSaved ? "✓" : "Saving..."}
+        <View
+            style={{
+                // display: "flex",
+                display: "none",
+                justifyContent: "center",
+                backgroundColor: "#156d94",
+                padding: 10,
+                marginHorizontal: 10,
+                marginTop: -20,
+                marginBottom: 40,
+                borderRadius: 10,
+            }}
+        >
+            <Text
+                style={{
+                    fontSize: 20,
+                    color: "#fff",
+                    textAlign: "center",
+                    marginBottom: 10,
+                }}
+            >
+                Cloud Data Save
+            </Text>
+            <View style={{ flexDirection: "column", alignSelf: "center" }}>
+                {savedElement}
+                <View style={{ flexDirection: "row", marginHorizontal: 10 }}>
+                <Text
+                    style={{
+                        fontSize: 15,
+                        fontWeight: "bold",
+                        color: "#fff",
+                        textAlign: "center",
+                        marginRight: 5,
+                    }}
+                >
+                ✓ 
                 </Text>
-                <Text style={{ fontSize: 15, fontWeight: "bold", color: "#fff", textAlign: "center", alignSelf: "center" }}>User Data</Text>
+                <Text
+                    style={{
+                        fontSize: 15,
+                        fontWeight: "bold",
+                        color: "#fff",
+                        textAlign: "center",
+                    }}
+                >
+                    Meals Data
+                </Text>
+            </View>
             </View>
         </View>
     );

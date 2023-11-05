@@ -35,7 +35,7 @@ export default BmiCalculator = ({ navigation, route }) => {
     const [bmi, setBmi] = useState('')
     const [bmiSpeedometer, setBmiSpeedometer] = useState(0)
     const [description, setDescription] = useState('')
-    const [userData, setUserData] = useState(null);
+    const [userData, setUserData] = useState({});
     const [calories, setCalories] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
     const [calorieIntake, setCalorieIntake] = useState([0, 0, 0, 0, 0, 0,0]);
@@ -214,7 +214,7 @@ export default BmiCalculator = ({ navigation, route }) => {
                             title={"Reset BMI Details"}
                             onPress={async () => {
                                 await AsyncStorage.removeItem('userData');
-                                setUserData(null);
+                                setUserData({});
                                 setBmi('');
                                 setBmiSpeedometer(0);
                                 setDescription('');
