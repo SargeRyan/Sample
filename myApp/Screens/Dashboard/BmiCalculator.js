@@ -1,4 +1,5 @@
 import { Touchable, TouchableOpacity } from "react-native";
+import SyncDataToCloud from "./SyncDataToCloud";
 import {
     Text,
     View,
@@ -34,7 +35,7 @@ export default BmiCalculator = ({ navigation, route }) => {
     const [bmi, setBmi] = useState('')
     const [bmiSpeedometer, setBmiSpeedometer] = useState(0)
     const [description, setDescription] = useState('')
-    const [userData, setUserData] = useState(null);
+    const [userData, setUserData] = useState({});
     const [calories, setCalories] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
     const [calorieIntake, setCalorieIntake] = useState([0, 0, 0, 0, 0, 0,0]);
@@ -213,7 +214,7 @@ export default BmiCalculator = ({ navigation, route }) => {
                             title={"Reset BMI Details"}
                             onPress={async () => {
                                 await AsyncStorage.removeItem('userData');
-                                setUserData(null);
+                                setUserData({});
                                 setBmi('');
                                 setBmiSpeedometer(0);
                                 setDescription('');
@@ -221,22 +222,26 @@ export default BmiCalculator = ({ navigation, route }) => {
                             }} />
 
                         <View>
-                            <View style={{ width: 150, left: 200, marginTop: 40 }}>
+                            <View style={{ width: 150, left: 200, marginTop: 20 }}>
+                                <Text style={{ fontSize: 20, fontWeight: "bold", }}>Name</Text>
+                                <TextInput editable={false} selectTextOnFocus={false} style={{ width: 150, alignSelf: "center" }} value={userData.name}></TextInput>
+                            </View>
+                            <View style={{ width: 150, left: 200, marginTop: 20 }}>
                                 <Text style={{ fontSize: 20, fontWeight: "bold", }}>Gender</Text>
                                 <TextInput editable={false} selectTextOnFocus={false} style={{ width: 150, alignSelf: "center" }} value={userData.gender}></TextInput>
                             </View>
 
-                            <View style={{ width: 150, left: 200, marginTop: 40 }}>
+                            <View style={{ width: 150, left: 200, marginTop: 20 }}>
                                 <Text style={{ fontSize: 20, fontWeight: "bold", }}>Age</Text>
                                 <TextInput editable={false} selectTextOnFocus={false} style={{ width: 150, alignSelf: "center" }} value={userData.age}></TextInput>
                             </View>
 
-                            <View style={{ width: 150, left: 200, marginTop: 40 }}>
+                            <View style={{ width: 150, left: 200, marginTop: 20 }}>
                                 <Text style={{ fontSize: 20, fontWeight: "bold", }}>Height</Text>
                                 <TextInput editable={false} selectTextOnFocus={false} style={{ width: 150, alignSelf: "center" }} value={userData.height}></TextInput>
                             </View>
 
-                            <View style={{ width: 150, left: 200, marginTop: 40 }}>
+                            <View style={{ width: 150, left: 200, marginTop: 20 }}>
                                 <Text style={{ fontSize: 20, fontWeight: "bold", }}>Weight</Text>
                                 <TextInput editable={false} selectTextOnFocus={false} style={{ width: 150, alignSelf: "center" }} value={userData.weight}></TextInput>
                             </View>
@@ -354,6 +359,7 @@ export default BmiCalculator = ({ navigation, route }) => {
                     </View>
                 )}
             </View>
+            <SyncDataToCloud isFocused={isFocused}></SyncDataToCloud>
         </ScrollView>
     );
 };

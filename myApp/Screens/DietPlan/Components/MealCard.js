@@ -18,6 +18,9 @@ export default MealCard = ({ mealData, setIndexRefresh }) => {
     const d = new Date();
     let day = d.getDay()
     mealData.eatenDate = day;
+    mealData.eatenTime = d.getTime();
+    mealData.eatenDateTime = d.toString();
+    
     
     if(currentCheckStatus){
         await storeDataObject(`eaten_${day}_${mealData.id}`, mealData);

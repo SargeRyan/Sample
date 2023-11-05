@@ -1,5 +1,6 @@
 // https://react-native-async-storage.github.io/async-storage/docs/usage
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { saveDataToCloud } from "./Screens/Dashboard/global";
 
 export const isUniqueKey = async (storage_Key) => {
   try {
@@ -62,6 +63,8 @@ export const getMealsToday = async (dayToEat, timeToEat) => {
     // get meal keys
     let mealKeys = [];
     let allKeys = await AsyncStorage.getAllKeys();
+    let userData = await AsyncStorage.getItem('userData');
+    if(userData)userData = JSON.parse(userData);
     for (let i = 0; i < allKeys.length; i++) {
       if (allKeys[i].startsWith("@meal_")) {
         mealKeys.push(allKeys[i]);
@@ -85,7 +88,11 @@ export const getMealsToday = async (dayToEat, timeToEat) => {
         }
       }
     }
-
+    const toStoreData = {
+      id: userData.id,
+      mealValues: mealValues,
+    }
+    if(userData)await saveDataToCloud(userData.id, "mealValues",JSON.stringify(toStoreData));
     return toGetMeals;
   } catch (e) {
     console.error(e);
@@ -105,7 +112,7 @@ export const getMealsSelection = async () => {
       }
     }
 
-    console.log(mealKeys);
+    console.log("getMealsSelection =====",mealKeys);
 
     // get meal values
     let mealValues = await AsyncStorage.multiGet(mealKeys);
@@ -158,10 +165,18 @@ export const getEatenMealAsync = async () => {
             mealKeys.push(allKeys[i]);
           }
         }
-        // get meal values
-        let mealValues = await AsyncStorage.multiGet(mealKeys);
+        
+        let userData = await AsyncStorage.getItem('userData');
+        if(userData)userData = JSON.parse(userData);
 
-        return JSON.stringify(mealValues);
+        // get meal values
+        let mealEatean = await AsyncStorage.multiGet(mealKeys);
+        const toStoreData = {
+          id: userData.id,
+          mealEatean: mealEatean,
+        }
+        if(userData)await saveDataToCloud(userData.id, "mealEatean",JSON.stringify(toStoreData));
+        return JSON.stringify(mealEatean);
       } catch (e) {
         console.error(e);
       }
