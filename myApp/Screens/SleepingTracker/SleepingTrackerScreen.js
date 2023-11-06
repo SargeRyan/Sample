@@ -11,10 +11,12 @@ import { useIsFocused } from "@react-navigation/native";
 import { LineChart } from "react-native-chart-kit";
 import { schedulePushNotification } from "../SleepingTracker/AlarmNotification";
 
+
 import {
   View,
   ScrollView,
   Switch,
+  SafeAreaView,
   Text,
   StyleSheet,
   Modal,
@@ -360,241 +362,288 @@ const SleepingTrackerTab = () => {
     }
   };
 
-  //DASH BOAD TIMERS display VALUE
 
+  const [isPickerVisible, setPickerVisible] = useState(false);
+  const [selectedTime, setSelectedTime] = useState('Set Ideal \n Sleeping Hours');
+
+  const showPicker = () => {
+    setPickerVisible(true);
+  };
+
+  const hidePicker = () => {
+    setPickerVisible(false);
+  };
+
+  const handleConfirm = (date) => {
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    setSelectedTime(`${hours}:${minutes}`);
+    hidePicker();
+  };
   // this will set ALARM FUNCTION
 
   const ButtonSave = () => {
     saveSleepingData();
     fetchAllData();
-    // clearAllData();
     toggleParentModal();
+    // clearAllData();
   };
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading2}>Your Sleeping Data</Text>
-      <LineChart
-        data={Graphdata}
-        style={{ borderRadius: 20, color: "white" }}
-        width={chartWidth}
-        height={chartHeight}
-        chartConfig={chartConfig}
-      />
+    <SafeAreaView style={styles.container}>
+      <ScrollView style={styles.scrollView}>
+        <View style={{ backgroundColor: '#009688', borderRadius:14, flexDirection: 'row', justifyContent: 'space-between', padding:4, justifyContent:"center"}}>
+          <Text style={styles.heading1}>
+            IDEAL SLEEPING HOURS
+          </Text>
+          <TouchableOpacity
+            style={{
+              backgroundColor: '#009688',
+              padding: 14,
+              borderRadius: 5,
+              alignSelf: 'flex-end',
+              fontSize: 18,
+            }}
+            onPress={showPicker}
+          >
+            <Text style={{ color: '#fff', textAlign: 'center' }}>{selectedTime}</Text>
+          </TouchableOpacity>
+          <DateTimePickerModal
+            isVisible={isPickerVisible}
+            mode="time"
+            onConfirm={handleConfirm}
+            onCancel={hidePicker}
+            is24Hour={true}
+          />
+        </View>
+        <Text style={styles.heading2}>SLEEPING DATA</Text>
+        <LineChart
+          data={Graphdata}
+          style={{ borderRadius: 20, color: "white" }}
+          width={chartWidth}
+          height={chartHeight}
+          chartConfig={chartConfig}
+        />
 
-      <View style={styles.ScrollsDiv}>
-        <Text style={styles.heading2}>Your Schedule</Text>
-        <ScrollView
-          horizontal
-          ref={scrollViewRef}
-          contentContainerStyle={styles.scrollViewContent}
-        >
-          {daysOfWeek.map((day, index) => (
-            <View
-              key={index}
-              style={[
-                styles.dayContainer,
-                index === currentDayIndex && styles.highlightedDayContainer,
-              ]}
-            >
-              <Text
+        <View style={styles.ScrollsDiv}>
+          <Text style={styles.heading2}>YOUR SCHEDULE</Text>
+          <ScrollView
+            horizontal
+            ref={scrollViewRef}
+            contentContainerStyle={styles.scrollViewContent}
+          >
+            {daysOfWeek.map((day, index) => (
+              <View
+                key={index}
                 style={[
-                  styles.dayText,
-                  index === currentDayIndex && styles.highlightedDayText,
+                  styles.dayContainer,
+                  index === currentDayIndex && styles.highlightedDayContainer,
                 ]}
               >
-                {day}
-              </Text>
-              {index === currentDayIndex && (
-                <Text style={styles.dayNumber}>{currentDay}</Text>
-              )}
-            </View>
-          ))}
-        </ScrollView>
-      </View>
-
-      <View style={styles.ToggleContainer}>
-        <Image
-          style={{
-            display: "flex",
-            resizeMode: "stretch",
-            height: 60,
-            width: 60,
-            margin: 5,
-          }}
-          source={require("../SleepingTracker/Elements/BedLogo.png")}
-        />
-        <View style={{ flexDirection: "column" }}>
-          <Text style={styles.Toggleheading}>BedTime :</Text>
-          <Text style={{ flexDirection: "column", paddingHorizontal: 8 }}>
-            in 14hours 30min
-          </Text>
-        </View>
-        <Text style={{ fontSize: 15, marginTop: 17 }}>
-          {selectedDashBoardBedTime1}
-        </Text>
-        <View style={styles.slideContainer}>
-          <TouchableOpacity style={styles.button} onPress={toggleParentModal}>
-            <Text style={styles.buttonText}>+</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <View style={styles.ToggleContainer}>
-        <Image
-          style={{
-            display: "flex",
-            resizeMode: "stretch",
-            height: 60,
-            width: 60,
-            margin: 5,
-          }}
-          source={require("../SleepingTracker/Elements/AlarmLogo.png")}
-        />
-        <View style={{ flexDirection: "column" }}>
-          <Text style={styles.Toggleheading}>AlarmTime :</Text>
-          <Text style={{ flexDirection: "column", paddingHorizontal: 5 }}>
-            in 14hours 30min
-          </Text>
-        </View>
-        <Text style={{ fontSize: 15, marginTop: 17, paddingRight: 5 }}>
-          {selectedDashBoardAlarmTime1}
-        </Text>
-        <View style={styles.slideContainer}>
-          <TouchableOpacity style={styles.button} onPress={toggleParentModal}>
-            <Text style={styles.buttonText}>+</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      {/*PARENT MODAL */}
-
-      <Modal visible={isParentModalVisible} animationType="slide" transparent>
-        <View style={styles.modalContainer}>
-          <TouchableOpacity
-            style={styles.closeButton}
-            onPress={toggleParentModal}
-          >
-            <Icon name="chevron-left" size={20} color="black" />
-          </TouchableOpacity>
-          <Text style={{ fontSize: 20, fontWeight: "bold" }}>SET ALARM</Text>
-
-          {/*BED TIME ALARM */}
-
-          <View style={styles.BedTimeContainer}>
-            <View style={styles.ModalLeftColumn}>
-              <Ionicons name="bed-outline" size={44} color="black" />
-              <Text style={styles.modalText}>Set Bed Time :</Text>
-            </View>
-            <View style={styles.ModalRightColumn}>
-              <Text>{selectedBedTime1}</Text>
-              <TouchableOpacity onPress={showTimePicker1} style={styles.picker}>
-                <Icon name="chevron-right" size={20} color="black" />
-              </TouchableOpacity>
-
-              <DateTimePickerModal
-                isVisible={isTimePickerVisible1}
-                mode="time"
-                onConfirm={handleTimeConfirm1}
-                onCancel={hideTimePicker1}
-              />
-            </View>
-          </View>
-
-          {/*ALARM TIME */}
-
-          <View style={styles.BedTimeContainer}>
-            <View style={styles.ModalLeftColumn}>
-              <Ionicons name="alarm-outline" size={44} color="black" styles />
-              <Text style={styles.modalText}>Set Alarm Time :</Text>
-            </View>
-            <View style={styles.ModalRightColumn}>
-              <Text>{selectedAlarmTime2}</Text>
-              <TouchableOpacity onPress={showTimePicker2} style={styles.picker}>
-                <Icon name="chevron-right" size={20} color="black" />
-              </TouchableOpacity>
-              <DateTimePickerModal
-                isVisible={isTimePickerVisible2}
-                mode="time"
-                onConfirm={handleTimeConfirm2}
-                onCancel={hideTimePicker2}
-              />
-            </View>
-          </View>
-
-          {/*HOURS OF SLEEP */}
-
-          <View style={styles.BedTimeContainer}>
-            <View style={styles.ModalLeftColumn}>
-              <Ionicons name="time-outline" size={44} color="black" styles />
-              <Text style={styles.modalText}>Total Hours of Sleep :</Text>
-            </View>
-            <View style={styles.ModalRightColumn}>
-              <Text> {timeDifference} Hours:Mins</Text>
-            </View>
-          </View>
-
-          {/*REAPEATING DAY DROP DOWN */}
-          <View style={styles.BedTimeContainer}>
-            <View style={styles.ModalLeftColumn}>
-              <Ionicons name="ios-repeat" size={44} color="black" />
-              <Text style={styles.modalText}>Repeat On :</Text>
-            </View>
-            <View style={styles.ModalRightColumn}>
-              <TouchableOpacity
-                style={styles.dropdownHeader}
-                onPress={toggleDropdown}
-              >
-                <Text style={styles.dropdownHeaderText}>
-                  {selectedDay || "Select a day"}
+                <Text
+                  style={[
+                    styles.dayText,
+                    index === currentDayIndex && styles.highlightedDayText,
+                  ]}
+                >
+                  {day}
                 </Text>
-                <Ionicons
-                  name={isOpen ? "chevron-up" : "chevron-down"}
-                  size={24}
-                  color="#000"
-                />
-              </TouchableOpacity>
-              {isOpen && (
-                <View style={styles.dropdownContent}>
-                  {daysOfWeek.map((day, index) => (
-                    <TouchableOpacity
-                      key={day}
-                      style={styles.dropdownItem}
-                      onPress={() => {
-                        handleDaySelect(day);
-                        handleDropBarDaySelect(day);
-                      }}
-                    >
-                      <Text
-                        style={[
-                          styles.dropdownItemText,
-                          selectedDayIndex === index && styles.selectedItemText,
-                        ]}
-                      >
-                        {day}
-                      </Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              )}
-            </View>
-          </View>
-          <TouchableOpacity style={styles.DoneButton} onPress={ButtonSave}>
-            <Text style={styles.DoneText}>DONE</Text>
-          </TouchableOpacity>
+                {index === currentDayIndex && (
+                  <Text style={styles.dayNumber}>{currentDay}</Text>
+                )}
+              </View>
+            ))}
+          </ScrollView>
         </View>
-      </Modal>
-    </View>
+
+        <View style={styles.ToggleContainer}>
+          <Image
+            style={{
+              display: "flex",
+              resizeMode: "stretch",
+              height: 60,
+              width: 60,
+              margin: 5,
+            }}
+            source={require("../SleepingTracker/Elements/BedLogo.png")}
+          />
+          <View style={{ flexDirection: "column" }}>
+            <Text style={styles.Toggleheading}>BedTime :</Text>
+            <Text style={{ flexDirection: "column", paddingHorizontal: 8 }}>
+              in 14hours 30min
+            </Text>
+          </View>
+          <Text style={{ fontSize: 15, marginTop: 17 }}>
+            {selectedDashBoardBedTime1}
+          </Text>
+          <View style={styles.slideContainer}>
+            <TouchableOpacity style={styles.button} onPress={toggleParentModal}>
+              <Text style={styles.buttonText}>+</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <View style={styles.ToggleContainer}>
+          <Image
+            style={{
+              display: "flex",
+              resizeMode: "stretch",
+              height: 60,
+              width: 60,
+              margin: 5,
+            }}
+            source={require("../SleepingTracker/Elements/AlarmLogo.png")}
+          />
+          <View style={{ flexDirection: "column" }}>
+            <Text style={styles.Toggleheading}>AlarmTime :</Text>
+            <Text style={{ flexDirection: "column", paddingHorizontal: 5 }}>
+              in 14hours 30min
+            </Text>
+          </View>
+          <Text style={{ fontSize: 15, marginTop: 17, paddingRight: 5 }}>
+            {selectedDashBoardAlarmTime1}
+          </Text>
+          <View style={styles.slideContainer}>
+            <TouchableOpacity style={styles.button} onPress={toggleParentModal}>
+              <Text style={styles.buttonText}>+</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/*PARENT MODAL */}
+
+        <Modal visible={isParentModalVisible} animationType="slide" transparent>
+          <View style={styles.modalContainer}>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={toggleParentModal}
+            >
+              <Icon name="chevron-left" size={20} color="black" />
+            </TouchableOpacity>
+            <Text style={{ fontSize: 20, fontWeight: "bold" }}>SET ALARM</Text>
+
+            {/*BED TIME ALARM */}
+
+            <View style={styles.BedTimeContainer}>
+              <View style={styles.ModalLeftColumn}>
+                <Ionicons name="bed-outline" size={44} color="black" />
+                <Text style={styles.modalText}>Set Bed Time :</Text>
+              </View>
+              <View style={styles.ModalRightColumn}>
+                <Text>{selectedBedTime1}</Text>
+                <TouchableOpacity onPress={showTimePicker1} style={styles.picker}>
+                  <Icon name="chevron-right" size={20} color="black" />
+                </TouchableOpacity>
+
+                <DateTimePickerModal
+                  isVisible={isTimePickerVisible1}
+                  mode="time"
+                  onConfirm={handleTimeConfirm1}
+                  onCancel={hideTimePicker1}
+                />
+              </View>
+            </View>
+
+            {/*ALARM TIME */}
+
+            <View style={styles.BedTimeContainer}>
+              <View style={styles.ModalLeftColumn}>
+                <Ionicons name="alarm-outline" size={44} color="black" styles />
+                <Text style={styles.modalText}>Set Alarm Time :</Text>
+              </View>
+              <View style={styles.ModalRightColumn}>
+                <Text>{selectedAlarmTime2}</Text>
+                <TouchableOpacity onPress={showTimePicker2} style={styles.picker}>
+                  <Icon name="chevron-right" size={20} color="black" />
+                </TouchableOpacity>
+                <DateTimePickerModal
+                  isVisible={isTimePickerVisible2}
+                  mode="time"
+                  onConfirm={handleTimeConfirm2}
+                  onCancel={hideTimePicker2}
+                />
+              </View>
+            </View>
+
+            {/*HOURS OF SLEEP */}
+
+            <View style={styles.BedTimeContainer}>
+              <View style={styles.ModalLeftColumn}>
+                <Ionicons name="time-outline" size={44} color="black" styles />
+                <Text style={styles.modalText}>Total Hours of Sleep :</Text>
+              </View>
+              <View style={styles.ModalRightColumn}>
+                <Text> {timeDifference} Hours:Mins</Text>
+              </View>
+            </View>
+
+            {/*REAPEATING DAY DROP DOWN */}
+            <View style={styles.BedTimeContainer}>
+              <View style={styles.ModalLeftColumn}>
+                <Ionicons name="ios-repeat" size={44} color="black" />
+                <Text style={styles.modalText}>Repeat On :</Text>
+              </View>
+              <View style={styles.ModalRightColumn}>
+                <TouchableOpacity
+                  style={styles.dropdownHeader}
+                  onPress={toggleDropdown}
+                >
+                  <Text style={styles.dropdownHeaderText}>
+                    {selectedDay || "Select a day"}
+                  </Text>
+                  <Ionicons
+                    name={isOpen ? "chevron-up" : "chevron-down"}
+                    size={24}
+                    color="#000"
+                  />
+                </TouchableOpacity>
+                {isOpen && (
+                  <View style={styles.dropdownContent}>
+                    {daysOfWeek.map((day, index) => (
+                      <TouchableOpacity
+                        key={day}
+                        style={styles.dropdownItem}
+                        onPress={() => {
+                          handleDaySelect(day);
+                          handleDropBarDaySelect(day);
+                        }}
+                      >
+                        <Text
+                          style={[
+                            styles.dropdownItemText,
+                            selectedDayIndex === index && styles.selectedItemText,
+                          ]}
+                        >
+                          {day}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
+              </View>
+            </View>
+            <TouchableOpacity style={styles.DoneButton} onPress={ButtonSave}>
+              <Text style={styles.DoneText}>DONE</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#afd3e2",
-    paddingTop: 10,
+    padding: 10,
     alignItems: "center",
     flexDirection: "column",
     alignContent: "center",
+    height: "100%",
+  },
+  scrollView: {
+    backgroundColor: "#afd3e2",
+    paddingBottom: 30,
+    width: "99%",
     height: "100%",
   },
   //HEADING
@@ -622,9 +671,15 @@ const styles = StyleSheet.create({
   },
 
   heading1: {
-    fontSize: 20,
+    fontSize: 21, // Increase the font size for better visibility
+    paddingVertical: 10,
+    paddingHorizontal: 16, // Increase the padding for better spacing
     fontWeight: "bold",
-    textAlign: "center",
+    color: "white",
+    alignSelf: "flex-start",
+    textShadowColor: 'rgba(0, 0, 0, 0.5)', // Add text shadow color
+    textShadowOffset: { width: 2, height: 2 }, // Adjust the shadow offset
+    textShadowRadius: 4,
   },
   SubHeading: {
     fontSize: 14,
@@ -639,11 +694,17 @@ const styles = StyleSheet.create({
   },
   ///scrollDiv
   heading2: {
-    fontSize: 20,
-    padding: 10,
+    fontSize: 18, // Increase the font size for better visibility
+    paddingVertical: 10,
+    paddingHorizontal: 16, // Increase the padding for better spacing
     fontWeight: "bold",
-    color: "#333333",
+    color: "white",
     alignSelf: "flex-start",
+    textShadowColor: 'rgba(0, 0, 0, 0.5)', // Add text shadow color
+    textShadowOffset: { width: 2, height: 2 }, // Adjust the shadow offset
+    textShadowRadius: 4, // Adjust the shadow radius
+
+
   },
   ScrollsDiv: {
     height: "24%",
@@ -677,9 +738,10 @@ const styles = StyleSheet.create({
   /// Slide
 
   ToggleContainer: {
-    marginTop: 20,
+    marginTop: 10,
+    margintBottom: 10,
     backgroundColor: "white",
-    width: "90%",
+    width: "100%",
     height: "13%",
     elevation: 8,
     padding: 10,
@@ -755,13 +817,17 @@ const styles = StyleSheet.create({
     margin: 10,
     backgroundColor: "#fef8ef",
     paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 10,
+    paddingBottom: 10,
     flexDirection: "row",
     elevation: 8,
     borderRadius: 15,
-    width: "95%",
-    height: "8%",
-    alignItems: "flex-end",
+    width: "90%",
+    height: 70,
+    alignItems: "center",
   },
+
   ModalRightColumn: {
     alignItems: "center",
     justifyContent: "center",

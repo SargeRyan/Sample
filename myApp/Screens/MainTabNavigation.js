@@ -6,6 +6,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import DietPlanScreen from "./DietPlan/DietPlanScreen";
 import ExercisePlanScreen from "./ExercisePlan/ExercisePlanScreen";
 import SleepingTrackerScreen from "./SleepingTracker/SleepingTrackerScreen.js";
+import MedicineTracker from "./MedicineTracker/MedicineTracker";
 import Dashboard from "./Dashboard/BmiCalculator";
 
 const Tab = createBottomTabNavigator();
@@ -17,6 +18,7 @@ export default MainTabNavigation = () => {
                 <Tab.Screen name="Exercise Plan" component={ExercisePlanScreen} />
                 <Tab.Screen name="Diet Plan" component={DietPlanScreen} />
                 <Tab.Screen name="Sleeping Tracker" component={SleepingTrackerScreen} />
+                <Tab.Screen name="Medicine Tracker" component={MedicineTracker} />
             </Tab.Navigator>
         </NavigationContainer>
     );
@@ -35,6 +37,9 @@ let navigatorScreenOptions = ({ route }) => ({
         }
         else if (route.name === "Sleeping Tracker") {
             iconName = focused ? "bed" : "bed-outline";
+        }
+        else if (route.name === "Medicine Tracker") {
+            iconName = focused ? "medkit" : "medkit-outline";
         }
 
         // You can return any component that you like here!
