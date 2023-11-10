@@ -397,13 +397,21 @@ const SleepingTrackerTab = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
-        <View style={{ backgroundColor: '#009688', borderRadius: 14, flexDirection: 'row', justifyContent: 'space-between', padding: 4, }}>
-          <Text style={styles.heading1}>
-            IDEAL SLEEPING HOURS
+        <View style={{ backgroundColor: '#009688', borderRadius: 14, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 4, }}>
+          <Text style={{
+            fontSize: 18, // Increase the font size for better visibility
+            // Increase the padding for better spacing
+            fontWeight: "bold",
+            color: "white",
+            textShadowColor: 'rgba(0, 0, 0, 0.5)', // Add text shadow color
+            textShadowOffset: { width: 2, height: 2 }, // Adjust the shadow offset
+            textShadowRadius: 4,
+            marginStart: 10,
+          }}>
+            IDEAL SLEEPING HOURS:
           </Text>
           <TouchableOpacity
             style={{
-              backgroundColor: '#009688',
               paddingVertical: 14,
               paddingHorizontal: 16,
               borderRadius: 5,
@@ -413,7 +421,7 @@ const SleepingTrackerTab = () => {
             }}
             onPress={showPicker}
           >
-            <Text style={{ color: '#fff', textAlign: 'center' }}>{selectedTime}</Text>
+            <Text style={{ color: '#fff', textAlign: 'center' }}>{selectedTime} Hours</Text>
           </TouchableOpacity>
           <DateTimePickerModal
             isVisible={isPickerVisible}
