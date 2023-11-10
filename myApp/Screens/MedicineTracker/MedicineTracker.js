@@ -1,5 +1,5 @@
-import React, { useRef, useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, TextInput, Modal, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import React, { useRef, useEffect, useState, } from "react";
+import { View, Text, TouchableOpacity, TextInput, Modal, SafeAreaView, ScrollView, StyleSheet, Alert } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import uuid from 'react-native-uuid';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -57,11 +57,41 @@ const MedicineTracker = () => {
             let ID = "@Med_Notification_" + newSchedule.id;
             await AsyncStorage.setItem(ID, JSON.stringify(newSchedule));
             alert('New schedule saved successfully!');
+            getScheduleForDate(selectedDate).then(setSchedulesForSelectedDate);
+            console.log('date : ' + selectedDate);
             console.log('Schedule saved to AsyncStorage with ID: ' + ID);
         } else {
             alert('Please fill out all fields and set a valid time.');
         }
     };
+    const handleDelete = async (id) => {
+        Alert.alert(
+            "Confirmation",
+            `Are you sure you want to delete this Schedule? This action cannot be undone.`,
+            [
+                {
+                    text: "Cancel",
+                    style: "cancel"
+                },
+                {
+                    text: "OK",
+                    onPress: async () => {
+                        const newMedicineSchedule = medicineSchedule.filter((schedule) => schedule.id !== id);
+                        setMedicineSchedule(newMedicineSchedule);
+                        try {
+                            await AsyncStorage.removeItem(`@Med_Notification_${id}`);
+                            alert(`Schedule has been removed successfully.`);
+                            getScheduleForDate(selectedDate).then(setSchedulesForSelectedDate);
+
+                        } catch (error) {
+                            console.error(`Error removing item with ID: ${id}. Error: ${error}`);
+                        }
+                    }
+                }
+            ]
+        );
+    };
+
 
     const getScheduleForDate = async (date) => {
         try {
@@ -84,7 +114,7 @@ const MedicineTracker = () => {
 
             // Log the results
             console.log('Filtered schedules:', filteredSchedules);
-
+            console.log('date : ' + selectedDate);
             return filteredSchedules;
         } catch (e) {
             console.error(e);
@@ -94,10 +124,19 @@ const MedicineTracker = () => {
 
 
     const [schedulesForSelectedDate, setSchedulesForSelectedDate] = useState([]);
-
+    const [formattedDate, setFormattedDate] = useState('');
     useEffect(() => {
         if (selectedDate) {
             getScheduleForDate(selectedDate).then(setSchedulesForSelectedDate);
+
+            const date = new Date(selectedDate);
+            const formatted = date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                weekday: 'short'
+            });
+            setFormattedDate(formatted);
         }
     }, [selectedDate]);
 
@@ -134,18 +173,21 @@ const MedicineTracker = () => {
                                 textShadowColor: 'rgba(0, 0, 0, 0.5)', // Add text shadow color
                                 textShadowOffset: { width: 2, height: 2 }, // Adjust the shadow offset
                                 textShadowRadius: 4,
-                            }}>SCHEDULE FOR :  {selectedDate}</Text>
+                            }}>SCHEDULE FOR :  {formattedDate}</Text>
                             {schedulesForSelectedDate.map((schedule) => (
-                                <Text key={schedule.id} style={styles.scheduleText}>
-                                    MEDICINE: {schedule.medicineName} {"\n"}
-                                    DOSAGE: {schedule.dosage} {"\n"}
-                                    TIME: {schedule.time} 
-                                </Text>
-
-
+                                <View key={schedule.id} style={styles.scheduleContainer}>
+                                    <Text style={styles.scheduleText}>
+                                        MEDICINE: {schedule.medicineName} {"\n"}
+                                        DOSAGE: {schedule.dosage} {"\n"}
+                                        TIME: {schedule.time}
+                                    </Text>
+                                    <TouchableOpacity style={styles.deleteButton} onPress={() => handleDelete(schedule.id)}>
+                                        <Text style={styles.deleteButtonText}>Delete</Text>
+                                    </TouchableOpacity>
+                                </View>
                             ))}
-                            <TouchableOpacity onPress={() => setShowForm(true)}>
-                                <Text style={{ color: 'blue', marginTop: 10 }}>Add Schedule</Text>
+                            <TouchableOpacity onPress={() => setShowForm(true)} style={styles.addBtn}>
+                                <Text style={{ color: 'white', }}>Add Schedule</Text>
                             </TouchableOpacity>
                         </View>
                     )}
@@ -229,7 +271,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent black background
     },
     modalContent: {
-        backgroundColor: 'rgba(255, 255, 255, 0.8)', // Semi-transparent white background for frosted glass effect
+        backgroundColor: '#fff', // Semi-transparent white background for frosted glass effect
         padding: 20,
         borderRadius: 10,
         width: '80%',
@@ -288,6 +330,17 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginTop: 10,
     },
+    addBtn: {
+        backgroundColor: 'rgba(0, 128, 0, 0.8)',
+        padding: 3,
+        color: '#fff',
+        borderRadius: 5,
+        alignItems: "center",
+        marginVertical: 10,
+        width: "50%",
+        backdropFilter: 'blur(10px)', // Apply background blur
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Apply shadow for better visibility
+    },
     buttonText: {
         color: '#fff',
         textAlign: 'center',
@@ -298,10 +351,27 @@ const styles = StyleSheet.create({
         fontSize: 18, // Increase font size for better readability
         color: '#009688', // Change text color
         fontWeight: 'bold', // Make text bold
-        backgroundColor: '#f0f0f0', // Add a light background color
         padding: 10, // Add some padding
-        borderRadius: 5, // Round the corners
-        marginVertical: 5, // Add some vertical margin
+        // Round the corners // Add some vertical margin
+    },
+    scheduleContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        marginVertical: 5,
+        padding: 5,
+        borderRadius: 5,
+    },
+    deleteButton: {
+        backgroundColor: '#ff0000',
+        padding: 10,
+        borderRadius: 5,
+        marginEnd: 10,
+    },
+    deleteButtonText: {
+        color: '#ffffff',
+        fontSize: 16,
     },
 });
 

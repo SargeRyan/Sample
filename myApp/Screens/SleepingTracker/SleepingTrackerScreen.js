@@ -57,7 +57,7 @@ const SleepingTrackerTab = () => {
       console.log("Error fetching data:", error);
     }
   };
-  
+
   fetchAllData();
   //ALARM AND BED FUNCTION
   const [selectedDashBoardBedTime1, setSelectedDashBoardBedTime1] =
@@ -399,10 +399,12 @@ const SleepingTrackerTab = () => {
           <TouchableOpacity
             style={{
               backgroundColor: '#009688',
-              padding: 14,
+              paddingVertical: 14,
+              paddingHorizontal: 16,
               borderRadius: 5,
               alignSelf: 'flex-end',
               fontSize: 18,
+              minWidth: 100,
             }}
             onPress={showPicker}
           >
