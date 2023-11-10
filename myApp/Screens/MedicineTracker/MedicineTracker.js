@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useRef, useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, TextInput, Modal, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import uuid from 'react-native-uuid';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { schedulePushNotification } from "../../Screens/SleepingTracker/AlarmNotification";
+import { schedulePushNotification } from "../MedicineTracker/MedNotification";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MedicineTracker = () => {
@@ -26,7 +26,7 @@ const MedicineTracker = () => {
         if (newSchedule.medicineName && newSchedule.dosage && newSchedule.time !== 'Set Time') {
             setMedicineSchedule([...medicineSchedule, newSchedule]);
             setSchedule({
-                id: uuid.v4(),
+                id: uuid.v4() + "MEDNOTIF",
                 medicineName: '',
                 dosage: '',
                 time: 'Set Time',
@@ -37,22 +37,69 @@ const MedicineTracker = () => {
             // Extract hour and minute from the time string
             const [hour, minute] = newSchedule.time.split(':');
 
+            // Extract year, month, and day from the date
+            const selectedDateObject = new Date(newSchedule.date);
+            const year = selectedDateObject.getFullYear();
+            const month = selectedDateObject.getMonth() + 1; // Months are zero-indexed
+            const day = selectedDateObject.getDate();
+
             // Schedule the notification
             await schedulePushNotification(
+                year,
+                month,
+                day,
                 parseInt(hour),
                 parseInt(minute),
-                newSchedule.date, // Assuming you want the date as a trigger
                 newSchedule.medicineName, // Title
-                `Dosage: ${newSchedule.dosage}, Time: ${newSchedule.time}` // Body
+                `Dosage: ${newSchedule.dosage},{"\n"} Time: ${newSchedule.time}` // Body
             );
+
+            let ID = "@Med_Notification_" + newSchedule.id;
+            await AsyncStorage.setItem(ID, JSON.stringify(newSchedule));
+            alert('New schedule saved successfully!');
+            console.log('Schedule saved to AsyncStorage with ID: ' + ID);
         } else {
             alert('Please fill out all fields and set a valid time.');
         }
     };
 
-    const getScheduleForDate = (date) => {
-        return medicineSchedule.filter((schedule) => schedule.date === date);
+    const getScheduleForDate = async (date) => {
+        try {
+            // get keys for medicine notifications
+            let medicineKeys = [];
+            let allKeys = await AsyncStorage.getAllKeys();
+            for (let i = 0; i < allKeys.length; i++) {
+                if (allKeys[i].startsWith("@Med_Notification_")) {
+                    medicineKeys.push(allKeys[i]);
+                }
+            }
+
+            // get medicine values
+            let medicineSchedules = await AsyncStorage.multiGet(medicineKeys);
+
+            // filter schedules for the given date
+            const filteredSchedules = medicineSchedules
+                .map(([key, value]) => JSON.parse(value))
+                .filter((schedule) => schedule.date === date);
+
+            // Log the results
+            console.log('Filtered schedules:', filteredSchedules);
+
+            return filteredSchedules;
+        } catch (e) {
+            console.error(e);
+            return [];
+        }
     };
+
+
+    const [schedulesForSelectedDate, setSchedulesForSelectedDate] = useState([]);
+
+    useEffect(() => {
+        if (selectedDate) {
+            getScheduleForDate(selectedDate).then(setSchedulesForSelectedDate);
+        }
+    }, [selectedDate]);
 
     const [isPickerVisible, setPickerVisible] = useState(false);
 
@@ -81,17 +128,21 @@ const MedicineTracker = () => {
                             <Text style={{
                                 fontSize: 21, // Increase the font size for better visibility
                                 paddingVertical: 10,
-                                 // Increase the padding for better spacing
+                                // Increase the padding for better spacing
                                 fontWeight: "bold",
                                 color: "white",
                                 textShadowColor: 'rgba(0, 0, 0, 0.5)', // Add text shadow color
                                 textShadowOffset: { width: 2, height: 2 }, // Adjust the shadow offset
                                 textShadowRadius: 4,
-                            }}>Schedule for {selectedDate}</Text>
-                            {getScheduleForDate(selectedDate).map((schedule) => (
-                                <Text key={schedule.id}>
-                                    {schedule.medicineName} - {schedule.dosage} - {schedule.time}
+                            }}>SCHEDULE FOR :  {selectedDate}</Text>
+                            {schedulesForSelectedDate.map((schedule) => (
+                                <Text key={schedule.id} style={styles.scheduleText}>
+                                    MEDICINE: {schedule.medicineName} {"\n"}
+                                    DOSAGE: {schedule.dosage} {"\n"}
+                                    TIME: {schedule.time} 
                                 </Text>
+
+
                             ))}
                             <TouchableOpacity onPress={() => setShowForm(true)}>
                                 <Text style={{ color: 'blue', marginTop: 10 }}>Add Schedule</Text>
@@ -242,6 +293,15 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontWeight: 'bold',
         fontSize: 16,
+    },
+    scheduleText: {
+        fontSize: 18, // Increase font size for better readability
+        color: '#009688', // Change text color
+        fontWeight: 'bold', // Make text bold
+        backgroundColor: '#f0f0f0', // Add a light background color
+        padding: 10, // Add some padding
+        borderRadius: 5, // Round the corners
+        marginVertical: 5, // Add some vertical margin
     },
 });
 

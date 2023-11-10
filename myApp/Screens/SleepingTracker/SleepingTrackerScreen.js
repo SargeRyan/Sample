@@ -57,6 +57,7 @@ const SleepingTrackerTab = () => {
       console.log("Error fetching data:", error);
     }
   };
+  
   fetchAllData();
   //ALARM AND BED FUNCTION
   const [selectedDashBoardBedTime1, setSelectedDashBoardBedTime1] =
