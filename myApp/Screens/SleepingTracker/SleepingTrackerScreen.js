@@ -109,7 +109,12 @@ const SleepingTrackerTab = () => {
   ////MODALS
   const [isParentModalVisible, setParentModalVisible] = useState(false);
   const toggleParentModal = () => {
-    setParentModalVisible(!isParentModalVisible);
+    if (selectedTime === "SET TIME") {
+      alert("Please Select Ideal Sleeping Time");
+    }
+    else {
+      setParentModalVisible(!isParentModalVisible);
+    }
   };
 
   ///datepicker
@@ -365,7 +370,7 @@ const SleepingTrackerTab = () => {
 
 
   const [isPickerVisible, setPickerVisible] = useState(false);
-  const [selectedTime, setSelectedTime] = useState('Set Ideal \n Sleeping Hours');
+  const [selectedTime, setSelectedTime] = useState('SET TIME');
 
   const showPicker = () => {
     setPickerVisible(true);
@@ -392,7 +397,7 @@ const SleepingTrackerTab = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
-        <View style={{ backgroundColor: '#009688', borderRadius: 14, flexDirection: 'row', justifyContent: 'space-between', padding: 4,}}>
+        <View style={{ backgroundColor: '#009688', borderRadius: 14, flexDirection: 'row', justifyContent: 'space-between', padding: 4, }}>
           <Text style={styles.heading1}>
             IDEAL SLEEPING HOURS
           </Text>

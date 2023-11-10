@@ -51,7 +51,7 @@ const MedicineTracker = () => {
                 parseInt(hour),
                 parseInt(minute),
                 newSchedule.medicineName, // Title
-                `Dosage: ${newSchedule.dosage},{"\n"} Time: ${newSchedule.time}` // Body
+                `Dosage: ${newSchedule.dosage}, \n Time: ${newSchedule.time}` // Body
             );
 
             let ID = "@Med_Notification_" + newSchedule.id;
@@ -241,8 +241,22 @@ const MedicineTracker = () => {
                             </View>
                         </View>
                     </Modal>
-
                 </View>
+                {!selectedDate ? (
+                    <Text style={{
+                        fontSize: 18,
+                        paddingVertical: 10,
+                        fontWeight: "bold",
+                        color: "white",
+                        textShadowColor: 'rgba(0, 0, 0, 0.5)',
+                        textShadowOffset: { width: 2, height: 2 },
+                        textShadowRadius: 4,
+                        alignSelf: 'center',
+                        marginVertical:50,
+                    }}>
+                        "Please select a date to view schedules."
+                    </Text>
+                ) : null}
             </ScrollView>
         </SafeAreaView>
     );
