@@ -391,7 +391,7 @@ const SleepingTrackerTab = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
-        <View style={{ backgroundColor: '#009688', borderRadius:14, flexDirection: 'row', justifyContent: 'space-between', padding:4, justifyContent:"center"}}>
+        <View style={{ backgroundColor: '#009688', borderRadius: 14, flexDirection: 'row', justifyContent: 'space-between', padding: 4,}}>
           <Text style={styles.heading1}>
             IDEAL SLEEPING HOURS
           </Text>
@@ -423,7 +423,6 @@ const SleepingTrackerTab = () => {
           height={chartHeight}
           chartConfig={chartConfig}
         />
-
         <View style={styles.ScrollsDiv}>
           <Text style={styles.heading2}>YOUR SCHEDULE</Text>
           <ScrollView
@@ -634,7 +633,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#afd3e2",
-    padding: 10,
     alignItems: "center",
     flexDirection: "column",
     alignContent: "center",
@@ -643,8 +641,10 @@ const styles = StyleSheet.create({
   scrollView: {
     backgroundColor: "#afd3e2",
     paddingBottom: 30,
-    width: "99%",
+    width: "100%",
     height: "100%",
+    padding: 10,
+
   },
   //HEADING
   headerContainer: {
