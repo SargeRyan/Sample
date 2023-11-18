@@ -10,7 +10,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { storeDataObject } from "../../../AsyncStorageFunctions";
 import { Button } from "@react-native-material/core";
 
-export default SelectionMealCard = ({ mealsToday, mealData,onToggleCheckFunction }) => {
+export default SelectionMealCard = ({ mealsToday, mealData, onToggleCheckFunction }) => {
   const [isChecked, setChecked] = useState(false);
   const [mealDayTimeId, setMealDayTimeId] = useState();
   const [addMealModalVisible, setAddMealModalVisible] = useState(false);
@@ -23,13 +23,15 @@ export default SelectionMealCard = ({ mealsToday, mealData,onToggleCheckFunction
 
   useEffect(() => {
     setChecked(false);
-    mealsToday.forEach((meal)=>{
-        if(meal.meal_id === mealData.id){
-            console.log("MEAL CARD Checked ===============",meal.meal_id);
-            setMealDayTimeId(meal.id);
-            setChecked(true);
-        }
-      });
+    mealsToday.forEach((meal) => {
+      if (meal.id === mealData.id) {
+        console.log("MEAL CARD Checked ===============", meal.meal_id);
+        setMealDayTimeId(meal.id);
+        setChecked(true);
+      } else {
+        console.log("MEAL CARD NOT Checked ===============", meal.meal_id, mealData.id);
+      }
+    });
   }, [mealsToday, mealData]);
 
   return (
