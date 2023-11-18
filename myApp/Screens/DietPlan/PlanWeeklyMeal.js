@@ -101,14 +101,13 @@ export default PlanWeeklyMeal = ({ modalVisible, onPressCloseModal }) => {
                             </ScrollView>
 
                         </View>
-
                         <SelectionMealList
-                            dayMeal={dayMeal} 
-                            setMealTime={setMealTime} 
-                            mealTime={mealTime} 
+                            dayMeal={dayMeal}
+                            setMealTime={setMealTime}
+                            mealTime={mealTime}
                             mealsTimeList={mealsTimeList}
                             indexToTriggerRefresh={indexToTriggerRefresh}
-                             />
+                        />
                     </View>
                 </KeyboardAwareScrollView>
             </View>
