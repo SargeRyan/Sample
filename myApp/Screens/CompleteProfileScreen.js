@@ -16,6 +16,7 @@ import {
 import { Button  } from "@react-native-material/core";
 import DropDownPicker from "react-native-dropdown-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import CheckBox from 'react-native-checkbox'; 
 
 TouchableOpacity.defaultProps = { ActiveOpacity: 0.8 };
 
@@ -28,7 +29,44 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
     </TouchableOpacity>
 );
 
+
+         const [isChecked, setIsChecked] = useState(false);
+
+  useEffect(() => {
+    // Load the initial value from AsyncStorage
+    loadCheckboxValue();
+  }, []);
+
+  const toggleCheckbox = () => {
+    // Toggle the checkbox state
+    setIsChecked(!isChecked);
+
+    // Save the new value to AsyncStorage
+    saveCheckboxValue(!isChecked);
+  };
+
+  const saveCheckboxValue = async (value) => {
+    try {
+      await AsyncStorage.setItem('checkboxValue', JSON.stringify(value));
+    } catch (error) {
+      console.error('Error saving checkbox value:', error);
+    }
+  };
+
+  const loadCheckboxValue = async () => {
+    try {
+      const value = await AsyncStorage.getItem('checkboxValue');
+      if (value !== null) {
+        // Convert the stored string back to a boolean
+        setIsChecked(JSON.parse(value));
+      }
+    } catch (error) {
+      console.error('Error loading checkbox value:', error);
+    }
+  };
+
     const [modalVisible, setModalVisible] = useState(false);
+    const [modalVisible1, setModalVisible1] = useState(false);
     const [modalSampleVisible, setSampleVisible] = useState(false);
 
     const [open, setOpen] = useState(false);
@@ -83,10 +121,13 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
 
     ]);
 
+
+
     const [height, setHeight] = useState('');
     const [weight, setWeight] = useState('');
     const [gender, setGender] = useState('Male');
     const [age, setAge] = useState('');
+    const [medHistory, setMedHistory] = useState('');
     const [name, setName] = useState('');
     const [goalWeight, setGoalWeight] = useState('');
     const [suggestedWeight, setSuggestedWeight] = useState(0);
@@ -106,7 +147,8 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                 weight,
                 age,
                 gender,
-                goalWeight
+                goalWeight,
+                medHistory
             };
 
             // Save the data to AsyncStorage
@@ -255,6 +297,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
 
                     setModalVisible(!modalVisible);
                 }}>
+            
                 <View style={{ backgroundColor: "#f6f6f6", height: 700 }}>
                     <View style={{ flexDirection: "row", backgroundColor: "#f9eed9", height: 60 }}>
                         <Pressable
@@ -268,60 +311,36 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
 
                     <Pressable
                         style={{ backgroundColor: "#009688", height: 50, width: 320, borderRadius: 10, marginTop: 20, position: "absolute", bottom: 30, alignSelf: "center" }}
-                        onPress={() => setSampleVisible(true)}>
+                        onPress={() => setModalVisible1(true)}>
                         <Text style={{ alignSelf: "center", marginTop: 10, fontSize: 20, fontWeight: "bold", color: "#fff" }}>NEXT</Text>
                     </Pressable>
 
 
-                    <Text style={{ marginTop: 40, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}>What is your baseline activity level</Text>
+                    <Text style={{ marginTop: 30, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}>What is your baseline activity level</Text>
                     <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Not including workouts- we count that separately: </Text>
 
-                    <Text style={{ marginTop: 90, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}>What is your Goal</Text>
+                    <Text style={{ marginTop: 100, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}>What is your Goal</Text>
                     <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Select your primary goal: </Text>
 
-                    <Text style={{ marginTop: 90, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}>In the past, what have been your primary barrier to losing weight</Text>
-                    <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Select your primary barrier: </Text>
+                   
 
-
-                    <DropDownPicker
-                        open={opens}
-                        value={values}
-                        items={items}
-                        setOpen={setOpens}
-                        setValue={setValues}
-                        setItems={setItem}
-                        zIndex={3000}
-                        placeholder="Select your baseline activity level "
-                        zIndexInverse={1000}
-                        containerStyle={{ width: 320, backgroundColor: "#f9eed9", position: "absolute", top: 150, right: 20 }}
-                    />
-
-                    <DropDownPicker
-                        open={Pop}
-                        value={Data}
-                        items={Selection}
-                        setOpen={setPop}
-                        setValue={setData}
-                        setItems={setSelection}
-                        placeholder="Select your primary barrier "
-                        zIndex={3000}
-                        zIndexInverse={1000}
-                        containerStyle={{ width: 320, backgroundColor: "#f9eed9", position: "absolute", top: 430, right: 20 }}
-                    />
-
-
-                    <DropDownPicker
-                        open={opened}
-                        value={valued}
-                        items={itemed}
-                        setOpen={setOpened}
-                        setValue={setValued}
-                        setItems={setItemed}
-                        placeholder="Select your goal "
-                        zIndex={3000}
-                        zIndexInverse={1000}
-                        containerStyle={{ width: 320, backgroundColor: "#f9eed9", position: "absolute", top: 280, right: 20 }}
-                    />
+                     <View style = {styles.goalCheckBoxContainer}>
+                        <CheckBox value={isChecked} onValueChange={toggleCheckbox} label = {'Lose Weight'} containerStyle = {styles.goalCheckBox}/>
+                     </View>
+                     <View style = {styles.goalCheckBoxContainer}>
+                        <CheckBox value={isChecked} onValueChange={toggleCheckbox} label = {'Maintain Weight'} containerStyle = {styles.goalCheckBox}/>
+                     </View>
+                     <View style = {styles.goalCheckBoxContainer}>
+                        <CheckBox value={isChecked} onValueChange={toggleCheckbox} label = {'Gain Weight'} containerStyle = {styles.goalCheckBox}/>
+                     </View>
+                     <View style = {styles.goalCheckBoxContainer}>
+                        <CheckBox value={isChecked} onValueChange={toggleCheckbox} label = {'Manage Stress'} containerStyle = {styles.goalCheckBox}/>
+                     </View>
+                     <View style = {styles.goalCheckBoxContainer}>
+                        <CheckBox value={isChecked} onValueChange={toggleCheckbox} label = {'Increase My Step Count'} containerStyle = {styles.goalCheckBox}/>
+                     </View>
+                     
+                    
 
                     <DropDownPicker
                         open={opens}
@@ -331,7 +350,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                         setValue={setValues}
                         setItems={setItem}
                         zIndex={3000}
-                        placeholder="Select your Activity baseline level  "
+                        placeholder="Select your Activity baseline level"
                         zIndexInverse={1000}
                         containerStyle={{ width: 320, backgroundColor: "#f9eed9", position: "absolute", top: 150, right: 20 }}
                     />
@@ -339,6 +358,75 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
 
                 </View>
             </Modal>
+               <Modal
+                animationType="slide"
+                transparent={false}
+                visible={modalVisible1}
+                onRequestClose={() => {
+
+                    setModalVisible1(!modalVisible1);
+                }}>
+            
+                <View style={{ backgroundColor: "#f6f6f6", height: 700 }}>
+                    <View style={{ flexDirection: "row", backgroundColor: "#f9eed9", height: 60 }}>
+                        <Pressable
+                            style={[styles.button, styles.buttonClose]}
+                            onPress={() => setModalVisible1(!modalVisible1)}>
+                            <Image style={{ height: 17, width: 23, marginLeft: 10, marginTop: 23 }} source={require("../image/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}
+                            />
+                        </Pressable>
+                        <Text style={{ marginTop: 20, fontSize: 17, marginLeft: 15, fontWeight: "bold" }}>BARIERS AND MEDICAL HISTORY</Text>
+                    </View>
+
+                    <Pressable
+                        style={{ backgroundColor: "#009688", height: 50, width: 320, borderRadius: 10, marginTop: 20, position: "absolute", bottom: 30, alignSelf: "center" }}
+                        onPress={() => setSampleVisible(true)}>
+                        <Text style={{ alignSelf: "center", marginTop: 10, fontSize: 20, fontWeight: "bold", color: "#fff" }}>NEXT</Text>
+                    </Pressable>
+
+
+
+                    <Text style={{ marginTop: 10, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}>In the past, what have been your primary barrier to losing weight</Text>
+                    <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Select your primary barrier: </Text>
+
+
+                     <View style = {styles.goalCheckBoxContainer}>
+                        <CheckBox value={isChecked} onValueChange={toggleCheckbox} label = {'Lack of Time'} containerStyle = {styles.goalCheckBox}/>
+                     </View>
+                     <View style = {styles.goalCheckBoxContainer}>
+                        <CheckBox value={isChecked} onValueChange={toggleCheckbox} label = {'Stress around food Choices'} containerStyle = {styles.goalCheckBox}/>
+                     </View>
+                     <View style = {styles.goalCheckBoxContainer}>
+                        <CheckBox value={isChecked} onValueChange={toggleCheckbox} label = {'Food Cravings'} containerStyle = {styles.goalCheckBox}/>
+                     </View>
+                     <View style = {styles.goalCheckBoxContainer}>
+                        <CheckBox value={isChecked} onValueChange={toggleCheckbox} label = {'Lack of Progress'} containerStyle = {styles.goalCheckBox}/>
+                     </View>
+                     <View style = {styles.goalCheckBoxContainer}>
+                        <CheckBox value={isChecked} onValueChange={toggleCheckbox} label = {'Healthy Food is too expensive'} containerStyle = {styles.goalCheckBox}/>
+                     </View>
+
+                    
+                    <Text style={{ marginTop: 10, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}>What is your past Medical History</Text>
+                    <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Enter Your Medical History: </Text>
+                    
+                    <View style={styles.medicalHistory}>
+                <Image
+                    style={styles.medsImageContainer}
+                    source={require("../image/medical-history.png")}
+                />
+                <TextInput
+                    placeholder="Medical History"
+                    inputMode="text"
+                    value={medHistory}
+                    onChangeText={(text) => setMedHistory(text)}
+                    style={styles.medHistoryTextContainer}
+                ></TextInput>
+            </View>
+                     
+                </View>
+            </Modal>
+
 
 
             <Modal
@@ -575,5 +663,56 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 140,
         alignSelf: "center"
-    }
+    },
+
+    goalCheckBoxContainer: {
+        backgroundColor: '#f9eed9', 
+        height: 50,
+        margin: 10,
+        width: 330,
+        alignSelf: 'center',
+        borderRadius: 10,
+        borderStyle: 'solid',
+        borderWidth: 1,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        
+ 
+    },
+
+    goalCheckBox : {
+        marginLeft: 10,
+        marginTop: 12,
+        marginBottom: 20,
+       
+        
+    },
+      medicalHistory: {
+        flexDirection: "row",
+        borderBottomColor: "#ccc",
+        marginBottom: 15,
+        backgroundColor: "#f9eed9",
+        borderRadius: 18,
+        width: 320,
+        height: 50,
+        alignSelf: 'center',
+        marginTop: 10
+    },
+    medHistoryTextContainer: {
+        marginTop: 10,
+        marginRight: 5,
+        flex: 1,
+        borderRadius: 12,
+        height: 35,
+        fontSize: 17,
+        marginTop: 6,
+    },
+     medsImageContainer: {
+        marginTop: 13,
+        height: 30,
+        marginRight: 12,
+        width: 30,
+        marginLeft: 17,
+    },
 });
