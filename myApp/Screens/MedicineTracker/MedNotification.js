@@ -20,7 +20,7 @@ export async function schedulePushNotification(year, month, day, hour, minute, t
 
     await Notifications.scheduleNotificationAsync({
         content: {
-            title: title,
+            title: "💊 "+title,
             body: body,
             data: {},
             sound: 'default',
