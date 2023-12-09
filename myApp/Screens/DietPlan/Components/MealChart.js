@@ -10,7 +10,7 @@ import {
 import { StyleSheet, Text, SafeAreaView, ScrollView, View, Image, Dimensions } from "react-native";
 const screenWidth = Dimensions.get("window").width - 50;
 import { getEatenMealAsync } from "../../../AsyncStorageFunctions";
-export default MealChart = ({indexRefresh}) => {
+export default MealChart = ({ indexRefresh }) => {
     const [calorieIntake, setCalorieIntake] = useState({
         Breakfast: 0,
         Lunch: 0,
@@ -50,19 +50,19 @@ export default MealChart = ({indexRefresh}) => {
 
     const data = [
         {
-            name: "Cal | Breakfast",
+            name: "Kcal | Breakfast",
             population: calorieIntake.Breakfast,
             color: "#ffffff",
             legendFontColor: "#ffffff",
         },
         {
-            name: "Cal | Lunch",
+            name: "Kcal | Lunch",
             population: calorieIntake.Lunch,
             color: "#e0fbfc",
             legendFontColor: "#ffffff",
         },
         {
-            name: "Cal | Dinner",
+            name: "Kcal | Dinner",
             population: calorieIntake.Dinner,
             color: "#1c4c85",
             legendFontColor: "#ffffff",
@@ -75,16 +75,16 @@ export default MealChart = ({indexRefresh}) => {
             backgroundColor: "#156d94",
             borderRadius: 20,
         }}>
-                <PieChart
-                    data={data}
-                    width={screenWidth}
-                    height={200}
-                    chartConfig={chartConfig}
-                    accessor={"population"}
-                    backgroundColor={"transparent"}
-                    paddingLeft={"15"}
-                    absolute
-                />
+            <PieChart
+                data={data}
+                width={screenWidth}
+                height={200}
+                chartConfig={chartConfig}
+                accessor={"population"}
+                backgroundColor={"transparent"}
+                paddingLeft={"15"}
+                absolute
+            />
         </View>
     )
 };

@@ -6,9 +6,7 @@ import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 
 
-
-
-export async function schedulePushNotification(hour , minute, title, body ) {
+export async function schedulePushNotification(hour, minute, title, body) {
     Notifications.setNotificationHandler({
         handleNotification: async () => ({
             shouldShowAlert: true,
@@ -16,9 +14,9 @@ export async function schedulePushNotification(hour , minute, title, body ) {
             shouldSetBadge: true,
         }),
     });
-    
+
     console.log("Scheduling notification");
-    registerForPushNotificationsAsync();
+    await registerForPushNotificationsAsync();
     const notificationListener = Notifications.addNotificationReceivedListener(notification => {
         console.log(notification);
     });
@@ -26,21 +24,25 @@ export async function schedulePushNotification(hour , minute, title, body ) {
     const responseListener = Notifications.addNotificationResponseReceivedListener(response => {
         console.log(response);
     });
+
     await Notifications.scheduleNotificationAsync({
         content: {
             title: title,
             body: body,
-            data: {  },
+            data: {},
+            sound: Platform.OS === "android" ? null : "default",
         },
-        trigger: { 
+        trigger: {
             hour: hour,
             minute: minute,
-            repeats: true
-         },
+            repeats: true,
+        },
     });
+
     Notifications.removeNotificationSubscription(notificationListener);
     Notifications.removeNotificationSubscription(responseListener);
 }
+
 
 async function registerForPushNotificationsAsync() {
     let token;

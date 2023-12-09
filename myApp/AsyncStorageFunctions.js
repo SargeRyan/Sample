@@ -64,7 +64,7 @@ export const getMealsToday = async (dayToEat, timeToEat) => {
     let mealKeys = [];
     let allKeys = await AsyncStorage.getAllKeys();
     let userData = await AsyncStorage.getItem('userData');
-    if(userData)userData = JSON.parse(userData);
+    if (userData) userData = JSON.parse(userData);
     for (let i = 0; i < allKeys.length; i++) {
       if (allKeys[i].startsWith("@meal_")) {
         mealKeys.push(allKeys[i]);
@@ -92,7 +92,7 @@ export const getMealsToday = async (dayToEat, timeToEat) => {
       id: userData.id,
       mealValues: mealValues,
     }
-    if(userData)await saveDataToCloud(userData.id, "mealValues",JSON.stringify(toStoreData));
+    if (userData) await saveDataToCloud(userData.id, "mealValues", JSON.stringify(toStoreData));
     return toGetMeals;
   } catch (e) {
     console.error(e);
@@ -112,7 +112,7 @@ export const getMealsSelection = async () => {
       }
     }
 
-    console.log("getMealsSelection =====",mealKeys);
+    console.log("getMealsSelection =====", mealKeys);
 
     // get meal values
     let mealValues = await AsyncStorage.multiGet(mealKeys);
@@ -145,57 +145,57 @@ export const mealTimeToEat = {
 };
 
 export const removeValue = async (key) => {
-    console.log("AsyncStorage Removing Key: " + key);
-    try {
-      await AsyncStorage.removeItem(key)
-    } catch(e) {
-      console.error(e);
-    }
-    console.log("AsyncStorage Removed Key: " + key);
+  console.log("AsyncStorage Removing Key: " + key);
+  try {
+    await AsyncStorage.removeItem(key)
+  } catch (e) {
+    console.error(e);
   }
+  console.log("AsyncStorage Removed Key: " + key);
+}
 
 
 export const getEatenMealAsync = async () => {
-    try {
-        // get meal keys
-        let mealKeys = [];
-        let allKeys = await AsyncStorage.getAllKeys();
-        for (let i = 0; i < allKeys.length; i++) {
-          if (allKeys[i].startsWith("eaten_")) {
-            mealKeys.push(allKeys[i]);
-          }
-        }
-        
-        let userData = await AsyncStorage.getItem('userData');
-        if(userData)userData = JSON.parse(userData);
-
-        // get meal values
-        let mealEatean = await AsyncStorage.multiGet(mealKeys);
-        const toStoreData = {
-          id: userData.id,
-          mealEatean: mealEatean,
-        }
-        if(userData)await saveDataToCloud(userData.id, "mealEatean",JSON.stringify(toStoreData));
-        return JSON.stringify(mealEatean);
-      } catch (e) {
-        console.error(e);
+  try {
+    // get meal keys
+    let mealKeys = [];
+    let allKeys = await AsyncStorage.getAllKeys();
+    for (let i = 0; i < allKeys.length; i++) {
+      if (allKeys[i].startsWith("eaten_")) {
+        mealKeys.push(allKeys[i]);
       }
+    }
+
+    let userData = await AsyncStorage.getItem('userData');
+    if (userData) userData = JSON.parse(userData);
+
+    // get meal values
+    let mealEatean = await AsyncStorage.multiGet(mealKeys);
+    const toStoreData = {
+      id: userData.id,
+      mealEatean: mealEatean,
+    }
+    if (userData) await saveDataToCloud(userData.id, "mealEatean", JSON.stringify(toStoreData));
+    return JSON.stringify(mealEatean);
+  } catch (e) {
+    console.error(e);
+  }
 };
 export const getIDgraph = async () => {
   try {
-      // get meal keys
-      let mealKeys = [];
-      let allKeys = await AsyncStorage.getAllKeys();
-      for (let i = 0; i < allKeys.length; i++) {
-        if (allKeys[i].startsWith("eaten_")) {
-          mealKeys.push(allKeys[i]);
-        }
+    // get meal keys
+    let mealKeys = [];
+    let allKeys = await AsyncStorage.getAllKeys();
+    for (let i = 0; i < allKeys.length; i++) {
+      if (allKeys[i].startsWith("eaten_")) {
+        mealKeys.push(allKeys[i]);
       }
-      // get meal values
-      let mealValues = await AsyncStorage.multiGet(mealKeys);
-
-      return JSON.stringify(mealValues);
-    } catch (e) {
-      console.error(e);
     }
+    // get meal values
+    let mealValues = await AsyncStorage.multiGet(mealKeys);
+
+    return JSON.stringify(mealValues);
+  } catch (e) {
+    console.error(e);
+  }
 };

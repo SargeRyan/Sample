@@ -21,8 +21,8 @@ export default DietPlanScreen = ({ navigation, route }) => {
         const currentDay = mealDayToEat[getCurrentDay()];
 
         let currentHourMeal = mealTime;
-        if(!isMealTimeInitialized){
-            currentHourMeal  = mealTimeToEat[getCurrentHourMeal()];
+        if (!isMealTimeInitialized) {
+            currentHourMeal = mealTimeToEat[getCurrentHourMeal()];
             setMealTime(currentHourMeal);
             setIsMealTimeInitialized(true);
         }
@@ -33,7 +33,7 @@ export default DietPlanScreen = ({ navigation, route }) => {
     useEffect(() => {
         fetchMeals();
     }, [mealTime]);
-    
+
 
     function getCurrentDay() {
         const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -45,7 +45,7 @@ export default DietPlanScreen = ({ navigation, route }) => {
 
     function getCurrentHourMeal() {
         const currentHour = new Date().getHours();
-        console.log("Current Hour ======",currentHour);
+        console.log("Current Hour ======", currentHour);
         if (currentHour >= 5 && currentHour < 11) {
             return 'breakfast';
         } else if (currentHour >= 11 && currentHour < 15) {
@@ -61,13 +61,14 @@ export default DietPlanScreen = ({ navigation, route }) => {
         <SafeAreaView style={styles.container}>
             <ScrollView style={styles.scrollView}>
                 <MealChart indexRefresh={indexRefresh}></MealChart>
+
                 <MealSettings fetchMeals={fetchMeals}></MealSettings>
                 <View style={styles.headingContainer}>
                     <Text style={styles.heading}>{mealDay.toUpperCase()} Meals</Text>
                     <MealTimeDropDown value={mealTime} setValue={setMealTime} />
                 </View>
-                <MealList mealsToday={mealsToday} setIndexRefresh={()=>{
-                    setIndexRefresh(indexRefresh+1);
+                <MealList mealsToday={mealsToday} setIndexRefresh={() => {
+                    setIndexRefresh(indexRefresh + 1);
                 }} />
                 {
                     Object.keys(mealsToday).length === 0 &&

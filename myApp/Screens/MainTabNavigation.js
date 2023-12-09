@@ -8,6 +8,7 @@ import ExercisePlanScreen from "./ExercisePlan/ExercisePlanScreen";
 import SleepingTrackerScreen from "./SleepingTracker/SleepingTrackerScreen.js";
 import MedicineTracker from "./MedicineTracker/MedicineTracker";
 import Dashboard from "./Dashboard/BmiCalculator";
+import WaterPlanScreen from "./WaterPlan/WaterPlanScreen";
 
 const Tab = createBottomTabNavigator();
 export default MainTabNavigation = () => {
@@ -17,6 +18,7 @@ export default MainTabNavigation = () => {
                 <Tab.Screen name="Dashboard" component={BmiCalculator} />
                 <Tab.Screen name="Exercise Plan" component={ExercisePlanScreen} />
                 <Tab.Screen name="Diet Plan" component={DietPlanScreen} />
+                <Tab.Screen name="Water" component={WaterPlanScreen} />
                 <Tab.Screen name="Sleeping Tracker" component={SleepingTrackerScreen} />
                 <Tab.Screen name="Medicine Tracker" component={MedicineTracker} />
             </Tab.Navigator>
@@ -29,6 +31,9 @@ let navigatorScreenOptions = ({ route }) => ({
         let iconName; // find icon names at https://ionic.io/ionicons
         if (route.name === "Dashboard") {
             iconName = focused ? "podium" : "podium-outline";
+        }
+        else if (route.name === "Water") {
+            iconName = focused ? "water" : "water-outline";
         }
         else if (route.name === "Exercise Plan") {
             iconName = focused ? "barbell" : "barbell-outline";
