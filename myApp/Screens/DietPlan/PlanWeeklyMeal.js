@@ -34,7 +34,7 @@ export default PlanWeeklyMeal = ({ modalVisible, onPressCloseModal }) => {
         "Friday",
         "Saturday",
     ];
-    const mealsTimeList = ["Breakfast", "Lunch", "Dinner"];
+    const mealsTimeList = ["Breakfast", "Mid Morning Snack", "Lunch", "Mid Lunch Snack", "Dinner", "Midnight Snack"];
 
     const [dayMeal, setDayMeal] = useState(daysOfWeekList[0]);
     const [mealTime, setMealTime] = useState(mealsTimeList[0]);

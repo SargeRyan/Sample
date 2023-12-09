@@ -136,8 +136,11 @@ MealTimeDropDown = ({ value, setValue }) => {
     const [open, setOpen] = useState(false);
     const [items, setItems] = useState([
         { label: "Breakfast", value: "Breakfast" },
+        { label: "Mid Morning Snack", value: "morningSnack" },
         { label: "Lunch", value: "Lunch" },
+        { label: "Mid Lunch Snack", value: "lunchSnack" },
         { label: "Dinner", value: "Dinner" },
+        { label: "Midnight Snack", value: "midnightSnack" },
     ]);
 
     return (
