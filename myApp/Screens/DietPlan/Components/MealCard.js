@@ -20,16 +20,16 @@ export default MealCard = ({ mealData, setIndexRefresh }) => {
     mealData.eatenDate = day;
     mealData.eatenTime = d.getTime();
     mealData.eatenDateTime = d.toString();
-    
-    
-    if(currentCheckStatus){
-        await storeDataObject(`eaten_${day}_${mealData.id}`, mealData);
-    }else{
-        await removeValue(`eaten_${day}_${mealData.id}`);
+
+
+    if (currentCheckStatus) {
+      await storeDataObject(`eaten_${day}_${mealData.id}`, mealData);
+    } else {
+      await removeValue(`eaten_${day}_${mealData.id}`);
     }
 
     await storeDataObject(mealData.id, mealData); // store the meal data as mark as checked
-    console.log("Checked========", mealData.id);
+    //console.log("Checked========", mealData.id);
     setIndexRefresh();
   };
 

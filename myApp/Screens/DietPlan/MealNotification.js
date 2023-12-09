@@ -15,14 +15,14 @@ export async function schedulePushNotification(hour, minute, title, body) {
         }),
     });
 
-    console.log("Scheduling notification");
+    //console.log("Scheduling notification");
     await registerForPushNotificationsAsync();
     const notificationListener = Notifications.addNotificationReceivedListener(notification => {
-        console.log(notification);
+        //console.log(notification);
     });
 
     const responseListener = Notifications.addNotificationResponseReceivedListener(response => {
-        console.log(response);
+        //console.log(response);
     });
 
     await Notifications.scheduleNotificationAsync({
@@ -68,7 +68,7 @@ async function registerForPushNotificationsAsync() {
             return;
         }
         token = (await Notifications.getExpoPushTokenAsync()).data;
-        console.log(token);
+        //console.log(token);
     } else {
         // alert('Must use physical device for Push Notifications');
         console.error('Must use physical device for Push Notifications');

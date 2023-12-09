@@ -25,11 +25,11 @@ export default SelectionMealCard = ({ mealsToday, mealData, onToggleCheckFunctio
     setChecked(false);
     mealsToday.forEach((meal) => {
       if (meal.id === mealData.id) {
-        console.log("MEAL CARD Checked ===============", meal.meal_id);
+        //console.log("MEAL CARD Checked ===============", meal.meal_id);
         setMealDayTimeId(meal.id);
         setChecked(true);
       } else {
-        console.log("MEAL CARD NOT Checked ===============", meal.meal_id, mealData.id);
+        //console.log("MEAL CARD NOT Checked ===============", meal.meal_id, mealData.id);
       }
     });
   }, [mealsToday, mealData]);

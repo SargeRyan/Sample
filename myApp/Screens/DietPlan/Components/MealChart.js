@@ -33,11 +33,11 @@ export default MealChart = ({ indexRefresh }) => {
                 const d = new Date();
                 let day = d.getDay()
                 if (mealValues.eatenDate !== day) continue; // skip other days
-                console.log("MEAL VALUES ===========", mealValues);
+                // //console.log("MEAL VALUES ===========", mealValues);
                 mealGraph[mealValues.timeToEat] += Number(mealValues.calories);
             }
             setCalorieIntake(mealGraph);
-            console.log(mealGraph);
+            //console.log(mealGraph);
         };
         getEatenMeal();
     }, [indexRefresh]);
