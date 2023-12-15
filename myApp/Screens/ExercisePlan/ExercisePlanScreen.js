@@ -309,12 +309,10 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
             source={require("../ExercisePlan/picture/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}
           />
         </TouchableOpacity>
-
-        <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/walking.gif")}
-          />
-
+          <Image
+          style={styles.ImageContainerInfo}
+          source={require("../ExercisePlan/picture/Ecercise/jogging.gif")}
+        />
         <TouchableOpacity
           onPress={() => {
             setModalVisible(false);
