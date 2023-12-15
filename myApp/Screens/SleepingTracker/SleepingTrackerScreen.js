@@ -57,6 +57,7 @@ const SleepingTrackerTab = () => {
       console.log("Error fetching data:", error);
     }
   };
+
   fetchAllData();
   //ALARM AND BED FUNCTION
   const [selectedDashBoardBedTime1, setSelectedDashBoardBedTime1] =
@@ -108,7 +109,12 @@ const SleepingTrackerTab = () => {
   ////MODALS
   const [isParentModalVisible, setParentModalVisible] = useState(false);
   const toggleParentModal = () => {
-    setParentModalVisible(!isParentModalVisible);
+    if (selectedTime === "SET TIME") {
+      alert("Please Select Ideal Sleeping Time");
+    }
+    else {
+      setParentModalVisible(!isParentModalVisible);
+    }
   };
 
   ///datepicker
@@ -364,7 +370,7 @@ const SleepingTrackerTab = () => {
 
 
   const [isPickerVisible, setPickerVisible] = useState(false);
-  const [selectedTime, setSelectedTime] = useState('Set Ideal \n Sleeping Hours');
+  const [selectedTime, setSelectedTime] = useState('SET TIME');
 
   const showPicker = () => {
     setPickerVisible(true);
@@ -391,21 +397,31 @@ const SleepingTrackerTab = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
-        <View style={{ backgroundColor: '#009688', borderRadius:14, flexDirection: 'row', justifyContent: 'space-between', padding:4, justifyContent:"center"}}>
-          <Text style={styles.heading1}>
-            IDEAL SLEEPING HOURS
+        <View style={{ backgroundColor: '#009688', borderRadius: 14, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 4, }}>
+          <Text style={{
+            fontSize: 18, // Increase the font size for better visibility
+            // Increase the padding for better spacing
+            fontWeight: "bold",
+            color: "white",
+            textShadowColor: 'rgba(0, 0, 0, 0.5)', // Add text shadow color
+            textShadowOffset: { width: 2, height: 2 }, // Adjust the shadow offset
+            textShadowRadius: 4,
+            marginStart: 10,
+          }}>
+            IDEAL SLEEPING HOURS:
           </Text>
           <TouchableOpacity
             style={{
-              backgroundColor: '#009688',
-              padding: 14,
+              paddingVertical: 14,
+              paddingHorizontal: 16,
               borderRadius: 5,
               alignSelf: 'flex-end',
               fontSize: 18,
+              minWidth: 100,
             }}
             onPress={showPicker}
           >
-            <Text style={{ color: '#fff', textAlign: 'center' }}>{selectedTime}</Text>
+            <Text style={{ color: '#fff', textAlign: 'center' }}>{selectedTime} Hours</Text>
           </TouchableOpacity>
           <DateTimePickerModal
             isVisible={isPickerVisible}
@@ -423,7 +439,6 @@ const SleepingTrackerTab = () => {
           height={chartHeight}
           chartConfig={chartConfig}
         />
-
         <View style={styles.ScrollsDiv}>
           <Text style={styles.heading2}>YOUR SCHEDULE</Text>
           <ScrollView
@@ -634,7 +649,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#afd3e2",
-    padding: 10,
     alignItems: "center",
     flexDirection: "column",
     alignContent: "center",
@@ -643,8 +657,10 @@ const styles = StyleSheet.create({
   scrollView: {
     backgroundColor: "#afd3e2",
     paddingBottom: 30,
-    width: "99%",
+    width: "100%",
     height: "100%",
+    padding: 10,
+
   },
   //HEADING
   headerContainer: {

@@ -25,7 +25,7 @@ export async function saveDataToCloud(asyncDataKey, parentKey = "", _storedData 
             // Check if the user data already exists in Cloud
             if (parsedData.id) {
                 let toCheckData = `${asyncDataKey}/${parsedData.id}`;
-                if(_storedData)toCheckData = `${asyncDataKey}/${parentKey}`;
+                if (_storedData) toCheckData = `${asyncDataKey}/${parentKey}`;
                 const dataSnapshot = await get(ref(db, toCheckData));
                 if (dataSnapshot.exists()) {
                     console.log("User Data already exists in Cloud");
@@ -42,7 +42,7 @@ export async function saveDataToCloud(asyncDataKey, parentKey = "", _storedData 
             await AsyncStorage.setItem(asyncDataKey, JSON.stringify(parsedData));
 
             console.log("Data Saved to Cloud");
-            console.log("_parsedData", parsedData);
+            // console.log("_parsedData", parsedData);
 
             return parsedData;
         }

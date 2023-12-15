@@ -1,12 +1,5 @@
-// https://docs.expo.dev/versions/latest/sdk/notifications/
 
-import { useState, useEffect, useRef } from 'react';
-import { Text, View, Button, Platform } from 'react-native';
-import * as Device from 'expo-device';
-import * as Notifications from 'expo-notifications';
-
-
-export async function schedulePushNotification(hour, minute, title, body) {
+export async function schedulePushNotification(year, month, day, hour, minute, title, body) {
     Notifications.setNotificationHandler({
         handleNotification: async () => ({
             shouldShowAlert: true,
@@ -15,34 +8,32 @@ export async function schedulePushNotification(hour, minute, title, body) {
         }),
     });
 
-    //console.log("Scheduling notification");
-    await registerForPushNotificationsAsync();
+    console.log('Scheduling notification');
+    registerForPushNotificationsAsync();
     const notificationListener = Notifications.addNotificationReceivedListener(notification => {
-        //console.log(notification);
+        console.log(notification);
     });
 
     const responseListener = Notifications.addNotificationResponseReceivedListener(response => {
-        //console.log(response);
+        console.log(response);
     });
 
     await Notifications.scheduleNotificationAsync({
         content: {
-            title: title,
+            title: "💊 "+title,
             body: body,
             data: {},
-            sound: Platform.OS === "android" ? null : "default",
+            sound: 'default',
         },
         trigger: {
-            hour: hour,
-            minute: minute,
-            repeats: true,
+            date: new Date(year, month - 1, day, hour, minute),
+            repeats: false,
         },
     });
 
     Notifications.removeNotificationSubscription(notificationListener);
     Notifications.removeNotificationSubscription(responseListener);
 }
-
 
 async function registerForPushNotificationsAsync() {
     let token;
@@ -68,11 +59,14 @@ async function registerForPushNotificationsAsync() {
             return;
         }
         token = (await Notifications.getExpoPushTokenAsync()).data;
-        //console.log(token);
+        console.log(token);
     } else {
-        // alert('Must use physical device for Push Notifications');
-        console.error('Must use physical device for Push Notifications');
+        alert('Must use physical device for Push Notifications');
     }
 
     return token;
 }
+import { useState, useEffect, useRef } from 'react';
+import { Text, View, Button, Platform } from 'react-native';
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';

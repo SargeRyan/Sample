@@ -1,11 +1,19 @@
 {
   "expo": {
-    "exposdk":"44.0.0",
+    "exposdk": "44.0.0",
     "plugins": [
       [
         "expo-image-picker",
         {
           "photosPermission": "The app accesses your photos"
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "sounds": [
+            "notif.wav"
+          ]
         }
       ]
     ],
@@ -31,7 +39,9 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "useNextNotificationsApi": true,
       "permissions": [
+        "RECEIVE_BOOT_COMPLETED",
         "android.permission.RECORD_AUDIO"
       ],
       "package": "com.paulpaulpaulpaul.Healtpilot"

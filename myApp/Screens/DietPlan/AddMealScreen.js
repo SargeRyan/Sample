@@ -18,7 +18,7 @@ export default AddMealScreen = ({ modalVisible, onPressCloseModal }) => {
     "https://firebasestorage.googleapis.com/v0/b/healtpilot.appspot.com/o/healthy-food.jpg?alt=media&token=9f6639b3-80e2-42d4-b50c-9dc24f61de77";
   const [mealToAdd, setMealToAdd] = useState({
     mealImage: defaultImage,
-    quantityCurrency : "pcs",
+    quantityCurrency: "pcs",
     quantity: 1,
   });
 
@@ -28,7 +28,7 @@ export default AddMealScreen = ({ modalVisible, onPressCloseModal }) => {
     const mealToAddRequiredKey = ["mealName", "calories", "quantity"];
     for (i = 0; i < mealToAddRequiredKey.length; i++) {
       const key = mealToAddRequiredKey[i];
-      console.log(key);
+      //console.log(key);
       if (!mealToAdd[key]) {
         let newInputErrors = { ...inputErrors };
         newInputErrors[key] = "This field is required";
@@ -97,7 +97,7 @@ export default AddMealScreen = ({ modalVisible, onPressCloseModal }) => {
                     quality: 0.5,
                   });
 
-                  console.log(result);
+                  //console.log(result);
 
                   if (result.assets) {
                     setMealToAdd({
