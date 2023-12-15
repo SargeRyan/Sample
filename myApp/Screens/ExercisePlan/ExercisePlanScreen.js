@@ -11,6 +11,9 @@ import {
   Pressable,
   Button,
 } from "react-native";
+import { Video } from "expo-av";
+
+
 import ExerciseDone from "./ExerciseDone";
 import { getData, storeData } from "../../AsyncStorageFunctions";
 export default ExercisePlanScreen = ({ navigation, route }) => {
@@ -233,6 +236,12 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
     setModalVisible9(true);
   };
 
+
+  const [status, setStatus] = React.useState({});
+  const [video, setVideo] = React.useState({});
+
+
+
   async function markExerciseDone(burnedCalories, duration, exerciseName) {
     if (startCount <= 0) {
       burnedCalories = 0;
@@ -278,7 +287,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
           </View>
           <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/jogging.gif")}
+            source={require("../ExercisePlan/picture/Ecercise/jogging.gif")}
           />
         </View>
       </TouchableOpacity>
@@ -302,9 +311,9 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
         </TouchableOpacity>
 
         <Image
-          style={styles.ImageContainerInfo}
-          source={require("../ExercisePlan/picture/jogging.gif")}
-        />
+            style={styles.ImageContainer}
+            source={require("../ExercisePlan/picture/Ecercise/walking.gif")}
+          />
 
         <TouchableOpacity
           onPress={() => {
@@ -321,7 +330,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
           <Text style={{ fontSize: 20 }}>Done</Text>
         </TouchableOpacity>
 
-        <View style={styles.modalMainContainer}>
+        <View style={{backgroundColor: "#AFD3E2", marginTop: 5, height: 500, borderTopRightRadius: 20, borderTopLeftRadius: 20,}}>
           <Text style={styles.exerciseName}>Jogging</Text>
           {/*Exercise Timer*/}
           <View style={styles.subModalContainer}>
@@ -449,7 +458,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
           </View>
           <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/exercise-walk.gif")}
+            source={require("../ExercisePlan/picture/Ecercise/walking.gif")}
           />
         </View>
       </TouchableOpacity>
@@ -474,7 +483,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
 
         <Image
           style={styles.ImageContainerInfo}
-          source={require("../ExercisePlan/picture/exercise-walk.gif")}
+          source={require("../ExercisePlan/picture/Ecercise/walking.gif")}
         />
 
         <TouchableOpacity
@@ -492,7 +501,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
           <Text style={{ fontSize: 20 }}>Done</Text>
         </TouchableOpacity>
 
-        <View style={styles.modalMainContainer}>
+        <View style={{  backgroundColor: "#AFD3E2", marginTop: 5, height: 500, borderTopRightRadius: 20, borderTopLeftRadius: 20,}}>
           <Text style={styles.exerciseName}>Walking</Text>
           {/*Exercise Timer*/}
           <View style={styles.subModalContainer}>
@@ -610,7 +619,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
         </View>
       </Modal>
 
-      {/*  //Third Exercise */}
+      {/*  //Third Exercise Dumbbell */}
       <TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
         <View style={styles.exerciseContainer}>
           <View style={styles.textContainer}>
@@ -620,7 +629,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
           </View>
           <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Front-Raise-2.gif.pagespeed.ce.ZJdDV-2er6.gif")}
+            source={require("../ExercisePlan/picture/Ecercise/lightDumbell.gif")}
           />
         </View>
       </TouchableOpacity>
@@ -645,7 +654,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
 
         <Image
           style={styles.ImageContainerInfo}
-          source={require("../ExercisePlan/picture/Front-Raise-2.gif.pagespeed.ce.ZJdDV-2er6.gif")}
+          source={require("../ExercisePlan/picture/Ecercise/lightDumbell.gif")}
         />
 
         <TouchableOpacity
@@ -663,7 +672,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
           <Text style={{ fontSize: 20 }}>Done</Text>
         </TouchableOpacity>
 
-        <View style={styles.modalMainContainer}>
+        <View style={{  backgroundColor: "#AFD3E2", marginTop: 5, height: 500, borderTopRightRadius: 20, borderTopLeftRadius: 20,}}>
           <Text style={styles.exerciseName}>Light Dumbbell</Text>
           {/*Exercise Timer*/}
           <View style={styles.subModalContainer}>
@@ -781,7 +790,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
         </View>
       </Modal>
 
-      {/*  //Fourth Exercise */}
+      {/*  //Fourth Exercise Jumping Jack*/}
       <TouchableOpacity style={styles.ButtonContainer} onPress={open3}>
         <View style={styles.exerciseContainer}>
           <View style={styles.textContainer}>
@@ -791,7 +800,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
           </View>
           <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/jumping-jack-icegif.gif")}
+            source={require("../ExercisePlan/picture/Ecercise/jumpingJack.gif")}
           />
         </View>
       </TouchableOpacity>
@@ -816,7 +825,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
 
         <Image
           style={styles.ImageContainerInfo}
-          source={require("../ExercisePlan/picture/jumping-jack-icegif.gif")}
+          source={require("../ExercisePlan/picture/Ecercise/jumpingJack.gif")}
         />
 
         <TouchableOpacity
@@ -834,7 +843,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
           <Text style={{ fontSize: 20 }}>Done</Text>
         </TouchableOpacity>
 
-        <View style={styles.modalMainContainer}>
+        <View style={{  backgroundColor: "#AFD3E2", marginTop: 5, height: 500, borderTopRightRadius: 20,borderTopLeftRadius: 20,}}>
           <Text style={styles.exerciseName}>Jumping Jack</Text>
           {/*Exercise Timer*/}
           <View style={styles.subModalContainer}>
@@ -1301,9 +1310,10 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
             <Text>Calories Burn: 10</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          <Image
+       
+           <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/arm-circles-exercise-illustration.gif")}
+            source={require("../ExercisePlan/picture/armRotation.gif")}
           />
         </View>
       </TouchableOpacity>
@@ -1315,21 +1325,23 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
           setModalVisible6(!modalVisible6);
         }}
       >
+<View style= {{backgroundColor: '#f9eed9', borderRadius: 10, borderBottomColor: 'black'}}>
+<View style = {{borderRadius: 100, height: 200, width: 120, alignSelf: "center", borderRadius: 20,}}>
+        <Image
+          style={styles.ImageContainerInfo}
+          source={require("../ExercisePlan/picture/armRotation.gif")}
+        />
+</View>
+
         <TouchableOpacity
-          style={{ marginTop: 20, position: "absolute", marginLeft: 20 }}
+          style={{ marginTop: 20, position: "absolute", marginLeft: 10, }}
           onPress={setModalVisible6}
         >
-          <Image
+           <Image
             style={{ height: 20, width: 25, resizeMode: "stretch" }}
             source={require("../ExercisePlan/picture/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}
           />
         </TouchableOpacity>
-
-        <Image
-          style={styles.ImageContainerInfo}
-          source={require("../ExercisePlan/picture/arm-circles-exercise-illustration.gif")}
-        />
-
         <TouchableOpacity
           onPress={() => {
             setModalVisible6(false);
@@ -1460,6 +1472,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               </Text>
             </TouchableOpacity>
           </View>
+        </View>
         </View>
       </Modal>
       {/* eighth Exercise */}
@@ -1996,18 +2009,22 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   ImageContainer: {
     height: 100,
-    width: 90,
+    width: 80,
     borderRadius: 10,
-    marginLeft: 40,
+    marginLeft: 70,
     resizeMode: "stretch",
   },
   ImageContainerInfo: {
-    height: 300,
-    width: 260,
-    borderRadius: 20,
+    height: 320,
+    width: 210,
     resizeMode: "stretch",
     alignSelf: "center",
-  },
+    marginTop: 50,
+    marginBottom: 5,
+    borderRadius: 10,
+    borderColor: 'yellow',
+    borderWidth: 10,
+      },
   ButtonContainer: {
     backgroundColor: "#fff",
     height: 110,
@@ -2033,7 +2050,8 @@ const styles = StyleSheet.create({
   },
   modalMainContainer: {
     backgroundColor: "#AFD3E2",
-    height: 1300,
+    marginTop: 180,
+    height: 500,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
   },

@@ -29,39 +29,60 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
     </TouchableOpacity>
 );
 
-
-         const [isChecked, setIsChecked] = useState(false);
+const [checkboxStates, setCheckboxStates] = useState({
+    lackOfTime: '',
+    stressAroundFood: '',
+    foodCravings: '',
+    lackOfProgress: '',
+    expensiveHealthyFood: '',
+  });
 
   useEffect(() => {
-    // Load the initial value from AsyncStorage
-    loadCheckboxValue();
+    // Load the initial values from AsyncStorage
+    loadCheckboxValues();
   }, []);
 
-  const toggleCheckbox = () => {
-    // Toggle the checkbox state
-    setIsChecked(!isChecked);
+  const toggleCheckbox = (checkboxKey, customValue) => {
+    // Toggle the checkbox state for the specified checkbox key
+    setCheckboxStates((prevStates) => ({
+      ...prevStates,
+      [checkboxKey]: customValue,
+    }));
 
     // Save the new value to AsyncStorage
-    saveCheckboxValue(!isChecked);
+    saveCheckboxValue(checkboxKey, customValue);
   };
 
-  const saveCheckboxValue = async (value) => {
+  const saveCheckboxValue = async (key, value) => {
     try {
-      await AsyncStorage.setItem('checkboxValue', JSON.stringify(value));
+      await AsyncStorage.setItem(key, JSON.stringify(value));
     } catch (error) {
-      console.error('Error saving checkbox value:', error);
+      console.error(`Error saving checkbox value for ${key}:`, error);
     }
   };
 
-  const loadCheckboxValue = async () => {
+  const loadCheckboxValues = async () => {
     try {
-      const value = await AsyncStorage.getItem('checkboxValue');
-      if (value !== null) {
-        // Convert the stored string back to a boolean
-        setIsChecked(JSON.parse(value));
-      }
+      const keys = Object.keys(checkboxStates);
+      const values = await AsyncStorage.multiGet(keys);
+
+      console.log(values);
+      
+
+      const loadedValues = {};
+      values.forEach(([key, value]) => {
+        loadedValues[key] = JSON.parse(value);
+      });
+
+      // Update checkbox states with loaded values
+      setCheckboxStates((prevStates) => ({
+        ...prevStates,
+        ...loadedValues
+
+       
+      }));
     } catch (error) {
-      console.error('Error loading checkbox value:', error);
+      console.error('Error loading checkbox values:', error);
     }
   };
 
@@ -72,10 +93,10 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
     const [items, setItems] = useState([
-        { label: 'Not Very Active', value: 'Not Very Active' },
-        { label: 'Lightly Very Active', value: 'Lightly Very Active' },
-        { label: 'Active', value: 'Active' },
-        { label: 'Very Active', value: 'Very Active' },
+        { label: 'Not Very Active(Doing Zumba or Exercise).', value: 'Not Very Active' },
+        { label: 'Lightly Very Active(Doing chores, sweeping floor, walking slowly).', value: 'Lightly Very Active' },
+        { label: 'Active(Doing 10-15 mins activity a day).', value: 'Active' },
+        { label: 'Very Active(Spend much time seated).', value: 'Very Active' },
     ]);
 
     const [opens, setOpens] = useState(false);
@@ -113,7 +134,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
         { label: 'Lose 0.25kg per week', value: '0.25' },
         { label: 'Lose 0.5 per week', value: '0.50' },
         { label: 'Lose 0.75 per week', value: '0.75' },
-        { label: 'Loss 1kg per week', value: '01' },
+        { label: 'Loss 1kg per week', value: '1' },
         { label: 'Gain 0.25kg per week', value: '.25' },
         { label: 'Gain 0.5 per week', value: '.50' },
         { label: 'Gain 0.75 per week', value: '.75' },
@@ -148,7 +169,8 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                 age,
                 gender,
                 goalWeight,
-                medHistory
+                medHistory,
+             
             };
 
             // Save the data to AsyncStorage
@@ -324,22 +346,47 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
 
                    
 
-                     <View style = {styles.goalCheckBoxContainer}>
-                        <CheckBox value={isChecked} onValueChange={toggleCheckbox} label = {'Lose Weight'} containerStyle = {styles.goalCheckBox}/>
+                      <View style={styles.goalCheckBoxContainer}>
+                            <CheckBox
+                            value={checkboxStates.lackOfTime}
+                            onValueChange={() => toggleCheckbox('lackOfTime')}
+                            label={'Lack of Time'}
+                            containerStyle={styles.goalCheckBox}
+                            />
                      </View>
-                     <View style = {styles.goalCheckBoxContainer}>
-                        <CheckBox value={isChecked} onValueChange={toggleCheckbox} label = {'Maintain Weight'} containerStyle = {styles.goalCheckBox}/>
+                     <View style={styles.goalCheckBoxContainer}>
+                            <CheckBox
+                            value={checkboxStates.stressAroundFood}
+                            onValueChange={() => toggleCheckbox('stressAroundFood')}
+                            label={'Stress Around Food'}
+                            containerStyle={styles.goalCheckBox}
+                            />
                      </View>
-                     <View style = {styles.goalCheckBoxContainer}>
-                        <CheckBox value={isChecked} onValueChange={toggleCheckbox} label = {'Gain Weight'} containerStyle = {styles.goalCheckBox}/>
+
+                      <View style={styles.goalCheckBoxContainer}>
+                            <CheckBox
+                            value={checkboxStates.foodCravings}
+                            onValueChange={() => toggleCheckbox('foodCravings')}
+                            label={'Food Cravings'}
+                            containerStyle={styles.goalCheckBox}
+                            />
                      </View>
-                     <View style = {styles.goalCheckBoxContainer}>
-                        <CheckBox value={isChecked} onValueChange={toggleCheckbox} label = {'Manage Stress'} containerStyle = {styles.goalCheckBox}/>
+                      <View style={styles.goalCheckBoxContainer}>
+                            <CheckBox
+                            value={checkboxStates.lackOfProgress}
+                            onValueChange={() => toggleCheckbox('lackOfProgress')}
+                            label={'Lack Of Progress'}
+                            containerStyle={styles.goalCheckBox}
+                            />
                      </View>
-                     <View style = {styles.goalCheckBoxContainer}>
-                        <CheckBox value={isChecked} onValueChange={toggleCheckbox} label = {'Increase My Step Count'} containerStyle = {styles.goalCheckBox}/>
+                      <View style={styles.goalCheckBoxContainer}>
+                            <CheckBox
+                            value={checkboxStates.expensiveHealthyFood}
+                            onValueChange={() => toggleCheckbox('expensiveHealthyFood')}
+                            label={'Expensive Healthy Food'}
+                            containerStyle={styles.goalCheckBox}
+                            />
                      </View>
-                     
                     
 
                     <DropDownPicker
@@ -389,22 +436,49 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                     <Text style={{ marginTop: 10, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}>In the past, what have been your primary barrier to losing weight</Text>
                     <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Select your primary barrier: </Text>
 
+                    <View style={styles.goalCheckBoxContainer}>
+                            <CheckBox
+                            value={checkboxStates.lackOfTime}
+                            onValueChange={() => toggleCheckbox('lackOfTime')}
+                            label={'Lack of Time'}
+                            containerStyle={styles.goalCheckBox}
+                            />
+                     </View>
+                     <View style={styles.goalCheckBoxContainer}>
+                            <CheckBox
+                            value={checkboxStates.stressAroundFood}
+                            onValueChange={() => toggleCheckbox('stressAroundFood')}
+                            label={'Stress Around Food'}
+                            containerStyle={styles.goalCheckBox}
+                            />
+                     </View>
 
-                     <View style = {styles.goalCheckBoxContainer}>
-                        <CheckBox value={isChecked} onValueChange={toggleCheckbox} label = {'Lack of Time'} containerStyle = {styles.goalCheckBox}/>
+                      <View style={styles.goalCheckBoxContainer}>
+                            <CheckBox
+                            value={checkboxStates.foodCravings}
+                            onValueChange={() => toggleCheckbox('foodCravings')}
+                            label={'Food Cravings'}
+                            containerStyle={styles.goalCheckBox}
+                            />
                      </View>
-                     <View style = {styles.goalCheckBoxContainer}>
-                        <CheckBox value={isChecked} onValueChange={toggleCheckbox} label = {'Stress around food Choices'} containerStyle = {styles.goalCheckBox}/>
+                      <View style={styles.goalCheckBoxContainer}>
+                            <CheckBox
+                            value={checkboxStates.lackOfProgress}
+                            onValueChange={() => toggleCheckbox('lackOfProgress')}
+                            label={'Lack Of Progress'}s
+                            containerStyle={styles.goalCheckBox}
+                            />
                      </View>
-                     <View style = {styles.goalCheckBoxContainer}>
-                        <CheckBox value={isChecked} onValueChange={toggleCheckbox} label = {'Food Cravings'} containerStyle = {styles.goalCheckBox}/>
+                      <View style={styles.goalCheckBoxContainer}>
+                            <CheckBox
+                            value={checkboxStates.expensiveHealthyFood}
+                            onValueChange={() => toggleCheckbox('expensiveHealthyFood')}
+                            label={'Expensive Healthy Food'}
+                            containerStyle={styles.goalCheckBox}
+                            />
                      </View>
-                     <View style = {styles.goalCheckBoxContainer}>
-                        <CheckBox value={isChecked} onValueChange={toggleCheckbox} label = {'Lack of Progress'} containerStyle = {styles.goalCheckBox}/>
-                     </View>
-                     <View style = {styles.goalCheckBoxContainer}>
-                        <CheckBox value={isChecked} onValueChange={toggleCheckbox} label = {'Healthy Food is too expensive'} containerStyle = {styles.goalCheckBox}/>
-                     </View>
+                                 
+                    
 
                     
                     <Text style={{ marginTop: 10, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}>What is your past Medical History</Text>
