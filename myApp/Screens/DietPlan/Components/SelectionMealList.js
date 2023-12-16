@@ -1,6 +1,7 @@
 import { StyleSheet, View, Text, ScrollView, Image } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import React, { useState, useEffect } from "react";
+import CollapsibleView from "@eliav2/react-native-collapsible-view";
 import MealCard from "./MealCard";
 import {
     getMealsToday,
@@ -11,7 +12,8 @@ import {
 } from "../../../AsyncStorageFunctions";
 import SelectionMealCard from "./SelectionMealCard";
 import { Button, Stack } from "@react-native-material/core";
-import { localMeals } from "./LocalMeals.js";
+import { newLocalMeals as localMeals } from "./LocalMeals.js";
+import CollapsibleMeal from "./CollapsibleMeal";
 
 export default SelectionMealList = ({ dayMeal, mealTime, setMealTime, mealsTimeList, indexToTriggerRefresh }) => {
     const [mealsSelection, setMealsSelection] = useState(localMeals);
@@ -55,27 +57,36 @@ export default SelectionMealList = ({ dayMeal, mealTime, setMealTime, mealsTimeL
                 </ScrollView>
             </View>
             <View style={styles.mealCardContainer}>
-                {mealsSelection.map((mealData) => (
-                    <SelectionMealCard
-                        mealData={mealData}
-                        key={mealData.id}
-                        mealsToday={mealsToday}
-                        onToggleCheckFunction={async (isChecked, meal_id) => {
-                            if (isChecked) {
-                                let toAddMeal = mealData;
-                                toAddMeal["timeToEat"] = mealTime;
-                                toAddMeal["dayToEat"] = dayMeal;
-                                toAddMeal["meal_id"] = mealData.id;
-                                toAddMeal["id"] = `@meal_${toAddMeal["dayToEat"]}_${toAddMeal["timeToEat"]}_${mealData.mealName}`;
-                                await storeDataObject(
-                                    toAddMeal["id"],
-                                    toAddMeal
-                                );
-                            } else {
-                                await removeValue(meal_id);
-                            }
-                        }}
-                    />
+                {mealsSelection.map((parentMeal) => (
+                    <CollapsibleView
+                        title={<CollapsibleMeal mealData={parentMeal} />}
+                        style={{ borderWidth: 0 }}
+                    >
+                        <View style={{ marginLeft: 30 }}>
+                            {parentMeal.types.map((mealData) => (
+                                <SelectionMealCard
+                                    mealData={mealData}
+                                    key={mealData.id}
+                                    mealsToday={mealsToday}
+                                    onToggleCheckFunction={async (isChecked, meal_id) => {
+                                        if (isChecked) {
+                                            let toAddMeal = mealData;
+                                            toAddMeal["timeToEat"] = mealTime;
+                                            toAddMeal["dayToEat"] = dayMeal;
+                                            toAddMeal["meal_id"] = mealData.id;
+                                            toAddMeal["id"] = `@meal_${toAddMeal["dayToEat"]}_${toAddMeal["timeToEat"]}_${mealData.mealName}`;
+                                            await storeDataObject(
+                                                toAddMeal["id"],
+                                                toAddMeal
+                                            );
+                                        } else {
+                                            await removeValue(meal_id);
+                                        }
+                                    }}
+                                />
+                            ))}
+                        </View>
+                    </CollapsibleView>
                 ))}
             </View>
             {
