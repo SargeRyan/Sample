@@ -6,9 +6,10 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LineChart } from "react-native-chart-kit";
 import { schedulePushNotification } from "../SleepingTracker/AlarmNotification";
+import { scheduleSleepPushNotification } from "../SleepingTracker/idealsleepAlarm";
+
 import Circle from 'react-native-progress/Circle';
 import { ScrollView, View, Dimensions, TouchableOpacity, Text, StyleSheet, Modal, Image, SafeAreaView, } from "react-native"
-import { set } from "date-fns";
 
 const SleepingTrackerTab = () => {
   const fetchAllData = async () => {
@@ -376,11 +377,11 @@ const SleepingTrackerTab = () => {
     } else if (progress >= 1) {
       setProgress(0);
       setTimerActive(false);
+      scheduleSleepPushNotification("The Ideal " + selectedTime + " Sleep Complete", "Good job!");
     }
     return () => clearInterval(interval);
   }, [timerActive, progress, timeInHours]);
-
-
+  
   const showPicker = () => {
     setPickerVisible(true);
   };
@@ -396,15 +397,15 @@ const SleepingTrackerTab = () => {
     resetTimer();
     setIDEALTEXT('Start and Sleep');
     try {
-      await AsyncStorage.setItem('SleepTime', hours+":"+minutes);
-      alert('Ideal Sleeping Time Saved : ' +  hours+":"+minutes + ' HH:MM');
+      await AsyncStorage.setItem('SleepTime', hours + ":" + minutes);
+      alert('Ideal Sleeping Time Saved : ' + hours + ":" + minutes + ' HH:MM');
       setSelectedTime(`${hours}:${minutes}`);
     } catch (error) {
       // Error saving data
       console.log(error);
       alert('error');
     }
-   
+
   };
 
   const resetTimer = () => {
@@ -415,10 +416,10 @@ const SleepingTrackerTab = () => {
     try {
       // Fetch the current value of 'selectedTime' from AsyncStorage
       const storedSelectedTime = await AsyncStorage.getItem('SleepTime');
-       // If 'selectedTime' is not stored in AsyncStorage, use the default value
+      // If 'selectedTime' is not stored in AsyncStorage, use the default value
       const updatedSelectedTime = storedSelectedTime;
       // Set the value of 'selectedTime' from the fetched or default value
-       setSelectedTime(updatedSelectedTime);
+      setSelectedTime(updatedSelectedTime);
     } catch (error) {
       // Handle errors here
       alert('Error fetching or updating selectedTime:', error);
@@ -426,7 +427,7 @@ const SleepingTrackerTab = () => {
     }
   };
   useEffect(() => {
-     fetchAndUpdateSelectedTime();
+    fetchAndUpdateSelectedTime();
   }, []);
 
 
