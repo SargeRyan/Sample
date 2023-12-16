@@ -28,7 +28,7 @@ export async function schedulePushNotification(hour , minute, weekday,title, bod
     });
     await Notifications.scheduleNotificationAsync({
         content: {
-            title: title,
+            title: "🛏️ "+title,
             body: body,
             data: {  },
             sound: 'default',

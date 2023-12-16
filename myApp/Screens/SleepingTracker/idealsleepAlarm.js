@@ -23,7 +23,7 @@ export async function scheduleSleepPushNotification(title, body) {
     });
     await Notifications.scheduleNotificationAsync({
         content: {
-            title: title,
+            title: "🛏️ "+title,
             body: body,
             data: {},
             sound: 'default',
