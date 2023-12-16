@@ -1,27 +1,14 @@
 import React, { useRef, useEffect, useState } from "react";
-import IMAGE from "../SleepingTracker/Elements/Logo.png";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { differenceInMinutes, differenceInHours } from "date-fns";
+import { Button } from "@react-native-material/core";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { Touchable, TouchableOpacity } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Dimensions } from "react-native";
-import { useIsFocused } from "@react-navigation/native";
 import { LineChart } from "react-native-chart-kit";
 import { schedulePushNotification } from "../SleepingTracker/AlarmNotification";
-
-
-import {
-  View,
-  ScrollView,
-  Switch,
-  SafeAreaView,
-  Text,
-  StyleSheet,
-  Modal,
-  Image,
-} from "react-native";
+import Circle from 'react-native-progress/Circle';
+import { ScrollView, View, Dimensions, TouchableOpacity, Text, StyleSheet, Modal, Image, SafeAreaView, } from "react-native"
+import { set } from "date-fns";
 
 const SleepingTrackerTab = () => {
   const fetchAllData = async () => {
@@ -344,7 +331,6 @@ const SleepingTrackerTab = () => {
   const screenWidth = Dimensions.get("window").width;
   const chartWidth = screenWidth * 0.9; // Adjust the chart width as desired
   const chartHeight = 170; // Adjust the chart height as desired
-  const fullScreenHieght = Dimensions.get("window").height;
 
   const Graphdata = {
     labels: ["Sun", "Mon", "Tues", "Weds", "Thurs", "Fri", "Sat"],
@@ -367,10 +353,33 @@ const SleepingTrackerTab = () => {
       console.log("Error clearing data:", error);
     }
   };
-
-
   const [isPickerVisible, setPickerVisible] = useState(false);
-  const [selectedTime, setSelectedTime] = useState('SET TIME');
+  const [selectedTime, setSelectedTime] = useState('00:00');
+  const [IDEALTEXT, setIDEALTEXT] = useState('Start and Sleep');
+
+  const [progress, setProgress] = useState(0);
+  const [timerActive, setTimerActive] = useState(false);
+
+  // Convert selectedTime (HH:mm) to hours
+  const [hours, minutes] = selectedTime.split(':');
+  const timeInHours = parseInt(hours) + parseInt(minutes) / 60;
+
+  useEffect(() => {
+    let interval = null;
+    if (timerActive && progress < 1 && timeInHours > 0) {
+      interval = setInterval(() => {
+        setProgress((oldProgress) => oldProgress + 1 / (timeInHours * 60 * 60));
+      }, 1000);
+      setIDEALTEXT('Ideal Sleep Complete');
+    } else if (!timerActive && progress !== 0) {
+      clearInterval(interval);
+    } else if (progress >= 1) {
+      setProgress(0);
+      setTimerActive(false);
+    }
+    return () => clearInterval(interval);
+  }, [timerActive, progress, timeInHours]);
+
 
   const showPicker = () => {
     setPickerVisible(true);
@@ -380,13 +389,46 @@ const SleepingTrackerTab = () => {
     setPickerVisible(false);
   };
 
-  const handleConfirm = (date) => {
+  const handleConfirm = async (date) => {
     const hours = date.getHours().toString().padStart(2, '0');
     const minutes = date.getMinutes().toString().padStart(2, '0');
-    setSelectedTime(`${hours}:${minutes}`);
     hidePicker();
+    resetTimer();
+    setIDEALTEXT('Start and Sleep');
+    try {
+      await AsyncStorage.setItem('SleepTime', hours+":"+minutes);
+      alert('Ideal Sleeping Time Saved : ' +  hours+":"+minutes + ' HH:MM');
+      setSelectedTime(`${hours}:${minutes}`);
+    } catch (error) {
+      // Error saving data
+      console.log(error);
+      alert('error');
+    }
+   
   };
-  // this will set ALARM FUNCTION
+
+  const resetTimer = () => {
+    setProgress(0);
+    setTimerActive(false);
+  };
+  const fetchAndUpdateSelectedTime = async () => {
+    try {
+      // Fetch the current value of 'selectedTime' from AsyncStorage
+      const storedSelectedTime = await AsyncStorage.getItem('SleepTime');
+       // If 'selectedTime' is not stored in AsyncStorage, use the default value
+      const updatedSelectedTime = storedSelectedTime;
+      // Set the value of 'selectedTime' from the fetched or default value
+       setSelectedTime(updatedSelectedTime);
+    } catch (error) {
+      // Handle errors here
+      alert('Error fetching or updating selectedTime:', error);
+
+    }
+  };
+  useEffect(() => {
+     fetchAndUpdateSelectedTime();
+  }, []);
+
 
   const ButtonSave = () => {
     saveSleepingData();
@@ -394,51 +436,24 @@ const SleepingTrackerTab = () => {
     toggleParentModal();
     // clearAllData();
   };
+
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView}>
-        <View style={{ backgroundColor: '#009688', borderRadius: 14, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 4, }}>
-          <Text style={{
-            fontSize: 18, // Increase the font size for better visibility
-            // Increase the padding for better spacing
-            fontWeight: "bold",
-            color: "white",
-            textShadowColor: 'rgba(0, 0, 0, 0.5)', // Add text shadow color
-            textShadowOffset: { width: 2, height: 2 }, // Adjust the shadow offset
-            textShadowRadius: 4,
-            marginStart: 10,
-          }}>
-            IDEAL SLEEPING HOURS:
-          </Text>
-          <TouchableOpacity
-            style={{
-              paddingVertical: 14,
-              paddingHorizontal: 16,
-              borderRadius: 5,
-              alignSelf: 'flex-end',
-              fontSize: 18,
-              minWidth: 100,
-            }}
-            onPress={showPicker}
-          >
-            <Text style={{ color: '#fff', textAlign: 'center' }}>{selectedTime} Hours</Text>
-          </TouchableOpacity>
-          <DateTimePickerModal
-            isVisible={isPickerVisible}
-            mode="time"
-            onConfirm={handleConfirm}
-            onCancel={hidePicker}
-            is24Hour={true}
+    <ScrollView style={styles.scrollView}>
+      <SafeAreaView style={styles.container}>
+        <View style={{
+          backgroundColor: "#009688",
+          borderRadius: 20,
+          elevation: 8,
+        }}>
+          <Text style={styles.heading2}>SLEEPING DATA</Text>
+          <LineChart
+            data={Graphdata}
+            style={{ borderRadius: 20, color: "white", padding: 10 }}
+            width={chartWidth}
+            height={chartHeight}
+            chartConfig={chartConfig}
           />
         </View>
-        <Text style={styles.heading2}>SLEEPING DATA</Text>
-        <LineChart
-          data={Graphdata}
-          style={{ borderRadius: 20, color: "white" }}
-          width={chartWidth}
-          height={chartHeight}
-          chartConfig={chartConfig}
-        />
         <View style={styles.ScrollsDiv}>
           <Text style={styles.heading2}>YOUR SCHEDULE</Text>
           <ScrollView
@@ -470,7 +485,7 @@ const SleepingTrackerTab = () => {
           </ScrollView>
         </View>
 
-        <View style={styles.ToggleContainer}>
+        <View style={styles.BedContainer}>
           <Image
             style={{
               display: "flex",
@@ -497,7 +512,7 @@ const SleepingTrackerTab = () => {
           </View>
         </View>
 
-        <View style={styles.ToggleContainer}>
+        <View style={styles.AlarmContainer}>
           <Image
             style={{
               display: "flex",
@@ -523,9 +538,87 @@ const SleepingTrackerTab = () => {
             </TouchableOpacity>
           </View>
         </View>
+        <View style={styles.SleepContainer}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+            <Text style={{
+              fontSize: 15,
+              width: '50%',
+              textAlign: 'center',
+              color: 'black',
+            }}>Set Ideal SleepTime :</Text>
+            <TouchableOpacity
+              style={{
+                paddingVertical: 10,
+                paddingHorizontal: 16,
+                backgroundColor: '#009688',
+                borderRadius: 5,
+                width: '50%',
+              }}
+              onPress={showPicker}
+            >
+              <Text style={{ color: '#fff', textAlign: 'center' }}>{selectedTime == "00:00" ? 'Click to Set Time' : selectedTime + `  H:M`}</Text>
+            </TouchableOpacity>
+            <DateTimePickerModal
+              isVisible={isPickerVisible}
+              mode="time"
+              onConfirm={handleConfirm}
+              onCancel={hidePicker}
+              is24Hour={true} // This will make the picker show only the hours
+            />
+          </View>
+
+          <View
+            style={{
+              paddingHorizontal: 14,
+              paddingVertical: 20,
+              backgroundColor: "#009688",
+              marginBottom: 15,
+              borderRadius: 10,
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+            keyboardShouldPersistTaps="handled"
+          >
+            <Circle
+              progress={progress}
+              size={150}
+              color="white"
+              borderWidth={2}
+              textStyle={{ fontSize: 17, color: 'white' }}
+              showsText={true}
+              formatText={() => {
+                const totalSeconds = Math.round(progress * timeInHours * 60 * 60);
+                const hours = Math.floor(totalSeconds / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = totalSeconds % 60;
+
+                if (!timerActive && hours == 0 && minutes == 0 && seconds == 0) {
+                  return IDEALTEXT;
+                } else if (timeInHours > 0) {
+                  return `${isNaN(timeInHours) ? 0 : `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} / ${selectedTime}:00`}`;
+                } else {
+                  return 'No sleep time set';
+                }
+              }}
+            />
+            <Button
+              style={{
+                marginTop: 10,
+                width: '100%',
+                height: 70,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              color="white"
+              title={timerActive ? 'Stop' : 'Sleep Now'}
+              onPress={() =>
+                setTimerActive(!timerActive)}
+              leading={(props) => <Ionicons style={{ color: '#009688' }} name={'bed'} {...props} />}
+            />
+          </View>
+        </View>
 
         {/*PARENT MODAL */}
-
         <Modal visible={isParentModalVisible} animationType="slide" transparent>
           <View style={styles.modalContainer}>
             <TouchableOpacity
@@ -641,26 +734,29 @@ const SleepingTrackerTab = () => {
             </TouchableOpacity>
           </View>
         </Modal>
-      </ScrollView>
-    </SafeAreaView>
+      </SafeAreaView>
+    </ScrollView >
   );
 };
+const fullScreenHieght = Dimensions.get("window").height * 2;
+const fullScreenWidth = Dimensions.get("window").width - 35;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#afd3e2",
     alignItems: "center",
     flexDirection: "column",
+    justifyContent: "center",
     alignContent: "center",
-    height: "100%",
+    paddingBottom: 30,
+    paddingTop: 10,
   },
   scrollView: {
     backgroundColor: "#afd3e2",
-    paddingBottom: 30,
     width: "100%",
     height: "100%",
     padding: 10,
-
+    overflow: "scroll",
   },
   //HEADING
   headerContainer: {
@@ -723,7 +819,8 @@ const styles = StyleSheet.create({
 
   },
   ScrollsDiv: {
-    height: "24%",
+    margin: 2,
+    height: 170,
   },
   dayContainer: {
     width: 100,
@@ -753,17 +850,37 @@ const styles = StyleSheet.create({
   },
   /// Slide
 
-  ToggleContainer: {
-    marginTop: 10,
+  BedContainer: {
     margintBottom: 10,
     backgroundColor: "white",
     width: "100%",
-    height: "13%",
+    height: "10%",
     elevation: 8,
     padding: 10,
     borderRadius: 15,
     flexDirection: "row",
   },
+  AlarmContainer: {
+    marginTop: 10,
+    margintBottom: 10,
+    backgroundColor: "white",
+    width: "100%",
+    height: "10%",
+    elevation: 8,
+    padding: 10,
+    borderRadius: 15,
+    flexDirection: "row",
+  },
+  SleepContainer: {
+    marginTop: 10,
+    margintBottom: 50,
+    backgroundColor: "white",
+    width: "100%",
+    elevation: 8,
+    padding: 10,
+    borderRadius: 15,
+  },
+
   Toggleheading: {
     marginTop: 10,
     fontSize: 15,
@@ -773,7 +890,6 @@ const styles = StyleSheet.create({
   },
   slideContainer: {
     alignSelf: "center",
-
     marginLeft: 20,
   },
 
