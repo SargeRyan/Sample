@@ -9,6 +9,7 @@ import SleepingTrackerScreen from "./SleepingTracker/SleepingTrackerScreen.js";
 import MedicineTracker from "./MedicineTracker/MedicineTracker";
 import Dashboard from "./Dashboard/BmiCalculator";
 import WaterPlanScreen from "./WaterPlan/WaterPlanScreen";
+import Announcements from "./Announcements/Announcements";
 
 const Tab = createBottomTabNavigator();
 export default MainTabNavigation = () => {
@@ -18,9 +19,10 @@ export default MainTabNavigation = () => {
                 <Tab.Screen name="Dashboard" component={BmiCalculator} />
                 <Tab.Screen name="Exercise Plan" component={ExercisePlanScreen} />
                 <Tab.Screen name="Diet Plan" component={DietPlanScreen} />
-                <Tab.Screen name="Water" component={WaterPlanScreen} />
+                <Tab.Screen name="Water Tracker" component={WaterPlanScreen} />
                 <Tab.Screen name="Sleeping Tracker" component={SleepingTrackerScreen} />
                 <Tab.Screen name="Medicine Tracker" component={MedicineTracker} />
+                <Tab.Screen name="Announcements" component={Announcements} />
             </Tab.Navigator>
         </NavigationContainer>
     );
@@ -32,7 +34,7 @@ let navigatorScreenOptions = ({ route }) => ({
         if (route.name === "Dashboard") {
             iconName = focused ? "podium" : "podium-outline";
         }
-        else if (route.name === "Water") {
+        else if (route.name === "Water Tracker") {
             iconName = focused ? "water" : "water-outline";
         }
         else if (route.name === "Exercise Plan") {
@@ -45,6 +47,9 @@ let navigatorScreenOptions = ({ route }) => ({
         }
         else if (route.name === "Medicine Tracker") {
             iconName = focused ? "medkit" : "medkit-outline";
+        }
+        else if (route.name === "Announcements") {
+            iconName = focused ? "chatbubble" : "chatbubble-outline";
         }
 
         // You can return any component that you like here!

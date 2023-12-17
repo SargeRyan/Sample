@@ -268,77 +268,77 @@ export const newLocalMeals = [
     },
     {
         "mealName": "Vegetable",
-        "mealImage": "Vegetable Image URL",
+        "mealImage": "https://drive.google.com/uc?id=1sN9wHKyHtggSw3zZdgm4uT2v_ECsrmTJ",
         "types": [
             {
                 "calories": "16",
                 "mealImage": "https://drive.google.com/uc?id=1BJf1eOY9mKLntwBJpKTPS2dhBBPQkF14",
                 "mealName": "Broccoli",
                 "quantity": "1",
-                "quantityName": "serve"
+                "quantityCurrency": "serve"
             },
             {
                 "calories": "16",
                 "mealImage": "https://drive.google.com/uc?id=1BNK8wLkY1lKPDK6AHzifMQoKdsc3QuE2",
                 "mealName": "Carrot",
                 "quantity": "1",
-                "quantityName": "serve"
+                "quantityCurrency": "serve"
             },
             {
                 "calories": "16",
-                "mealImage": "Ampalaya Image URL",
+                "mealImage": "https://drive.google.com/uc?id=1n5Xzz0AtmkzYc6VEtw7CW4ua6j-oHz_j",
                 "mealName": "Ampalaya",
                 "quantity": "1",
-                "quantityName": "serve"
+                "quantityCurrency": "serve"
             },
             {
                 "calories": "16",
-                "mealImage": "Cucumber Image URL",
+                "mealImage": "https://drive.google.com/uc?id=1sN9wHKyHtggSw3zZdgm4uT2v_ECsrmTJ",
                 "mealName": "Cucumber",
                 "quantity": "1",
-                "quantityName": "serve"
+                "quantityCurrency": "serve"
             },
             {
                 "calories": "16",
-                "mealImage": "Gulay2.jpg",
+                "mealImage": "https://drive.google.com/uc?id=1NQhFFAmHs-ppEe7w8Fs_wmnV65NK28lH",
                 "mealName": "Kangkong",
                 "quantity": "1",
-                "quantityName": "Serve"
+                "quantityCurrency": "Serve"
             },
             {
                 "calories": "16",
                 "mealImage": "https://drive.google.com/uc?id=1BOP6f5hYUT0RIgrwnHjkyFsy78a-he0j",
                 "mealName": "Okra",
                 "quantity": "1",
-                "quantityName": "serve"
+                "quantityCurrency": "serve"
             },
             {
                 "calories": "16",
-                "mealImage": "Vegetable4.jpg",
+                "mealImage": "https://drive.google.com/uc?id=1KR-qUAZGkXXZjDqoeaYU05cdsDQh7ZGG",
                 "mealName": "Toge",
                 "quantity": "1",
-                "quantityName": "Serve"
+                "quantityCurrency": "Serve"
             },
             {
                 "calories": "16",
                 "mealImage": "https://drive.google.com/uc?id=1BYrFtjwdbN2QYMdg0DU1eYN4Q_UyANJd",
                 "mealName": "Kalabasa",
                 "quantity": "1",
-                "quantityName": "Serve"
+                "quantityCurrency": "Serve"
             },
             {
                 "calories": "16",
                 "mealImage": "https://drive.google.com/uc?id=1BbBg4ubh_bdsapt9uEfBJsqb-CFiJdhl",
-                "mealName": "Tomatoo",
+                "mealName": "Tomatoma",
                 "quantity": "1",
-                "quantityName": "Serve"
+                "quantityCurrency": "Serve"
             },
             {
                 "calories": "16",
-                "mealImage": "Gulay3.jpg",
+                "mealImage": "https://drive.google.com/uc?id=1MVf6PQifMih4VeVD27kjnuK5SGoOBFZb",
                 "mealName": "Malungay",
                 "quantity": "1",
-                "quantityName": "serve"
+                "quantityCurrency": "serve"
             }
         ]
     },
