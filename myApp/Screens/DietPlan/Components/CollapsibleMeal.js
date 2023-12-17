@@ -40,7 +40,7 @@ export default CollapsibleMeal = ({ mealData }) => {
                             justifyContent: "space-around",
                         }}
                     >
-                        <Text style={{ fontSize: 30, width: 150 }}>
+                        <Text style={{ fontSize: 22, width: 150 }}>
                             {mealData.mealName}
                         </Text>
                     </View>

@@ -114,8 +114,12 @@ export const localMeals = [
 ];
 
 export const newLocalMeals = [
-
-
+    {
+        "mealName": "User Added Meals",
+        "mealImage": "https://drive.google.com/uc?id=1CBBZJ67_ft5aRqE7e-GquSVc1yhwYuJ-",
+        "types": [
+        ]
+    },
     {
         "mealName": "Milk",
         "mealImage": "https://drive.google.com/uc?id=19jspasdcZ044K1uzw-K4Z5vdcq-jyQSn",
@@ -524,5 +528,7 @@ export const newLocalMeals = [
                 "quantityUnit": "g"
             }
         ]
-    }
+    },
+
+
 ]

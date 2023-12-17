@@ -26,9 +26,11 @@ export default SelectionMealList = ({ dayMeal, mealTime, setMealTime, mealsTimeL
 
     const fetchMeals = async () => {
         const fetchMeals = await getMealsSelection();
-        //console.log("Meal Selection (Added by user) ===============", fetchMeals);
-
-        setMealsSelection(fetchMeals.concat(mealsSelection));
+        console.log("Meal Selection (Added by user) ===============", fetchMeals);
+        const _mealsSelection = mealsSelection;
+        _mealsSelection[0]["types"] = fetchMeals;
+        console.log("_mealsSelection[0]", _mealsSelection[0]);
+        setMealsSelection(_mealsSelection);
 
         // meals this time
         const mealsToday = await getMealsToday(dayMeal, mealTime);
