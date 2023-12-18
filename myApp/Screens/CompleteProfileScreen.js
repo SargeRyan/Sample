@@ -93,10 +93,10 @@ const [checkboxStates, setCheckboxStates] = useState({
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
     const [items, setItems] = useState([
-        { label: 'Not Very Active(Doing Zumba or Exercise).', value: 'Not Very Active' },
-        { label: 'Lightly Very Active(Doing chores, sweeping floor, walking slowly).', value: 'Lightly Very Active' },
-        { label: 'Active(Doing 10-15 mins activity a day).', value: 'Active' },
-        { label: 'Very Active(Spend much time seated).', value: 'Very Active' },
+        { label: 'Highly active (doing zumba or exercises)', value: 'Highly active (doing zumba or exercises)' },
+        { label: 'Moderate activite ( doing chores, sweeping floor, walking slowly)', value: 'Moderate activite ( doing chores, sweeping floor,walking slowly)' },
+        { label: 'Light active ( doing 10-15 mins activity a day)', value: 'Light active ( doing 10-15 mins activity a day)' },
+        { label: 'Sedentary ( spend much time seated', value: 'Sedentary ( spend much time seated'},
     ]);
 
     const [opens, setOpens] = useState(false);
@@ -349,16 +349,16 @@ const [checkboxStates, setCheckboxStates] = useState({
                       <View style={styles.goalCheckBoxContainer}>
                             <CheckBox
                             value={checkboxStates.lackOfTime}
-                            onValueChange={() => toggleCheckbox('lackOfTime')}
-                            label={'Lack of Time'}
+                            onValueChange={() => toggleCheckbox('Loss Weight')}
+                            label={'Loss Weight'}
                             containerStyle={styles.goalCheckBox}
                             />
                      </View>
                      <View style={styles.goalCheckBoxContainer}>
                             <CheckBox
                             value={checkboxStates.stressAroundFood}
-                            onValueChange={() => toggleCheckbox('stressAroundFood')}
-                            label={'Stress Around Food'}
+                            onValueChange={() => toggleCheckbox('Maintain Weight')}
+                            label={'Maintain Weight'}
                             containerStyle={styles.goalCheckBox}
                             />
                      </View>
@@ -366,27 +366,20 @@ const [checkboxStates, setCheckboxStates] = useState({
                       <View style={styles.goalCheckBoxContainer}>
                             <CheckBox
                             value={checkboxStates.foodCravings}
-                            onValueChange={() => toggleCheckbox('foodCravings')}
-                            label={'Food Cravings'}
+                            onValueChange={() => toggleCheckbox('Gain Weight')}
+                            label={'Gain Weight'}
                             containerStyle={styles.goalCheckBox}
                             />
                      </View>
                       <View style={styles.goalCheckBoxContainer}>
                             <CheckBox
                             value={checkboxStates.lackOfProgress}
-                            onValueChange={() => toggleCheckbox('lackOfProgress')}
-                            label={'Lack Of Progress'}
+                            onValueChange={() => toggleCheckbox('Increase My Step Count')}
+                            label={'Increase My Step Count'}
                             containerStyle={styles.goalCheckBox}
                             />
                      </View>
-                      <View style={styles.goalCheckBoxContainer}>
-                            <CheckBox
-                            value={checkboxStates.expensiveHealthyFood}
-                            onValueChange={() => toggleCheckbox('expensiveHealthyFood')}
-                            label={'Expensive Healthy Food'}
-                            containerStyle={styles.goalCheckBox}
-                            />
-                     </View>
+                    
                     
 
                     <DropDownPicker
@@ -433,7 +426,7 @@ const [checkboxStates, setCheckboxStates] = useState({
 
 
 
-                    <Text style={{ marginTop: 10, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}>In the past, what have been your primary barrier to losing weight</Text>
+                    <Text style={{ marginTop: 10, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}> In the past, what been your primary barrier to gain and losing weight</Text>
                     <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Select your primary barrier: </Text>
 
                     <View style={styles.goalCheckBoxContainer}>
@@ -465,7 +458,7 @@ const [checkboxStates, setCheckboxStates] = useState({
                             <CheckBox
                             value={checkboxStates.lackOfProgress}
                             onValueChange={() => toggleCheckbox('lackOfProgress')}
-                            label={'Lack Of Progress'}s
+                            label={'Lack Of Progress'}
                             containerStyle={styles.goalCheckBox}
                             />
                      </View>
