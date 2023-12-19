@@ -396,15 +396,15 @@ const SleepingTrackerTab = () => {
     resetTimer();
     setIDEALTEXT('Start and Sleep');
     try {
-      await AsyncStorage.setItem('SleepTime', hours+":"+minutes);
-      alert('Ideal Sleeping Time Saved : ' +  hours+":"+minutes + ' HH:MM');
+      await AsyncStorage.setItem('SleepTime', hours + ":" + minutes);
+      alert('Ideal Sleeping Time Saved : ' + hours + ":" + minutes + ' HH:MM');
       setSelectedTime(`${hours}:${minutes}`);
     } catch (error) {
       // Error saving data
       console.log(error);
       alert('error');
     }
-   
+
   };
 
   const resetTimer = () => {
@@ -415,18 +415,19 @@ const SleepingTrackerTab = () => {
     try {
       // Fetch the current value of 'selectedTime' from AsyncStorage
       const storedSelectedTime = await AsyncStorage.getItem('SleepTime');
-       // If 'selectedTime' is not stored in AsyncStorage, use the default value
-      const updatedSelectedTime = storedSelectedTime;
+
+      // If 'selectedTime' is not stored in AsyncStorage, use the default value
+      const updatedSelectedTime = storedSelectedTime !== null ? storedSelectedTime : '00:00';
+
       // Set the value of 'selectedTime' from the fetched or default value
-       setSelectedTime(updatedSelectedTime);
+      setSelectedTime(updatedSelectedTime);
     } catch (error) {
       // Handle errors here
       alert('Error fetching or updating selectedTime:', error);
-
     }
   };
   useEffect(() => {
-     fetchAndUpdateSelectedTime();
+    fetchAndUpdateSelectedTime();
   }, []);
 
 
