@@ -52,6 +52,8 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
     return () => clearInterval(interval);
   }, [isRunning]);
 
+
+
   const formatTime = (timeInSeconds) => {
     const minutes = Math.floor(timeInSeconds / 60);
     const seconds = timeInSeconds % 60;
@@ -237,8 +239,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
   };
 
 
-  const [status, setStatus] = React.useState({});
-  const [video, setVideo] = React.useState({});
+ 
 
 
 
@@ -276,7 +277,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
         display: "flex",
         flexDirection: "column",
       }}
-    >
+    > 
       {/*  //First Exercise */}
       <TouchableOpacity style={styles.ButtonContainer} onPress={open}>
         <View style={styles.exerciseContainer}>
@@ -447,6 +448,10 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
       </Modal>
 
       {/*  //Second Exercise */}
+
+
+
+
       <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
         <View style={styles.exerciseContainer}>
           <View style={styles.textContainer}>
@@ -460,6 +465,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
           />
         </View>
       </TouchableOpacity>
+      
 
       <Modal
         animationType="slide"
@@ -969,11 +975,13 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
           </View>
           <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/hip-circles-exercise-illustration.gif")}
+            source={require("../ExercisePlan/picture/Ecercise/hipRotation.gif")}
           />
         </View>
       </TouchableOpacity>
+
       <Modal
+      
         animationType="slide"
         transparent={false}
         visible={modalVisible4}
@@ -993,7 +1001,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
 
         <Image
           style={styles.ImageContainerInfo}
-          source={require("../ExercisePlan/picture/hip-circles-exercise-illustration.gif")}
+          source={require("../ExercisePlan/picture/Ecercise/hipRotation.gif")}
         />
 
         <TouchableOpacity
@@ -1138,7 +1146,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
           </View>
           <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/neck.gif")}
+            source={require("../ExercisePlan/picture/Ecercise/headRotation.gif")}
           />
         </View>
       </TouchableOpacity>
@@ -1162,7 +1170,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
 
         <Image
           style={styles.ImageContainerInfo}
-          source={require("../ExercisePlan/picture/neck.gif")}
+          source={require("../ExercisePlan/picture/Ecercise/headRotation.gif")}
         />
 
         <TouchableOpacity
@@ -1486,7 +1494,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
           </View>
           <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/knee-circles-exercise-illustration.gif")}
+            source={require("../ExercisePlan/picture/Ecercise/kneeRotation.gif")}
           />
         </View>
       </TouchableOpacity>
@@ -1511,7 +1519,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
 
         <Image
           style={styles.ImageContainerInfo}
-          source={require("../ExercisePlan/picture/knee-circles-exercise-illustration.gif")}
+          source={require("../ExercisePlan/picture/Ecercise/kneeRotation.gif")}
         />
 
         <TouchableOpacity
@@ -1656,7 +1664,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
           </View>
           <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/march-in-place-exercise-illustration.gif")}
+            source={require("../ExercisePlan/picture/Ecercise/marching.gif")}
           />
         </View>
       </TouchableOpacity>
@@ -1680,7 +1688,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
 
         <Image
           style={styles.ImageContainerInfo}
-          source={require("../ExercisePlan/picture/march-in-place-exercise-illustration.gif")}
+          source={require("../ExercisePlan/picture/Ecercise/marching.gif")}
         />
 
         <TouchableOpacity
@@ -1825,7 +1833,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
           </View>
           <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/neck.gif")}
+            source={require("../ExercisePlan/picture/Ecercise/shoulderRotation.gif")}
           />
         </View>
       </TouchableOpacity>
@@ -1849,7 +1857,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
 
         <Image
           style={styles.ImageContainerInfo}
-          source={require("../ExercisePlan/picture/shoulder-rolls-exercise-illustration.gif")}
+          source={require("../ExercisePlan/picture/Ecercise/shoulderRotation.gif")}
         />
 
         <TouchableOpacity

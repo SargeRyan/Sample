@@ -416,10 +416,10 @@ const SleepingTrackerTab = () => {
     try {
       // Fetch the current value of 'selectedTime' from AsyncStorage
       const storedSelectedTime = await AsyncStorage.getItem('SleepTime');
-  
+
       // If 'selectedTime' is not stored in AsyncStorage, use the default value
       const updatedSelectedTime = storedSelectedTime !== null ? storedSelectedTime : '00:00';
-  
+
       // Set the value of 'selectedTime' from the fetched or default value
       setSelectedTime(updatedSelectedTime);
     } catch (error) {

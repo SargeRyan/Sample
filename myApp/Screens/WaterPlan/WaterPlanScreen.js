@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import WaterChart from "./Components/WaterChart";
 import WaterMonitor from "./Components/WaterMonitor";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { saveDataToCloud } from "../Dashboard/global";
 
 export default DietPlanScreen = ({ navigation, route }) => {
     const currentDayIndex = getCurrentDayIndex();
@@ -15,6 +16,7 @@ export default DietPlanScreen = ({ navigation, route }) => {
         setWaterData((prevWaterData) => {
             const newWaterData = [...prevWaterData]; // Create a new array
             newWaterData[currentDayIndex] = currentDayWater;
+
             return newWaterData;
         });
         saveAsyncCurrentDayWater(currentDayWater);
@@ -31,7 +33,18 @@ export default DietPlanScreen = ({ navigation, route }) => {
     }
 
     async function saveAsyncCurrentDayWater(amount) {
-        if (amount && amount > 0) await AsyncStorage.setItem(`@water_${currentDay}`, amount.toString());;
+        if (amount && amount > 0) {
+            await AsyncStorage.setItem(`@water_${currentDay}`, amount.toString());
+            let userData = await AsyncStorage.getItem('userData');
+            if (userData) userData = JSON.parse(userData);
+            const today = new Date();
+            const day = today.getDate();
+            const year = today.getFullYear();
+            const month = today.getMonth() + 1;
+            const formattedDate = `${year}-${month}-${day}`;
+
+            await saveDataToCloud(null, `water/${userData.id}/${formattedDate}`, amount);
+        }
         await getWaterData();
     }
 
