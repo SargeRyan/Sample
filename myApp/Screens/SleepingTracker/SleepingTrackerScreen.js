@@ -6,9 +6,10 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LineChart } from "react-native-chart-kit";
 import { schedulePushNotification } from "../SleepingTracker/AlarmNotification";
+import { scheduleSleepPushNotification } from "../SleepingTracker/idealsleepAlarm";
+
 import Circle from 'react-native-progress/Circle';
 import { ScrollView, View, Dimensions, TouchableOpacity, Text, StyleSheet, Modal, Image, SafeAreaView, } from "react-native"
-import { set } from "date-fns";
 
 const SleepingTrackerTab = () => {
   const fetchAllData = async () => {
@@ -376,10 +377,10 @@ const SleepingTrackerTab = () => {
     } else if (progress >= 1) {
       setProgress(0);
       setTimerActive(false);
+      scheduleSleepPushNotification("The Ideal " + selectedTime + " Sleep Complete", "Good job!");
     }
     return () => clearInterval(interval);
   }, [timerActive, progress, timeInHours]);
-
 
   const showPicker = () => {
     setPickerVisible(true);
@@ -423,9 +424,11 @@ const SleepingTrackerTab = () => {
       setSelectedTime(updatedSelectedTime);
     } catch (error) {
       // Handle errors here
-      alert('Error fetching or updating selectedTime:', error);
+      alert('Error fetching The Ideal Sleeping Time :', error);
     }
+
   };
+
   useEffect(() => {
     fetchAndUpdateSelectedTime();
   }, []);
@@ -977,6 +980,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginRight: "auto",
     alignSelf: "flex-start",
+    width: "50%",
   },
   ///REPEAT DROP DOWN
   dropdownHeader: {

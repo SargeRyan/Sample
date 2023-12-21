@@ -1,14 +1,9 @@
-// https://docs.expo.dev/versions/latest/sdk/notifications/
-
 import { useState, useEffect, useRef } from 'react';
 import { Text, View, Button, Platform } from 'react-native';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 
-
-
-
-export async function schedulePushNotification(hour , minute, weekday,title, body ) {
+export async function scheduleSleepPushNotification(title, body) {
     Notifications.setNotificationHandler({
         handleNotification: async () => ({
             shouldShowAlert: true,
@@ -16,9 +11,9 @@ export async function schedulePushNotification(hour , minute, weekday,title, bod
             shouldSetBadge: true,
         }),
     });
-    
+
     console.log("Scheduling notification");
-    registerForPushNotificationsAsync();
+    await registerForPushNotificationsAsync();
     const notificationListener = Notifications.addNotificationReceivedListener(notification => {
         console.log(notification);
     });
@@ -30,16 +25,10 @@ export async function schedulePushNotification(hour , minute, weekday,title, bod
         content: {
             title: "🛏️ "+title,
             body: body,
-            data: {  },
+            data: {},
             sound: 'default',
-
         },
-        trigger: { 
-            hour: hour,
-            minute: minute,
-            repeats: true,
-            weekday: weekday,
-         },
+        trigger: null,
     });
     Notifications.removeNotificationSubscription(notificationListener);
     Notifications.removeNotificationSubscription(responseListener);
@@ -76,3 +65,6 @@ async function registerForPushNotificationsAsync() {
 
     return token;
 }
+
+// Your useEffect function
+
