@@ -428,7 +428,7 @@ const SleepingTrackerTab = () => {
     }
 
   };
-  
+
   useEffect(() => {
     fetchAndUpdateSelectedTime();
   }, []);
@@ -980,6 +980,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginRight: "auto",
     alignSelf: "flex-start",
+    width: "50%",
   },
   ///REPEAT DROP DOWN
   dropdownHeader: {
