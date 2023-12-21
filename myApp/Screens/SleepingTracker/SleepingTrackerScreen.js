@@ -381,7 +381,7 @@ const SleepingTrackerTab = () => {
     }
     return () => clearInterval(interval);
   }, [timerActive, progress, timeInHours]);
-  
+
   const showPicker = () => {
     setPickerVisible(true);
   };
@@ -416,16 +416,19 @@ const SleepingTrackerTab = () => {
     try {
       // Fetch the current value of 'selectedTime' from AsyncStorage
       const storedSelectedTime = await AsyncStorage.getItem('SleepTime');
+  
       // If 'selectedTime' is not stored in AsyncStorage, use the default value
-      const updatedSelectedTime = storedSelectedTime;
+      const updatedSelectedTime = storedSelectedTime !== null ? storedSelectedTime : '00:00';
+  
       // Set the value of 'selectedTime' from the fetched or default value
       setSelectedTime(updatedSelectedTime);
     } catch (error) {
       // Handle errors here
-      alert('Error fetching or updating selectedTime:', error);
-
+      alert('Error fetching The Ideal Sleeping Time :', error);
     }
+
   };
+  
   useEffect(() => {
     fetchAndUpdateSelectedTime();
   }, []);
