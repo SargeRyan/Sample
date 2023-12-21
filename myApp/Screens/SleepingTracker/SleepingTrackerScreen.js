@@ -970,16 +970,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     textAlign: "center",
     height: "100%",
-    width: "50%",
+    maxWidth: "50%",
     alignSelf: "flex-end",
   },
   ModalLeftColumn: {
-    marginTop: 5,
     alignItems: "center",
     alignContent: "flex-start",
     flexDirection: "row",
     marginRight: "auto",
     alignSelf: "flex-start",
+    height: "100%",
     width: "50%",
   },
   ///REPEAT DROP DOWN

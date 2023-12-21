@@ -8,7 +8,7 @@ import * as Notifications from 'expo-notifications';
 
 
 
-export async function schedulePushNotification(hour , minute, weekday,title, body ) {
+export async function schedulePushNotification(hour, minute, weekday, title, body) {
     Notifications.setNotificationHandler({
         handleNotification: async () => ({
             shouldShowAlert: true,
@@ -16,7 +16,7 @@ export async function schedulePushNotification(hour , minute, weekday,title, bod
             shouldSetBadge: true,
         }),
     });
-    
+
     console.log("Scheduling notification");
     registerForPushNotificationsAsync();
     const notificationListener = Notifications.addNotificationReceivedListener(notification => {
@@ -28,18 +28,18 @@ export async function schedulePushNotification(hour , minute, weekday,title, bod
     });
     await Notifications.scheduleNotificationAsync({
         content: {
-            title: "🛏️ "+title,
+            title: "🛏️ " + title,
             body: body,
-            data: {  },
+            data: {},
             sound: 'default',
 
         },
-        trigger: { 
+        trigger: {
             hour: hour,
             minute: minute,
             repeats: true,
             weekday: weekday,
-         },
+        },
     });
     Notifications.removeNotificationSubscription(notificationListener);
     Notifications.removeNotificationSubscription(responseListener);
