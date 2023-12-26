@@ -290,7 +290,7 @@ const videoRef = useRef(null);
   };
 
 
-   const [category, setCategory] = useState('Diabetes');
+   const [category, setCategory] = useState('High Blood');
 
   
  
@@ -337,41 +337,49 @@ const videoRef = useRef(null);
 
     {category === 'Diabetes' && (
     <>
-    {/* Jogging */}
-      <TouchableOpacity style={styles.ButtonContainer} onPress={open}>
+    <Text>Diabetes</Text>
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open}>
         <View style={styles.exerciseContainer}>
           <View style={styles.textContainer}>
             <Text style={styles.textHeaderContainer}>Jogging</Text>
             <Text>Calories Burn: 93</Text>
             <Text>Duration: 10 Minutes</Text>
           </View>
+           <Image
+            style={styles.ImageContainer}
+            source={require("../ExercisePlan/menuImage/Joggingfrontview.jpg")}
+          />
         </View>
       </TouchableOpacity>
-    {/* Walking  */}
-      <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
+
+       <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
       <View style={styles.exerciseContainer}>
         <View style={styles.textContainer}>
           <Text style={styles.textHeaderContainer}>Walking</Text>
           <Text>Calories Burn: 67</Text>
           <Text>Duration: 10 Minutes</Text>
         </View>
+         <Image
+            style={styles.ImageContainer}
+            source={require("../ExercisePlan/menuImage/Walkingfrontview.jpg")}
+          />
       </View>
     </TouchableOpacity>
-    {/* Light Dumbbell */}
-       <TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
+
+   <TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
         <View style={styles.exerciseContainer}>
           <View style={styles.textContainer}>
             <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
             <Text>Calories Burn: 36</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/lightDumbell.gif")}
-          /> */}
-        </View>
+            source={require("../ExercisePlan/menuImage/LightDumbbell.jpg")}
+          />
+        </View>    
       </TouchableOpacity>
-    {/* Jumping Jack */}
+
   <TouchableOpacity style={styles.ButtonContainer} onPress={open3}>
         <View style={styles.exerciseContainer}>
           <View style={styles.textContainer}>
@@ -379,24 +387,24 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 80</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+           <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/jumpingJack.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/JumpingJacks.jpg")}
+          /> 
         </View>
       </TouchableOpacity>
-    {/* Hip Rotation */}
- <TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
+
+<TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
         <View style={styles.exerciseContainer}>
           <View style={styles.textContainer}>
             <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/hipRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/HipRotation.jpg")}
+          />
         </View>
       </TouchableOpacity>
     {/* Head Rotation */}
@@ -407,10 +415,10 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 10</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/headRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/HeadRotation.jpg")}
+          /> 
         </View>
       </TouchableOpacity>
      {/* Arm Rotation */}
@@ -425,10 +433,10 @@ const videoRef = useRef(null);
             <Text>Duration: 5 Minutes</Text>
           </View>
        
-           {/* <Image
+           <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/armRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/ArmRotation.jpg")}
+          /> 
         </View>
       </TouchableOpacity>
     {/* Knee Rotation */}
@@ -442,10 +450,10 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/kneeRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/KneeRotation.jpg")}
+          />
         </View>
       </TouchableOpacity>
    {/*Standing March */}
@@ -456,10 +464,10 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/marching.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/Marchingfrontview.jpg")}
+          /> 
         </View>
       </TouchableOpacity>
   {/* Shoulder Roll */}
@@ -470,10 +478,10 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/shoulderRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/Shoulderroll.jpg")}
+          />
         </View>
       </TouchableOpacity>
     </>
@@ -481,43 +489,47 @@ const videoRef = useRef(null);
 
      {category === 'High Blood' && (
     <>
-     
-    {/* Walking  */}
-      <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
+       <Text>High Blood</Text>
+       <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
       <View style={styles.exerciseContainer}>
         <View style={styles.textContainer}>
           <Text style={styles.textHeaderContainer}>Walking</Text>
           <Text>Calories Burn: 67</Text>
           <Text>Duration: 10 Minutes</Text>
         </View>
+         <Image
+            style={styles.ImageContainer}
+            source={require("../ExercisePlan/menuImage/Walkingfrontview.jpg")}
+          />
       </View>
     </TouchableOpacity>
-    {/* Light Dumbbell */}
-       <TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
+
+   <TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
         <View style={styles.exerciseContainer}>
           <View style={styles.textContainer}>
             <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
             <Text>Calories Burn: 36</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/lightDumbell.gif")}
-          /> */}
-        </View>
+            source={require("../ExercisePlan/menuImage/LightDumbbell.jpg")}
+          />
+        </View>    
       </TouchableOpacity>
-    {/* Hip Rotation */}
- <TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
+
+
+<TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
         <View style={styles.exerciseContainer}>
           <View style={styles.textContainer}>
             <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/hipRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/HipRotation.jpg")}
+          />
         </View>
       </TouchableOpacity>
     {/* Head Rotation */}
@@ -528,10 +540,10 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 10</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/headRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/HeadRotation.jpg")}
+          /> 
         </View>
       </TouchableOpacity>
      {/* Arm Rotation */}
@@ -546,10 +558,10 @@ const videoRef = useRef(null);
             <Text>Duration: 5 Minutes</Text>
           </View>
        
-           {/* <Image
+           <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/armRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/ArmRotation.jpg")}
+          /> 
         </View>
       </TouchableOpacity>
     {/* Knee Rotation */}
@@ -563,10 +575,10 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/kneeRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/KneeRotation.jpg")}
+          />
         </View>
       </TouchableOpacity>
    {/*Standing March */}
@@ -577,10 +589,10 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/marching.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/Marchingfrontview.jpg")}
+          /> 
         </View>
       </TouchableOpacity>
   {/* Shoulder Roll */}
@@ -591,10 +603,10 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/shoulderRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/Shoulderroll.jpg")}
+          />
         </View>
       </TouchableOpacity>
     </>
@@ -602,43 +614,47 @@ const videoRef = useRef(null);
 
     {category === 'Stroke' && (
     <>
-     
-    {/* Walking  */}
-      <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
+      <Text>Stroke</Text>  
+       <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
       <View style={styles.exerciseContainer}>
         <View style={styles.textContainer}>
           <Text style={styles.textHeaderContainer}>Walking</Text>
           <Text>Calories Burn: 67</Text>
           <Text>Duration: 10 Minutes</Text>
         </View>
+         <Image
+            style={styles.ImageContainer}
+            source={require("../ExercisePlan/menuImage/Walkingfrontview.jpg")}
+          />
       </View>
     </TouchableOpacity>
-    {/* Light Dumbbell */}
-       <TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
+
+   <TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
         <View style={styles.exerciseContainer}>
           <View style={styles.textContainer}>
             <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
             <Text>Calories Burn: 36</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/lightDumbell.gif")}
-          /> */}
-        </View>
+            source={require("../ExercisePlan/menuImage/LightDumbbell.jpg")}
+          />
+        </View>    
       </TouchableOpacity>
-    {/* Hip Rotation */}
- <TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
+
+
+<TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
         <View style={styles.exerciseContainer}>
           <View style={styles.textContainer}>
             <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/hipRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/HipRotation.jpg")}
+          />
         </View>
       </TouchableOpacity>
     {/* Head Rotation */}
@@ -649,10 +665,10 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 10</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/headRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/HeadRotation.jpg")}
+          /> 
         </View>
       </TouchableOpacity>
      {/* Arm Rotation */}
@@ -667,10 +683,10 @@ const videoRef = useRef(null);
             <Text>Duration: 5 Minutes</Text>
           </View>
        
-           {/* <Image
+           <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/armRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/ArmRotation.jpg")}
+          /> 
         </View>
       </TouchableOpacity>
     {/* Knee Rotation */}
@@ -684,10 +700,10 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/kneeRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/KneeRotation.jpg")}
+          />
         </View>
       </TouchableOpacity>
    {/*Standing March */}
@@ -698,10 +714,10 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/marching.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/Marchingfrontview.jpg")}
+          /> 
         </View>
       </TouchableOpacity>
   {/* Shoulder Roll */}
@@ -712,10 +728,10 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/shoulderRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/Shoulderroll.jpg")}
+          />
         </View>
       </TouchableOpacity>
     </>
@@ -723,43 +739,47 @@ const videoRef = useRef(null);
 
      {category === 'Arthritis' && (
     <>
-     
-    {/* Walking  */}
-      <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
+        <Text>Arthritis</Text>
+       <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
       <View style={styles.exerciseContainer}>
         <View style={styles.textContainer}>
           <Text style={styles.textHeaderContainer}>Walking</Text>
           <Text>Calories Burn: 67</Text>
           <Text>Duration: 10 Minutes</Text>
         </View>
+         <Image
+            style={styles.ImageContainer}
+            source={require("../ExercisePlan/menuImage/Walkingfrontview.jpg")}
+          />
       </View>
     </TouchableOpacity>
-    {/* Light Dumbbell */}
-       <TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
+
+   <TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
         <View style={styles.exerciseContainer}>
           <View style={styles.textContainer}>
             <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
             <Text>Calories Burn: 36</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/lightDumbell.gif")}
-          /> */}
-        </View>
+            source={require("../ExercisePlan/menuImage/LightDumbbell.jpg")}
+          />
+        </View>    
       </TouchableOpacity>
-    {/* Hip Rotation */}
- <TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
+
+
+<TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
         <View style={styles.exerciseContainer}>
           <View style={styles.textContainer}>
             <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/hipRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/HipRotation.jpg")}
+          />
         </View>
       </TouchableOpacity>
     {/* Head Rotation */}
@@ -770,10 +790,10 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 10</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/headRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/HeadRotation.jpg")}
+          /> 
         </View>
       </TouchableOpacity>
      {/* Arm Rotation */}
@@ -788,10 +808,10 @@ const videoRef = useRef(null);
             <Text>Duration: 5 Minutes</Text>
           </View>
        
-           {/* <Image
+           <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/armRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/ArmRotation.jpg")}
+          /> 
         </View>
       </TouchableOpacity>
     {/* Knee Rotation */}
@@ -805,10 +825,10 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/kneeRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/KneeRotation.jpg")}
+          />
         </View>
       </TouchableOpacity>
    {/*Standing March */}
@@ -819,10 +839,10 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/marching.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/Marchingfrontview.jpg")}
+          /> 
         </View>
       </TouchableOpacity>
   {/* Shoulder Roll */}
@@ -833,10 +853,10 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/shoulderRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/Shoulderroll.jpg")}
+          />
         </View>
       </TouchableOpacity>
     </>
@@ -844,43 +864,47 @@ const videoRef = useRef(null);
 
      {category === 'Asthma' && (
     <>
-     
-    {/* Walking  */}
-      <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
+        <Text>Asthma</Text>
+       <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
       <View style={styles.exerciseContainer}>
         <View style={styles.textContainer}>
           <Text style={styles.textHeaderContainer}>Walking</Text>
           <Text>Calories Burn: 67</Text>
           <Text>Duration: 10 Minutes</Text>
         </View>
+         <Image
+            style={styles.ImageContainer}
+            source={require("../ExercisePlan/menuImage/Walkingfrontview.jpg")}
+          />
       </View>
     </TouchableOpacity>
-    {/* Light Dumbbell */}
-       <TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
+
+   <TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
         <View style={styles.exerciseContainer}>
           <View style={styles.textContainer}>
             <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
             <Text>Calories Burn: 36</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/lightDumbell.gif")}
-          /> */}
-        </View>
+            source={require("../ExercisePlan/menuImage/LightDumbbell.jpg")}
+          />
+        </View>    
       </TouchableOpacity>
-    {/* Hip Rotation */}
- <TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
+
+
+<TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
         <View style={styles.exerciseContainer}>
           <View style={styles.textContainer}>
             <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/hipRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/HipRotation.jpg")}
+          />
         </View>
       </TouchableOpacity>
     {/* Head Rotation */}
@@ -891,10 +915,10 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 10</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/headRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/HeadRotation.jpg")}
+          /> 
         </View>
       </TouchableOpacity>
      {/* Arm Rotation */}
@@ -909,10 +933,10 @@ const videoRef = useRef(null);
             <Text>Duration: 5 Minutes</Text>
           </View>
        
-           {/* <Image
+           <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/armRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/ArmRotation.jpg")}
+          /> 
         </View>
       </TouchableOpacity>
     {/* Knee Rotation */}
@@ -926,10 +950,10 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/kneeRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/KneeRotation.jpg")}
+          />
         </View>
       </TouchableOpacity>
    {/*Standing March */}
@@ -940,10 +964,10 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/marching.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/Marchingfrontview.jpg")}
+          /> 
         </View>
       </TouchableOpacity>
   {/* Shoulder Roll */}
@@ -954,10 +978,10 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/shoulderRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/Shoulderroll.jpg")}
+          />
         </View>
       </TouchableOpacity>
     </>
@@ -965,7 +989,7 @@ const videoRef = useRef(null);
 
   {category === 'Obesity' && (
     <>
-    {/* Jogging */}
+    <Text>Obesity</Text>
       <TouchableOpacity style={styles.ButtonContainer} onPress={open}>
         <View style={styles.exerciseContainer}>
           <View style={styles.textContainer}>
@@ -973,33 +997,41 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 93</Text>
             <Text>Duration: 10 Minutes</Text>
           </View>
+           <Image
+            style={styles.ImageContainer}
+            source={require("../ExercisePlan/menuImage/Joggingfrontview.jpg")}
+          />
         </View>
       </TouchableOpacity>
-    {/* Walking  */}
-      <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
+
+       <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
       <View style={styles.exerciseContainer}>
         <View style={styles.textContainer}>
           <Text style={styles.textHeaderContainer}>Walking</Text>
           <Text>Calories Burn: 67</Text>
           <Text>Duration: 10 Minutes</Text>
         </View>
+         <Image
+            style={styles.ImageContainer}
+            source={require("../ExercisePlan/menuImage/Walkingfrontview.jpg")}
+          />
       </View>
     </TouchableOpacity>
-    {/* Light Dumbbell */}
-       <TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
+
+   <TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
         <View style={styles.exerciseContainer}>
           <View style={styles.textContainer}>
             <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
             <Text>Calories Burn: 36</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/lightDumbell.gif")}
-          /> */}
-        </View>
+            source={require("../ExercisePlan/menuImage/LightDumbbell.jpg")}
+          />
+        </View>    
       </TouchableOpacity>
-    {/* Jumping Jack */}
+
   <TouchableOpacity style={styles.ButtonContainer} onPress={open3}>
         <View style={styles.exerciseContainer}>
           <View style={styles.textContainer}>
@@ -1007,24 +1039,24 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 80</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+           <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/jumpingJack.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/JumpingJacks.jpg")}
+          /> 
         </View>
       </TouchableOpacity>
-    {/* Hip Rotation */}
- <TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
+
+<TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
         <View style={styles.exerciseContainer}>
           <View style={styles.textContainer}>
             <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/hipRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/HipRotation.jpg")}
+          />
         </View>
       </TouchableOpacity>
     {/* Head Rotation */}
@@ -1035,10 +1067,10 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 10</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/headRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/HeadRotation.jpg")}
+          /> 
         </View>
       </TouchableOpacity>
      {/* Arm Rotation */}
@@ -1053,10 +1085,10 @@ const videoRef = useRef(null);
             <Text>Duration: 5 Minutes</Text>
           </View>
        
-           {/* <Image
+           <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/armRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/ArmRotation.jpg")}
+          /> 
         </View>
       </TouchableOpacity>
     {/* Knee Rotation */}
@@ -1070,10 +1102,10 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/kneeRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/KneeRotation.jpg")}
+          />
         </View>
       </TouchableOpacity>
    {/*Standing March */}
@@ -1084,10 +1116,10 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/marching.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/Marchingfrontview.jpg")}
+          /> 
         </View>
       </TouchableOpacity>
   {/* Shoulder Roll */}
@@ -1098,10 +1130,10 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/shoulderRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/Shoulderroll.jpg")}
+          />
         </View>
       </TouchableOpacity>
     </>
@@ -1109,7 +1141,7 @@ const videoRef = useRef(null);
   
   {category === 'Under Weight' && (
     <>
-    {/* Jogging */}
+    <Text>Under Weight</Text>
       <TouchableOpacity style={styles.ButtonContainer} onPress={open}>
         <View style={styles.exerciseContainer}>
           <View style={styles.textContainer}>
@@ -1117,33 +1149,41 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 93</Text>
             <Text>Duration: 10 Minutes</Text>
           </View>
+           <Image
+            style={styles.ImageContainer}
+            source={require("../ExercisePlan/menuImage/Joggingfrontview.jpg")}
+          />
         </View>
       </TouchableOpacity>
-    {/* Walking  */}
-      <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
+
+       <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
       <View style={styles.exerciseContainer}>
         <View style={styles.textContainer}>
           <Text style={styles.textHeaderContainer}>Walking</Text>
           <Text>Calories Burn: 67</Text>
           <Text>Duration: 10 Minutes</Text>
         </View>
+         <Image
+            style={styles.ImageContainer}
+            source={require("../ExercisePlan/menuImage/Walkingfrontview.jpg")}
+          />
       </View>
     </TouchableOpacity>
-    {/* Light Dumbbell */}
-       <TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
+
+   <TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
         <View style={styles.exerciseContainer}>
           <View style={styles.textContainer}>
             <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
             <Text>Calories Burn: 36</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/lightDumbell.gif")}
-          /> */}
-        </View>
+            source={require("../ExercisePlan/menuImage/LightDumbbell.jpg")}
+          />
+        </View>    
       </TouchableOpacity>
-    {/* Jumping Jack */}
+
   <TouchableOpacity style={styles.ButtonContainer} onPress={open3}>
         <View style={styles.exerciseContainer}>
           <View style={styles.textContainer}>
@@ -1151,24 +1191,24 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 80</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+           <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/jumpingJack.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/JumpingJacks.jpg")}
+          /> 
         </View>
       </TouchableOpacity>
-    {/* Hip Rotation */}
- <TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
+
+<TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
         <View style={styles.exerciseContainer}>
           <View style={styles.textContainer}>
             <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/hipRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/HipRotation.jpg")}
+          />
         </View>
       </TouchableOpacity>
     {/* Head Rotation */}
@@ -1179,10 +1219,10 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 10</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/headRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/HeadRotation.jpg")}
+          /> 
         </View>
       </TouchableOpacity>
      {/* Arm Rotation */}
@@ -1197,10 +1237,10 @@ const videoRef = useRef(null);
             <Text>Duration: 5 Minutes</Text>
           </View>
        
-           {/* <Image
+           <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/armRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/ArmRotation.jpg")}
+          /> 
         </View>
       </TouchableOpacity>
     {/* Knee Rotation */}
@@ -1214,10 +1254,10 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/kneeRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/KneeRotation.jpg")}
+          />
         </View>
       </TouchableOpacity>
    {/*Standing March */}
@@ -1228,10 +1268,10 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/marching.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/Marchingfrontview.jpg")}
+          /> 
         </View>
       </TouchableOpacity>
   {/* Shoulder Roll */}
@@ -1242,10 +1282,10 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/shoulderRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/Shoulderroll.jpg")}
+          />
         </View>
       </TouchableOpacity>
     </>
@@ -1253,19 +1293,47 @@ const videoRef = useRef(null);
 
  {category === 'Fatigue' && (
     <>
-   
-    {/* Hip Rotation */}
- <TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
+    <Text>Fatigue</Text>
+     <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
+      <View style={styles.exerciseContainer}>
+        <View style={styles.textContainer}>
+          <Text style={styles.textHeaderContainer}>Walking</Text>
+          <Text>Calories Burn: 67</Text>
+          <Text>Duration: 10 Minutes</Text>
+        </View>
+         <Image
+            style={styles.ImageContainer}
+            source={require("../ExercisePlan/menuImage/Walkingfrontview.jpg")}
+          />
+      </View>
+    </TouchableOpacity>
+
+   <TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
+        <View style={styles.exerciseContainer}>
+          <View style={styles.textContainer}>
+            <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
+            <Text>Calories Burn: 36</Text>
+            <Text>Duration: 5 Minutes</Text>
+          </View>
+          <Image
+            style={styles.ImageContainer}
+            source={require("../ExercisePlan/menuImage/LightDumbbell.jpg")}
+          />
+        </View>    
+      </TouchableOpacity>
+
+
+<TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
         <View style={styles.exerciseContainer}>
           <View style={styles.textContainer}>
             <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/hipRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/HipRotation.jpg")}
+          />
         </View>
       </TouchableOpacity>
     {/* Head Rotation */}
@@ -1276,10 +1344,10 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 10</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/headRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/HeadRotation.jpg")}
+          /> 
         </View>
       </TouchableOpacity>
      {/* Arm Rotation */}
@@ -1294,10 +1362,10 @@ const videoRef = useRef(null);
             <Text>Duration: 5 Minutes</Text>
           </View>
        
-           {/* <Image
+           <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/armRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/ArmRotation.jpg")}
+          /> 
         </View>
       </TouchableOpacity>
     {/* Knee Rotation */}
@@ -1311,10 +1379,24 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/kneeRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/KneeRotation.jpg")}
+          />
+        </View>
+      </TouchableOpacity>
+   {/*Standing March */}
+ <TouchableOpacity style={styles.ButtonContainer} onPress={open8}>
+        <View style={styles.exerciseContainer}>
+          <View style={styles.textContainer}>
+            <Text style={styles.textHeaderContainer}>Standing March</Text>
+            <Text>Calories Burn: 20</Text>
+            <Text>Duration: 5 Minutes</Text>
+          </View>
+          <Image
+            style={styles.ImageContainer}
+            source={require("../ExercisePlan/menuImage/Marchingfrontview.jpg")}
+          /> 
         </View>
       </TouchableOpacity>
   {/* Shoulder Roll */}
@@ -1325,10 +1407,10 @@ const videoRef = useRef(null);
             <Text>Calories Burn: 20</Text>
             <Text>Duration: 5 Minutes</Text>
           </View>
-          {/* <Image
+          <Image
             style={styles.ImageContainer}
-            source={require("../ExercisePlan/picture/Ecercise/shoulderRotation.gif")}
-          /> */}
+            source={require("../ExercisePlan/menuImage/Shoulderroll.jpg")}
+          />
         </View>
       </TouchableOpacity>
     </>
@@ -1336,9 +1418,11 @@ const videoRef = useRef(null);
 
  
   {category === '' && (
+    
     <View style={{ marginTop: 20, padding: 10, backgroundColor: 'lightgray' }}>
-      <Text>No category matched</Text>
+   <Text>No Category Match</Text>
     </View>
+
   )}
 
 
@@ -3127,7 +3211,7 @@ const videoRef = useRef(null);
 
 const styles = StyleSheet.create({
   ImageContainer: {
-    height: 100,
+    height: 120,
     width: 80,
     borderRadius: 10,
     marginLeft: 70,
@@ -3160,7 +3244,7 @@ const styles = StyleSheet.create({
   exerciseContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 5,
+    marginTop: 15,
   },
   textContainer: {
     marginRight: 20,
