@@ -337,8 +337,8 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
   };
 
   const [category, setCategory] = useState('Obesity');
-  const [medicalHistory, setMedicalHistory] = useState(['Diabetes', 'Stroke', 'Arthritis', 'Asthma', 'Obesity', 'Underweight', 'Fatigue', 'High Blood']);
-  const [medicalTitle, setMedicalTitle] = useState('Exercises for No Medical Condition');
+  const [medicalHistory, setMedicalHistory] = useState([]);
+  const [medicalTitle, setMedicalTitle] = useState('');
 
   useEffect(() => {
     const getAllMedCategory = async function () {
@@ -355,8 +355,11 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
       console.log("Medical History", categories);
       setMedicalHistory(categories);
       // add "and" before the last item of category title
-      categoryTitle[categoryTitle.length - 1] = "and " + categoryTitle[categoryTitle.length - 1];
-      setMedicalTitle('Some Exercises are not available since you specifiy that you have ' + categoryTitle.toString());
+      if (categoryTitle.length > 0) {
+        categoryTitle[categoryTitle.length - 1] = "and " + categoryTitle[categoryTitle.length - 1];
+        setMedicalTitle('Some Exercises are not available since you specifiy that you have ' + categoryTitle.toString());
+      }
+
     }
     getAllMedCategory();
   }, []);
@@ -398,7 +401,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
         flexDirection: "column",
       }}
     >
-      <Text style={{
+      {medicalTitle && <Text style={{
         textAlign: "center",
         fontSize: 16,
         margin: 10,
@@ -407,6 +410,9 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
         color: "#0d4761",
         borderRadius: 5,
       }}>{medicalTitle}</Text>
+
+      }
+
       {category === 'Diabetes' && (
         <>
           <Text>Diabetes</Text>
