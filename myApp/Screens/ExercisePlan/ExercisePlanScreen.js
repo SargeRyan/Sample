@@ -53,27 +53,27 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
     return () => clearInterval(interval);
   }, [isRunning]);
 
-useEffect(() => {
-  const getData = async () => {
-    try {
-      // Retrieve data using AsyncStorage
-      const heightValue = await AsyncStorage.getItem('height');
-      const weightValue = await AsyncStorage.getItem('weight');
-      const genderValue = await AsyncStorage.getItem('gender');
-      const medHistoryValue = await AsyncStorage.getItem('medHistory');
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        // Retrieve data using AsyncStorage
+        const heightValue = await AsyncStorage.getItem('height');
+        const weightValue = await AsyncStorage.getItem('weight');
+        const genderValue = await AsyncStorage.getItem('gender');
+        const medHistoryValue = await AsyncStorage.getItem('medHistory');
 
-      // Update state with retrieved data
-      setHeight(heightValue);
-      setWeight(weightValue);
-      setGender(genderValue);
-      setMedHistory(medHistoryValue);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+        // Update state with retrieved data
+        setHeight(heightValue);
+        setWeight(weightValue);
+        setGender(genderValue);
+        setMedHistory(medHistoryValue);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-  getData();
-}, []);
+    getData();
+  }, []);
 
 
 
@@ -262,7 +262,7 @@ useEffect(() => {
     setModalVisible9(true);
   };
 
-const videoRef = useRef(null);
+  const videoRef = useRef(null);
   const [isReplaying, setIsReplaying] = useState(false);
 
   const handleReadyForDisplay = async () => {
@@ -289,13 +289,77 @@ const videoRef = useRef(null);
     }
   };
 
+  function checkDiplayAllowedExercise(exercise) {
+    for (let i = 0; i < medicalHistory.length; i++) {
+      const medHistory = medicalHistory[i];
+      const allowedExercise = allowedMedicalConditions[medHistory].allowedExercise;
+      if (!allowedExercise.includes(exercise)) {
+        return 'none'
+      }
+    }
+    return 'flex';
+  }
 
-   const [category, setCategory] = useState('High Blood');
+  const allExercises = ['Jogging', 'Walking', 'Light Dumbbell', 'Jumping Jack', 'Hip Rotation', 'Head Rotation', 'Arm Rotation', 'Knee Rotation', 'Standing March', 'Shoulder Roll'];
+  const allowedMedicalConditions = {
+    Diabetes: {
+      allowedExercise: allExercises,
+      duration: '30 minutes daily (10 minutes per dose, 3 sets)',
+    },
+    Stroke: {
+      allowedExercise: ['Light Dumbbell', 'Standing March', 'Walking', 'Hip Rotation', 'Head Rotation', 'Knee Rotation', 'Arm Rotation', 'Shoulder Role'],
+      duration: '30 minutes daily (10 minutes per dose, 3 sets)',
+    },
+    Arthritis: {
+      allowedExercise: ['Light Dumbbell', 'Standing March', 'Walking', 'Hip Rotation', 'Head Rotation', 'Knee Rotation', 'Arm Rotation', 'Shoulder Role'],
+      duration: '30 minutes daily',
+    },
+    Asthma: {
+      allowedExercise: ['Light Dumbbell', 'Standing March', 'Walking', 'Hip Rotation', 'Head Rotation', 'Knee Rotation', 'Arm Rotation', 'Shoulder Role'],
+      duration: '30 minutes daily (10 minutes per dose, 3 sets)',
+    },
+    Obesity: {
+      allowedExercise: allExercises,  // No excluded exercises (All exercises are allowed).
+      duration: '30 minutes daily',
+    },
+    Underweight: {
+      allowedExercise: allExercises,  // No excluded exercises (All exercises are allowed).
+      duration: '30 minutes daily',
+    },
+    Fatigue: {
+      allowedExercise: ['Hip Rotation', 'Head Rotation', 'Knee Rotation', 'Arm Rotation', 'Shoulder Role'],
+      duration: '15 minutes (3 minutes per dose, 5 sets)',
+    },
+    "High Blood": {
+      allowedExercise: ['Light Dumbbell', 'Standing March', 'Walking', 'Hip Rotation', 'Head Rotation', 'Knee Rotation', 'Arm Rotation', 'Shoulder Role'],
+      duration: '30 minutes daily (10 minutes per dose, 3 sets)',
+    },
+  };
 
-  
- 
+  const [category, setCategory] = useState('Obesity');
+  const [medicalHistory, setMedicalHistory] = useState(['Diabetes', 'Stroke', 'Arthritis', 'Asthma', 'Obesity', 'Underweight', 'Fatigue', 'High Blood']);
+  const [medicalTitle, setMedicalTitle] = useState('Exercises for No Medical Condition');
 
-
+  useEffect(() => {
+    const getAllMedCategory = async function () {
+      let categories = [];
+      let categoryTitle = [];
+      let allKeys = await AsyncStorage.getAllKeys();
+      for (let i = 0; i < allKeys.length; i++) {
+        if (allKeys[i].startsWith("@medicalHistory_")) {
+          categories.push(allKeys[i].split("_")[1]);
+          // Add "and" between elements in categoryTitle
+          categoryTitle.push(allKeys[i].split("_")[1]);
+        }
+      }
+      console.log("Medical History", categories);
+      setMedicalHistory(categories);
+      // add "and" before the last item of category title
+      categoryTitle[categoryTitle.length - 1] = "and " + categoryTitle[categoryTitle.length - 1];
+      setMedicalTitle('Some Exercises are not available since you specifiy that you have ' + categoryTitle.toString());
+    }
+    getAllMedCategory();
+  }, []);
 
   async function markExerciseDone(burnedCalories, duration, exerciseName) {
     if (startCount <= 0) {
@@ -333,1098 +397,1104 @@ const videoRef = useRef(null);
         display: "flex",
         flexDirection: "column",
       }}
-    > 
-
-    {category === 'Diabetes' && (
-    <>
-    <Text>Diabetes</Text>
+    >
+      <Text style={{
+        textAlign: "center",
+        fontSize: 16,
+        margin: 10,
+        padding: 5,
+        backgroundColor: "#fff",
+        color: "#0d4761",
+        borderRadius: 5,
+      }}>{medicalTitle}</Text>
+      {category === 'Diabetes' && (
+        <>
+          <Text>Diabetes</Text>
           <TouchableOpacity style={styles.ButtonContainer} onPress={open}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Jogging</Text>
-            <Text>Calories Burn: 93</Text>
-            <Text>Duration: 10 Minutes</Text>
-          </View>
-           <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/Joggingfrontview.jpg")}
-          />
-        </View>
-      </TouchableOpacity>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Jogging</Text>
+                <Text>Calories Burn: 93</Text>
+                <Text>Duration: 10 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/Joggingfrontview.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
 
-       <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
-      <View style={styles.exerciseContainer}>
-        <View style={styles.textContainer}>
-          <Text style={styles.textHeaderContainer}>Walking</Text>
-          <Text>Calories Burn: 67</Text>
-          <Text>Duration: 10 Minutes</Text>
-        </View>
-         <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/Walkingfrontview.jpg")}
-          />
-      </View>
-    </TouchableOpacity>
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Walking</Text>
+                <Text>Calories Burn: 67</Text>
+                <Text>Duration: 10 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/Walkingfrontview.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
 
-   <TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
-            <Text>Calories Burn: 36</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/LightDumbbell.jpg")}
-          />
-        </View>    
-      </TouchableOpacity>
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
+                <Text>Calories Burn: 36</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/LightDumbbell.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
 
-  <TouchableOpacity style={styles.ButtonContainer} onPress={open3}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Jumping Jack</Text>
-            <Text>Calories Burn: 80</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-           <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/JumpingJacks.jpg")}
-          /> 
-        </View>
-      </TouchableOpacity>
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open3}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Jumping Jack</Text>
+                <Text>Calories Burn: 80</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/JumpingJacks.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
 
-<TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/HipRotation.jpg")}
-          />
-        </View>
-      </TouchableOpacity>
-    {/* Head Rotation */}
- <TouchableOpacity style={styles.ButtonContainer} onPress={open5}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Head Rotation</Text>
-            <Text>Calories Burn: 10</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/HeadRotation.jpg")}
-          /> 
-        </View>
-      </TouchableOpacity>
-     {/* Arm Rotation */}
-<TouchableOpacity
-        style={styles.ButtonContainer}
-        onPress={() => setModalVisible6(true)}
-      >
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Arm Rotation</Text>
-            <Text>Calories Burn: 10</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-       
-           <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/ArmRotation.jpg")}
-          /> 
-        </View>
-      </TouchableOpacity>
-    {/* Knee Rotation */}
-  <TouchableOpacity
-        style={styles.ButtonContainer}
-        onPress={() => setModalVisible7(true)}
-      >
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Knee Rotation</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/KneeRotation.jpg")}
-          />
-        </View>
-      </TouchableOpacity>
-   {/*Standing March */}
- <TouchableOpacity style={styles.ButtonContainer} onPress={open8}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Standing March</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/Marchingfrontview.jpg")}
-          /> 
-        </View>
-      </TouchableOpacity>
-  {/* Shoulder Roll */}
-<TouchableOpacity style={styles.ButtonContainer} onPress={open9}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Shoulder Roll</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/Shoulderroll.jpg")}
-          />
-        </View>
-      </TouchableOpacity>
-    </>
-  )}
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/HipRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Head Rotation */}
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open5}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Head Rotation</Text>
+                <Text>Calories Burn: 10</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/HeadRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Arm Rotation */}
+          <TouchableOpacity
+            style={styles.ButtonContainer}
+            onPress={() => setModalVisible6(true)}
+          >
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Arm Rotation</Text>
+                <Text>Calories Burn: 10</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
 
-     {category === 'High Blood' && (
-    <>
-       <Text>High Blood</Text>
-       <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
-      <View style={styles.exerciseContainer}>
-        <View style={styles.textContainer}>
-          <Text style={styles.textHeaderContainer}>Walking</Text>
-          <Text>Calories Burn: 67</Text>
-          <Text>Duration: 10 Minutes</Text>
-        </View>
-         <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/Walkingfrontview.jpg")}
-          />
-      </View>
-    </TouchableOpacity>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/ArmRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Knee Rotation */}
+          <TouchableOpacity
+            style={styles.ButtonContainer}
+            onPress={() => setModalVisible7(true)}
+          >
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Knee Rotation</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/KneeRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/*Standing March */}
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open8}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Standing March</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/Marchingfrontview.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Shoulder Roll */}
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open9}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Shoulder Roll</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/Shoulderroll.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+        </>
+      )}
 
-   <TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
-            <Text>Calories Burn: 36</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/LightDumbbell.jpg")}
-          />
-        </View>    
-      </TouchableOpacity>
+      {category === 'High Blood' && (
+        <>
+          <Text>High Blood</Text>
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Walking</Text>
+                <Text>Calories Burn: 67</Text>
+                <Text>Duration: 10 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/Walkingfrontview.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
 
-
-<TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/HipRotation.jpg")}
-          />
-        </View>
-      </TouchableOpacity>
-    {/* Head Rotation */}
- <TouchableOpacity style={styles.ButtonContainer} onPress={open5}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Head Rotation</Text>
-            <Text>Calories Burn: 10</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/HeadRotation.jpg")}
-          /> 
-        </View>
-      </TouchableOpacity>
-     {/* Arm Rotation */}
-<TouchableOpacity
-        style={styles.ButtonContainer}
-        onPress={() => setModalVisible6(true)}
-      >
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Arm Rotation</Text>
-            <Text>Calories Burn: 10</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-       
-           <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/ArmRotation.jpg")}
-          /> 
-        </View>
-      </TouchableOpacity>
-    {/* Knee Rotation */}
-  <TouchableOpacity
-        style={styles.ButtonContainer}
-        onPress={() => setModalVisible7(true)}
-      >
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Knee Rotation</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/KneeRotation.jpg")}
-          />
-        </View>
-      </TouchableOpacity>
-   {/*Standing March */}
- <TouchableOpacity style={styles.ButtonContainer} onPress={open8}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Standing March</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/Marchingfrontview.jpg")}
-          /> 
-        </View>
-      </TouchableOpacity>
-  {/* Shoulder Roll */}
-<TouchableOpacity style={styles.ButtonContainer} onPress={open9}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Shoulder Roll</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/Shoulderroll.jpg")}
-          />
-        </View>
-      </TouchableOpacity>
-    </>
-  )}
-
-    {category === 'Stroke' && (
-    <>
-      <Text>Stroke</Text>  
-       <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
-      <View style={styles.exerciseContainer}>
-        <View style={styles.textContainer}>
-          <Text style={styles.textHeaderContainer}>Walking</Text>
-          <Text>Calories Burn: 67</Text>
-          <Text>Duration: 10 Minutes</Text>
-        </View>
-         <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/Walkingfrontview.jpg")}
-          />
-      </View>
-    </TouchableOpacity>
-
-   <TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
-            <Text>Calories Burn: 36</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/LightDumbbell.jpg")}
-          />
-        </View>    
-      </TouchableOpacity>
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
+                <Text>Calories Burn: 36</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/LightDumbbell.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
 
 
-<TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/HipRotation.jpg")}
-          />
-        </View>
-      </TouchableOpacity>
-    {/* Head Rotation */}
- <TouchableOpacity style={styles.ButtonContainer} onPress={open5}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Head Rotation</Text>
-            <Text>Calories Burn: 10</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/HeadRotation.jpg")}
-          /> 
-        </View>
-      </TouchableOpacity>
-     {/* Arm Rotation */}
-<TouchableOpacity
-        style={styles.ButtonContainer}
-        onPress={() => setModalVisible6(true)}
-      >
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Arm Rotation</Text>
-            <Text>Calories Burn: 10</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-       
-           <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/ArmRotation.jpg")}
-          /> 
-        </View>
-      </TouchableOpacity>
-    {/* Knee Rotation */}
-  <TouchableOpacity
-        style={styles.ButtonContainer}
-        onPress={() => setModalVisible7(true)}
-      >
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Knee Rotation</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/KneeRotation.jpg")}
-          />
-        </View>
-      </TouchableOpacity>
-   {/*Standing March */}
- <TouchableOpacity style={styles.ButtonContainer} onPress={open8}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Standing March</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/Marchingfrontview.jpg")}
-          /> 
-        </View>
-      </TouchableOpacity>
-  {/* Shoulder Roll */}
-<TouchableOpacity style={styles.ButtonContainer} onPress={open9}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Shoulder Roll</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/Shoulderroll.jpg")}
-          />
-        </View>
-      </TouchableOpacity>
-    </>
-  )}
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/HipRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Head Rotation */}
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open5}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Head Rotation</Text>
+                <Text>Calories Burn: 10</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/HeadRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Arm Rotation */}
+          <TouchableOpacity
+            style={styles.ButtonContainer}
+            onPress={() => setModalVisible6(true)}
+          >
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Arm Rotation</Text>
+                <Text>Calories Burn: 10</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
 
-     {category === 'Arthritis' && (
-    <>
-        <Text>Arthritis</Text>
-       <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
-      <View style={styles.exerciseContainer}>
-        <View style={styles.textContainer}>
-          <Text style={styles.textHeaderContainer}>Walking</Text>
-          <Text>Calories Burn: 67</Text>
-          <Text>Duration: 10 Minutes</Text>
-        </View>
-         <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/Walkingfrontview.jpg")}
-          />
-      </View>
-    </TouchableOpacity>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/ArmRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Knee Rotation */}
+          <TouchableOpacity
+            style={styles.ButtonContainer}
+            onPress={() => setModalVisible7(true)}
+          >
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Knee Rotation</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/KneeRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/*Standing March */}
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open8}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Standing March</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/Marchingfrontview.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Shoulder Roll */}
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open9}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Shoulder Roll</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/Shoulderroll.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+        </>
+      )}
 
-   <TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
-            <Text>Calories Burn: 36</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/LightDumbbell.jpg")}
-          />
-        </View>    
-      </TouchableOpacity>
+      {category === 'Stroke' && (
+        <>
+          <Text>Stroke</Text>
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Walking</Text>
+                <Text>Calories Burn: 67</Text>
+                <Text>Duration: 10 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/Walkingfrontview.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
 
-
-<TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/HipRotation.jpg")}
-          />
-        </View>
-      </TouchableOpacity>
-    {/* Head Rotation */}
- <TouchableOpacity style={styles.ButtonContainer} onPress={open5}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Head Rotation</Text>
-            <Text>Calories Burn: 10</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/HeadRotation.jpg")}
-          /> 
-        </View>
-      </TouchableOpacity>
-     {/* Arm Rotation */}
-<TouchableOpacity
-        style={styles.ButtonContainer}
-        onPress={() => setModalVisible6(true)}
-      >
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Arm Rotation</Text>
-            <Text>Calories Burn: 10</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-       
-           <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/ArmRotation.jpg")}
-          /> 
-        </View>
-      </TouchableOpacity>
-    {/* Knee Rotation */}
-  <TouchableOpacity
-        style={styles.ButtonContainer}
-        onPress={() => setModalVisible7(true)}
-      >
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Knee Rotation</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/KneeRotation.jpg")}
-          />
-        </View>
-      </TouchableOpacity>
-   {/*Standing March */}
- <TouchableOpacity style={styles.ButtonContainer} onPress={open8}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Standing March</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/Marchingfrontview.jpg")}
-          /> 
-        </View>
-      </TouchableOpacity>
-  {/* Shoulder Roll */}
-<TouchableOpacity style={styles.ButtonContainer} onPress={open9}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Shoulder Roll</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/Shoulderroll.jpg")}
-          />
-        </View>
-      </TouchableOpacity>
-    </>
-  )}
-
-     {category === 'Asthma' && (
-    <>
-        <Text>Asthma</Text>
-       <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
-      <View style={styles.exerciseContainer}>
-        <View style={styles.textContainer}>
-          <Text style={styles.textHeaderContainer}>Walking</Text>
-          <Text>Calories Burn: 67</Text>
-          <Text>Duration: 10 Minutes</Text>
-        </View>
-         <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/Walkingfrontview.jpg")}
-          />
-      </View>
-    </TouchableOpacity>
-
-   <TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
-            <Text>Calories Burn: 36</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/LightDumbbell.jpg")}
-          />
-        </View>    
-      </TouchableOpacity>
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
+                <Text>Calories Burn: 36</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/LightDumbbell.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
 
 
-<TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/HipRotation.jpg")}
-          />
-        </View>
-      </TouchableOpacity>
-    {/* Head Rotation */}
- <TouchableOpacity style={styles.ButtonContainer} onPress={open5}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Head Rotation</Text>
-            <Text>Calories Burn: 10</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/HeadRotation.jpg")}
-          /> 
-        </View>
-      </TouchableOpacity>
-     {/* Arm Rotation */}
-<TouchableOpacity
-        style={styles.ButtonContainer}
-        onPress={() => setModalVisible6(true)}
-      >
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Arm Rotation</Text>
-            <Text>Calories Burn: 10</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-       
-           <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/ArmRotation.jpg")}
-          /> 
-        </View>
-      </TouchableOpacity>
-    {/* Knee Rotation */}
-  <TouchableOpacity
-        style={styles.ButtonContainer}
-        onPress={() => setModalVisible7(true)}
-      >
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Knee Rotation</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/KneeRotation.jpg")}
-          />
-        </View>
-      </TouchableOpacity>
-   {/*Standing March */}
- <TouchableOpacity style={styles.ButtonContainer} onPress={open8}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Standing March</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/Marchingfrontview.jpg")}
-          /> 
-        </View>
-      </TouchableOpacity>
-  {/* Shoulder Roll */}
-<TouchableOpacity style={styles.ButtonContainer} onPress={open9}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Shoulder Roll</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/Shoulderroll.jpg")}
-          />
-        </View>
-      </TouchableOpacity>
-    </>
-  )}
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/HipRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Head Rotation */}
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open5}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Head Rotation</Text>
+                <Text>Calories Burn: 10</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/HeadRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Arm Rotation */}
+          <TouchableOpacity
+            style={styles.ButtonContainer}
+            onPress={() => setModalVisible6(true)}
+          >
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Arm Rotation</Text>
+                <Text>Calories Burn: 10</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
 
-  {category === 'Obesity' && (
-    <>
-    <Text>Obesity</Text>
-      <TouchableOpacity style={styles.ButtonContainer} onPress={open}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Jogging</Text>
-            <Text>Calories Burn: 93</Text>
-            <Text>Duration: 10 Minutes</Text>
-          </View>
-           <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/Joggingfrontview.jpg")}
-          />
-        </View>
-      </TouchableOpacity>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/ArmRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Knee Rotation */}
+          <TouchableOpacity
+            style={styles.ButtonContainer}
+            onPress={() => setModalVisible7(true)}
+          >
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Knee Rotation</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/KneeRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/*Standing March */}
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open8}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Standing March</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/Marchingfrontview.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Shoulder Roll */}
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open9}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Shoulder Roll</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/Shoulderroll.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+        </>
+      )}
 
-       <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
-      <View style={styles.exerciseContainer}>
-        <View style={styles.textContainer}>
-          <Text style={styles.textHeaderContainer}>Walking</Text>
-          <Text>Calories Burn: 67</Text>
-          <Text>Duration: 10 Minutes</Text>
-        </View>
-         <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/Walkingfrontview.jpg")}
-          />
-      </View>
-    </TouchableOpacity>
+      {category === 'Arthritis' && (
+        <>
+          <Text>Arthritis</Text>
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Walking</Text>
+                <Text>Calories Burn: 67</Text>
+                <Text>Duration: 10 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/Walkingfrontview.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
 
-   <TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
-            <Text>Calories Burn: 36</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/LightDumbbell.jpg")}
-          />
-        </View>    
-      </TouchableOpacity>
-
-  <TouchableOpacity style={styles.ButtonContainer} onPress={open3}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Jumping Jack</Text>
-            <Text>Calories Burn: 80</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-           <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/JumpingJacks.jpg")}
-          /> 
-        </View>
-      </TouchableOpacity>
-
-<TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/HipRotation.jpg")}
-          />
-        </View>
-      </TouchableOpacity>
-    {/* Head Rotation */}
- <TouchableOpacity style={styles.ButtonContainer} onPress={open5}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Head Rotation</Text>
-            <Text>Calories Burn: 10</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/HeadRotation.jpg")}
-          /> 
-        </View>
-      </TouchableOpacity>
-     {/* Arm Rotation */}
-<TouchableOpacity
-        style={styles.ButtonContainer}
-        onPress={() => setModalVisible6(true)}
-      >
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Arm Rotation</Text>
-            <Text>Calories Burn: 10</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-       
-           <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/ArmRotation.jpg")}
-          /> 
-        </View>
-      </TouchableOpacity>
-    {/* Knee Rotation */}
-  <TouchableOpacity
-        style={styles.ButtonContainer}
-        onPress={() => setModalVisible7(true)}
-      >
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Knee Rotation</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/KneeRotation.jpg")}
-          />
-        </View>
-      </TouchableOpacity>
-   {/*Standing March */}
- <TouchableOpacity style={styles.ButtonContainer} onPress={open8}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Standing March</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/Marchingfrontview.jpg")}
-          /> 
-        </View>
-      </TouchableOpacity>
-  {/* Shoulder Roll */}
-<TouchableOpacity style={styles.ButtonContainer} onPress={open9}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Shoulder Roll</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/Shoulderroll.jpg")}
-          />
-        </View>
-      </TouchableOpacity>
-    </>
-  )}
-  
-  {category === 'Under Weight' && (
-    <>
-    <Text>Under Weight</Text>
-      <TouchableOpacity style={styles.ButtonContainer} onPress={open}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Jogging</Text>
-            <Text>Calories Burn: 93</Text>
-            <Text>Duration: 10 Minutes</Text>
-          </View>
-           <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/Joggingfrontview.jpg")}
-          />
-        </View>
-      </TouchableOpacity>
-
-       <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
-      <View style={styles.exerciseContainer}>
-        <View style={styles.textContainer}>
-          <Text style={styles.textHeaderContainer}>Walking</Text>
-          <Text>Calories Burn: 67</Text>
-          <Text>Duration: 10 Minutes</Text>
-        </View>
-         <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/Walkingfrontview.jpg")}
-          />
-      </View>
-    </TouchableOpacity>
-
-   <TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
-            <Text>Calories Burn: 36</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/LightDumbbell.jpg")}
-          />
-        </View>    
-      </TouchableOpacity>
-
-  <TouchableOpacity style={styles.ButtonContainer} onPress={open3}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Jumping Jack</Text>
-            <Text>Calories Burn: 80</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-           <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/JumpingJacks.jpg")}
-          /> 
-        </View>
-      </TouchableOpacity>
-
-<TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/HipRotation.jpg")}
-          />
-        </View>
-      </TouchableOpacity>
-    {/* Head Rotation */}
- <TouchableOpacity style={styles.ButtonContainer} onPress={open5}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Head Rotation</Text>
-            <Text>Calories Burn: 10</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/HeadRotation.jpg")}
-          /> 
-        </View>
-      </TouchableOpacity>
-     {/* Arm Rotation */}
-<TouchableOpacity
-        style={styles.ButtonContainer}
-        onPress={() => setModalVisible6(true)}
-      >
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Arm Rotation</Text>
-            <Text>Calories Burn: 10</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-       
-           <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/ArmRotation.jpg")}
-          /> 
-        </View>
-      </TouchableOpacity>
-    {/* Knee Rotation */}
-  <TouchableOpacity
-        style={styles.ButtonContainer}
-        onPress={() => setModalVisible7(true)}
-      >
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Knee Rotation</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/KneeRotation.jpg")}
-          />
-        </View>
-      </TouchableOpacity>
-   {/*Standing March */}
- <TouchableOpacity style={styles.ButtonContainer} onPress={open8}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Standing March</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/Marchingfrontview.jpg")}
-          /> 
-        </View>
-      </TouchableOpacity>
-  {/* Shoulder Roll */}
-<TouchableOpacity style={styles.ButtonContainer} onPress={open9}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Shoulder Roll</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/Shoulderroll.jpg")}
-          />
-        </View>
-      </TouchableOpacity>
-    </>
-  )}
-
- {category === 'Fatigue' && (
-    <>
-    <Text>Fatigue</Text>
-     <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
-      <View style={styles.exerciseContainer}>
-        <View style={styles.textContainer}>
-          <Text style={styles.textHeaderContainer}>Walking</Text>
-          <Text>Calories Burn: 67</Text>
-          <Text>Duration: 10 Minutes</Text>
-        </View>
-         <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/Walkingfrontview.jpg")}
-          />
-      </View>
-    </TouchableOpacity>
-
-   <TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
-            <Text>Calories Burn: 36</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/LightDumbbell.jpg")}
-          />
-        </View>    
-      </TouchableOpacity>
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
+                <Text>Calories Burn: 36</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/LightDumbbell.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
 
 
-<TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/HipRotation.jpg")}
-          />
-        </View>
-      </TouchableOpacity>
-    {/* Head Rotation */}
- <TouchableOpacity style={styles.ButtonContainer} onPress={open5}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Head Rotation</Text>
-            <Text>Calories Burn: 10</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/HeadRotation.jpg")}
-          /> 
-        </View>
-      </TouchableOpacity>
-     {/* Arm Rotation */}
-<TouchableOpacity
-        style={styles.ButtonContainer}
-        onPress={() => setModalVisible6(true)}
-      >
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Arm Rotation</Text>
-            <Text>Calories Burn: 10</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-       
-           <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/ArmRotation.jpg")}
-          /> 
-        </View>
-      </TouchableOpacity>
-    {/* Knee Rotation */}
-  <TouchableOpacity
-        style={styles.ButtonContainer}
-        onPress={() => setModalVisible7(true)}
-      >
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Knee Rotation</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/KneeRotation.jpg")}
-          />
-        </View>
-      </TouchableOpacity>
-   {/*Standing March */}
- <TouchableOpacity style={styles.ButtonContainer} onPress={open8}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Standing March</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/Marchingfrontview.jpg")}
-          /> 
-        </View>
-      </TouchableOpacity>
-  {/* Shoulder Roll */}
-<TouchableOpacity style={styles.ButtonContainer} onPress={open9}>
-        <View style={styles.exerciseContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeaderContainer}>Shoulder Roll</Text>
-            <Text>Calories Burn: 20</Text>
-            <Text>Duration: 5 Minutes</Text>
-          </View>
-          <Image
-            style={styles.ImageContainer}
-            source={require("../ExercisePlan/menuImage/Shoulderroll.jpg")}
-          />
-        </View>
-      </TouchableOpacity>
-    </>
-  )}
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/HipRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Head Rotation */}
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open5}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Head Rotation</Text>
+                <Text>Calories Burn: 10</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/HeadRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Arm Rotation */}
+          <TouchableOpacity
+            style={styles.ButtonContainer}
+            onPress={() => setModalVisible6(true)}
+          >
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Arm Rotation</Text>
+                <Text>Calories Burn: 10</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
 
- 
-  {category === '' && (
-    
-    <View style={{ marginTop: 20, padding: 10, backgroundColor: 'lightgray' }}>
-   <Text>No Category Match</Text>
-    </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/ArmRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Knee Rotation */}
+          <TouchableOpacity
+            style={styles.ButtonContainer}
+            onPress={() => setModalVisible7(true)}
+          >
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Knee Rotation</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/KneeRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/*Standing March */}
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open8}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Standing March</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/Marchingfrontview.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Shoulder Roll */}
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open9}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Shoulder Roll</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/Shoulderroll.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+        </>
+      )}
 
-  )}
+      {category === 'Asthma' && (
+        <>
+          <Text>Asthma</Text>
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Walking</Text>
+                <Text>Calories Burn: 67</Text>
+                <Text>Duration: 10 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/Walkingfrontview.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
 
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
+                <Text>Calories Burn: 36</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/LightDumbbell.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+
+
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/HipRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Head Rotation */}
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open5}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Head Rotation</Text>
+                <Text>Calories Burn: 10</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/HeadRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Arm Rotation */}
+          <TouchableOpacity
+            style={styles.ButtonContainer}
+            onPress={() => setModalVisible6(true)}
+          >
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Arm Rotation</Text>
+                <Text>Calories Burn: 10</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/ArmRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Knee Rotation */}
+          <TouchableOpacity
+            style={styles.ButtonContainer}
+            onPress={() => setModalVisible7(true)}
+          >
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Knee Rotation</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/KneeRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/*Standing March */}
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open8}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Standing March</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/Marchingfrontview.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Shoulder Roll */}
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open9}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Shoulder Roll</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/Shoulderroll.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+        </>
+      )}
+
+      {category === 'Obesity' && (
+        <>
+          <TouchableOpacity style={[styles.ButtonContainer, { display: checkDiplayAllowedExercise('Jogging') }]} onPress={open}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Jogging</Text>
+                <Text>Calories Burn: 93</Text>
+                <Text>Duration: 10 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/Joggingfrontview.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[styles.ButtonContainer, { display: checkDiplayAllowedExercise('Walking') }]} onPress={open1}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Walking</Text>
+                <Text>Calories Burn: 67</Text>
+                <Text>Duration: 10 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/Walkingfrontview.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[styles.ButtonContainer, { display: checkDiplayAllowedExercise('Light Dumbbell') }]} onPress={open2}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
+                <Text>Calories Burn: 36</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/LightDumbbell.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[styles.ButtonContainer, { display: checkDiplayAllowedExercise('Jumping Jack') }]} onPress={open3}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Jumping Jack</Text>
+                <Text>Calories Burn: 80</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/JumpingJacks.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[styles.ButtonContainer, { display: checkDiplayAllowedExercise('Hip Rotation') }]} onPress={open4}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/HipRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Head Rotation */}
+          <TouchableOpacity style={[styles.ButtonContainer, { display: checkDiplayAllowedExercise('Head Rotation') }]} onPress={open5}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Head Rotation</Text>
+                <Text>Calories Burn: 10</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/HeadRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Arm Rotation */}
+          <TouchableOpacity
+            style={[styles.ButtonContainer, { display: checkDiplayAllowedExercise('Arm Rotation') }]}
+            onPress={() => setModalVisible6(true)}
+          >
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Arm Rotation</Text>
+                <Text>Calories Burn: 10</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/ArmRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Knee Rotation */}
+          <TouchableOpacity
+            style={[styles.ButtonContainer, { display: checkDiplayAllowedExercise('Knee Rotation') }]}
+            onPress={() => setModalVisible7(true)}
+          >
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Knee Rotation</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/KneeRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/*Standing March */}
+          <TouchableOpacity style={[styles.ButtonContainer, { display: checkDiplayAllowedExercise('Standing March') }]} onPress={open8}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Standing March</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/Marchingfrontview.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Shoulder Roll */}
+          <TouchableOpacity style={[styles.ButtonContainer, { display: checkDiplayAllowedExercise('Shoulder Roll') }]} onPress={open9}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Shoulder Roll</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/Shoulderroll.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+        </>
+      )}
+
+      {category === 'Under Weight' && (
+        <>
+          <Text>Under Weight</Text>
+          <TouchableOpacity style={[styles.ButtonContainer, { display: checkDiplayAllowedExercise('Jogging') }]} onPress={open}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Jogging</Text>
+                <Text>Calories Burn: 93</Text>
+                <Text>Duration: 10 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/Joggingfrontview.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[styles.ButtonContainer, { display: checkDiplayAllowedExercise('Jogging') }]} onPress={open1}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Walking</Text>
+                <Text>Calories Burn: 67</Text>
+                <Text>Duration: 10 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/Walkingfrontview.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[styles.ButtonContainer, { display: checkDiplayAllowedExercise('Jogging') }]} onPress={open2}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
+                <Text>Calories Burn: 36</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/LightDumbbell.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[styles.ButtonContainer, { display: checkDiplayAllowedExercise('Jogging') }]} onPress={open3}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Jumping Jack</Text>
+                <Text>Calories Burn: 80</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/JumpingJacks.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[styles.ButtonContainer, { display: checkDiplayAllowedExercise('Jogging') }]} onPress={open4}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/HipRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Head Rotation */}
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open5}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Head Rotation</Text>
+                <Text>Calories Burn: 10</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/HeadRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Arm Rotation */}
+          <TouchableOpacity
+            style={styles.ButtonContainer}
+            onPress={() => setModalVisible6(true)}
+          >
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Arm Rotation</Text>
+                <Text>Calories Burn: 10</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/ArmRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Knee Rotation */}
+          <TouchableOpacity
+            style={styles.ButtonContainer}
+            onPress={() => setModalVisible7(true)}
+          >
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Knee Rotation</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/KneeRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/*Standing March */}
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open8}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Standing March</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/Marchingfrontview.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Shoulder Roll */}
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open9}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Shoulder Roll</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/Shoulderroll.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+        </>
+      )}
+
+      {category === 'Fatigue' && (
+        <>
+          <Text>Fatigue</Text>
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open1}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Walking</Text>
+                <Text>Calories Burn: 67</Text>
+                <Text>Duration: 10 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/Walkingfrontview.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open2}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
+                <Text>Calories Burn: 36</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/LightDumbbell.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+
+
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open4}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/HipRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Head Rotation */}
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open5}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Head Rotation</Text>
+                <Text>Calories Burn: 10</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/HeadRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Arm Rotation */}
+          <TouchableOpacity
+            style={styles.ButtonContainer}
+            onPress={() => setModalVisible6(true)}
+          >
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Arm Rotation</Text>
+                <Text>Calories Burn: 10</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/ArmRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Knee Rotation */}
+          <TouchableOpacity
+            style={styles.ButtonContainer}
+            onPress={() => setModalVisible7(true)}
+          >
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Knee Rotation</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/KneeRotation.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/*Standing March */}
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open8}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Standing March</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/Marchingfrontview.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* Shoulder Roll */}
+          <TouchableOpacity style={styles.ButtonContainer} onPress={open9}>
+            <View style={styles.exerciseContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textHeaderContainer}>Shoulder Roll</Text>
+                <Text>Calories Burn: 20</Text>
+                <Text>Duration: 5 Minutes</Text>
+              </View>
+              <Image
+                style={styles.ImageContainer}
+                source={require("../ExercisePlan/menuImage/Shoulderroll.jpg")}
+              />
+            </View>
+          </TouchableOpacity>
+        </>
+      )}
+
+
+      {category === '' && (
+
+        <View style={{ marginTop: 20, padding: 10, backgroundColor: 'lightgray' }}>
+          <Text>No Category Match</Text>
+        </View>
+
+      )}
 
 
 
@@ -1439,7 +1509,8 @@ const videoRef = useRef(null);
 
 
 
-{/* 
+
+      {/* 
       <TouchableOpacity style={styles.ButtonContainer} onPress={open}>
         <View style={styles.exerciseContainer}>
           <View style={styles.textContainer}>
@@ -1467,7 +1538,7 @@ const videoRef = useRef(null);
           setModalVisible(!modalVisible);
         }}
       >
-       
+
 
         <TouchableOpacity
           style={{ marginTop: 20, position: "absolute", marginLeft: 20 }}
@@ -1479,14 +1550,14 @@ const videoRef = useRef(null);
           />
         </TouchableOpacity>
         <Video
-        ref={videoRef}
-        source={require('../ExercisePlan/picture/Ecercise/Jogging.mp4')}
-        style={{height: 280, width: 280, alignSelf: "center", marginTop: 10, }}
-        resizeMode="contain"
-        useNativeControls={false}
-        onReadyForDisplay={handleReadyForDisplay}
-        onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
-      />
+          ref={videoRef}
+          source={require('../ExercisePlan/picture/Ecercise/Jogging.mp4')}
+          style={{ height: 280, width: 280, alignSelf: "center", marginTop: 10, }}
+          resizeMode="contain"
+          useNativeControls={false}
+          onReadyForDisplay={handleReadyForDisplay}
+          onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
+        />
         <TouchableOpacity
           onPress={() => {
             setModalVisible(false);
@@ -1502,7 +1573,7 @@ const videoRef = useRef(null);
           <Text style={{ fontSize: 20 }}>Done</Text>
         </TouchableOpacity>
 
-        <View style={{backgroundColor: "#AFD3E2", marginTop: 5, height: 500, borderTopRightRadius: 20, borderTopLeftRadius: 20,}}>
+        <View style={{ backgroundColor: "#AFD3E2", marginTop: 5, height: 500, borderTopRightRadius: 20, borderTopLeftRadius: 20, }}>
           <Text style={styles.exerciseName}>Jogging</Text>
           {/*Exercise Timer*/}
           <View style={styles.subModalContainer}>
@@ -1635,7 +1706,7 @@ const videoRef = useRef(null);
          
         </View>
       </TouchableOpacity> */}
-      
+
 
       <Modal
         animationType="slide"
@@ -1656,14 +1727,14 @@ const videoRef = useRef(null);
         </TouchableOpacity>
 
         <Video
-        ref={videoRef}
-        source={require('../ExercisePlan/picture/Ecercise/Walking.mp4')}
-        style={{height: 280, width: 280, alignSelf: "center", marginTop: 10, }}
-        resizeMode="contain"
-        useNativeControls={false}
-        onReadyForDisplay={handleReadyForDisplay}
-        onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
-      />
+          ref={videoRef}
+          source={require('../ExercisePlan/picture/Ecercise/Walking.mp4')}
+          style={{ height: 280, width: 280, alignSelf: "center", marginTop: 10, }}
+          resizeMode="contain"
+          useNativeControls={false}
+          onReadyForDisplay={handleReadyForDisplay}
+          onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
+        />
 
         <TouchableOpacity
           onPress={() => {
@@ -1680,7 +1751,7 @@ const videoRef = useRef(null);
           <Text style={{ fontSize: 20 }}>Done</Text>
         </TouchableOpacity>
 
-        <View style={{  backgroundColor: "#AFD3E2", marginTop: 5, height: 500, borderTopRightRadius: 20, borderTopLeftRadius: 20,}}>
+        <View style={{ backgroundColor: "#AFD3E2", marginTop: 5, height: 500, borderTopRightRadius: 20, borderTopLeftRadius: 20, }}>
           <Text style={styles.exerciseName}>Walking</Text>
           {/*Exercise Timer*/}
           <View style={styles.subModalContainer}>
@@ -1827,15 +1898,15 @@ const videoRef = useRef(null);
             source={require("../ExercisePlan/picture/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}
           />
         </TouchableOpacity>
-   <Video
-        ref={videoRef}
-        source={require('../ExercisePlan/picture/Ecercise/lightDumbell.mp4')}
-        style={{height: 280, width: 280, alignSelf: "center", marginTop: 10, }}
-        resizeMode="contain"
-        useNativeControls={false}
-        onReadyForDisplay={handleReadyForDisplay}
-        onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
-      />
+        <Video
+          ref={videoRef}
+          source={require('../ExercisePlan/picture/Ecercise/lightDumbell.mp4')}
+          style={{ height: 280, width: 280, alignSelf: "center", marginTop: 10, }}
+          resizeMode="contain"
+          useNativeControls={false}
+          onReadyForDisplay={handleReadyForDisplay}
+          onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
+        />
 
         <TouchableOpacity
           onPress={() => {
@@ -1852,7 +1923,7 @@ const videoRef = useRef(null);
           <Text style={{ fontSize: 20 }}>Done</Text>
         </TouchableOpacity>
 
-        <View style={{  backgroundColor: "#AFD3E2", marginTop: 5, height: 500, borderTopRightRadius: 20, borderTopLeftRadius: 20,}}>
+        <View style={{ backgroundColor: "#AFD3E2", marginTop: 5, height: 500, borderTopRightRadius: 20, borderTopLeftRadius: 20, }}>
           <Text style={styles.exerciseName}>Light Dumbbell</Text>
           {/*Exercise Timer*/}
           <View style={styles.subModalContainer}>
@@ -1994,7 +2065,7 @@ const videoRef = useRef(null);
           style={{ marginTop: 20, position: "absolute", marginLeft: 20 }}
           onPress={() => setModalVisible3(false)}
         >
-        
+
           <Image
             style={{ height: 20, width: 25, resizeMode: "stretch" }}
             source={require("../ExercisePlan/picture/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}
@@ -2005,15 +2076,15 @@ const videoRef = useRef(null);
           style={styles.ImageContainerInfo}
           source={require("../ExercisePlan/picture/Ecercise/jumpingJack.gif")}
         /> */}
-          <Video
-        ref={videoRef}
-        source={require('../ExercisePlan/picture/Ecercise/JumpingJack.mp4')}
-        style={{height: 280, width: 280, alignSelf: "center", marginTop: 20, }}
-        resizeMode="contain"
-        useNativeControls={false}
-        onReadyForDisplay={handleReadyForDisplay}
-        onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
-      />
+        <Video
+          ref={videoRef}
+          source={require('../ExercisePlan/picture/Ecercise/JumpingJack.mp4')}
+          style={{ height: 280, width: 280, alignSelf: "center", marginTop: 20, }}
+          resizeMode="contain"
+          useNativeControls={false}
+          onReadyForDisplay={handleReadyForDisplay}
+          onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
+        />
 
 
         <TouchableOpacity
@@ -2031,8 +2102,8 @@ const videoRef = useRef(null);
           <Text style={{ fontSize: 20 }}>Done</Text>
         </TouchableOpacity>
 
-      
-        <View style={{  backgroundColor: "#AFD3E2", marginTop: 5, height: 500, borderTopRightRadius: 20,borderTopLeftRadius: 20,}}>
+
+        <View style={{ backgroundColor: "#AFD3E2", marginTop: 5, height: 500, borderTopRightRadius: 20, borderTopLeftRadius: 20, }}>
           <Text style={styles.exerciseName}>Jumping Jack</Text>
           {/*Exercise Timer*/}
           <View style={styles.subModalContainer}>
@@ -2163,7 +2234,7 @@ const videoRef = useRef(null);
       </TouchableOpacity> */}
 
       <Modal
-      
+
         animationType="slide"
         transparent={false}
         visible={modalVisible4}
@@ -2181,15 +2252,15 @@ const videoRef = useRef(null);
           />
         </TouchableOpacity>
 
-       <Video
-        ref={videoRef}
-        source={require('../ExercisePlan/picture/Ecercise/hipRotation.mp4')}
-        style={{height: 280, width: 280, alignSelf: "center", marginTop: 20, }}
-        resizeMode="contain"
-        useNativeControls={false}
-        onReadyForDisplay={handleReadyForDisplay}
-        onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
-      />
+        <Video
+          ref={videoRef}
+          source={require('../ExercisePlan/picture/Ecercise/hipRotation.mp4')}
+          style={{ height: 280, width: 280, alignSelf: "center", marginTop: 20, }}
+          resizeMode="contain"
+          useNativeControls={false}
+          onReadyForDisplay={handleReadyForDisplay}
+          onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
+        />
 
         <TouchableOpacity
           onPress={() => {
@@ -2351,15 +2422,15 @@ const videoRef = useRef(null);
             source={require("../ExercisePlan/picture/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}
           />
         </TouchableOpacity>
-<Video
-        ref={videoRef}
-        source={require('../ExercisePlan/picture/Ecercise/headRotation.mp4')}
-        style={{height: 280, width: 280, alignSelf: "center", marginTop: 20, }}
-        resizeMode="contain"
-        useNativeControls={false}
-        onReadyForDisplay={handleReadyForDisplay}
-        onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
-      />
+        <Video
+          ref={videoRef}
+          source={require('../ExercisePlan/picture/Ecercise/headRotation.mp4')}
+          style={{ height: 280, width: 280, alignSelf: "center", marginTop: 20, }}
+          resizeMode="contain"
+          useNativeControls={false}
+          onReadyForDisplay={handleReadyForDisplay}
+          onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
+        />
 
         <TouchableOpacity
           onPress={() => {
@@ -2516,159 +2587,159 @@ const videoRef = useRef(null);
           setModalVisible6(!modalVisible6);
         }}
       >
-<View style= {{backgroundColor: '#f9eed9', borderRadius: 10, borderBottomColor: 'black'}}>
-<View style = {{borderRadius: 100, height: 200, width: 120, alignSelf: "center", borderRadius: 20,}}>
-        <Video
-        ref={videoRef}
-        source={require('../ExercisePlan/picture/Ecercise/ArmRotation.mp4')}
-        style={{height: 280, width: 280, alignSelf: "center", marginTop: 20, }}
-        resizeMode="contain"
-        useNativeControls={false}
-        onReadyForDisplay={handleReadyForDisplay}
-        onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
-      />
-</View>
-
-        <TouchableOpacity
-          style={{ marginTop: 20, position: "absolute", marginLeft: 10, }}
-          onPress={setModalVisible6}
-        >
-           <Image
-            style={{ height: 20, width: 25, resizeMode: "stretch" }}
-            source={require("../ExercisePlan/picture/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            setModalVisible6(false);
-            markExerciseDone(10, "5 minutes", "Arm Rotation");
-          }}
-          style={{
-            marginTop: 15,
-            position: "absolute",
-            marginLeft: 20,
-            right: 20,
-          }}
-        >
-          <Text style={{ fontSize: 20 }}>Done</Text>
-        </TouchableOpacity>
-
-        <View style={{backgroundColor: "#AFD3E2", marginTop: 110, height: 500, borderTopRightRadius: 20, borderTopLeftRadius: 20,}}>
-          <Text style={styles.exerciseName}>Arm Rotation</Text>
-          {/*Exercise Timer*/}
-          <View style={styles.subModalContainer}>
-            <View style={styles.HeadersContainer}>
-              <Image
-                style={styles.timeClock}
-                source={require("../ExercisePlan/picture/clock.png")}
-              />
-              <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4 }}>
-                5mins
-              </Text>
-            </View>
-            <View style={styles.CaloriesContainer}>
-              <Image
-                style={styles.calorieLogo}
-                source={require("../ExercisePlan/picture/calories.png")}
-              />
-              <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4 }}>
-                Calories Burn: 10
-              </Text>
-            </View>
+        <View style={{ backgroundColor: '#f9eed9', borderRadius: 10, borderBottomColor: 'black' }}>
+          <View style={{ borderRadius: 100, height: 200, width: 120, alignSelf: "center", borderRadius: 20, }}>
+            <Video
+              ref={videoRef}
+              source={require('../ExercisePlan/picture/Ecercise/ArmRotation.mp4')}
+              style={{ height: 280, width: 280, alignSelf: "center", marginTop: 20, }}
+              resizeMode="contain"
+              useNativeControls={false}
+              onReadyForDisplay={handleReadyForDisplay}
+              onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
+            />
           </View>
 
-          <View
+          <TouchableOpacity
+            style={{ marginTop: 20, position: "absolute", marginLeft: 10, }}
+            onPress={setModalVisible6}
+          >
+            <Image
+              style={{ height: 20, width: 25, resizeMode: "stretch" }}
+              source={require("../ExercisePlan/picture/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              setModalVisible6(false);
+              markExerciseDone(10, "5 minutes", "Arm Rotation");
+            }}
             style={{
-              alignSelf: "center",
-              marginTop: 40,
-              flexDirection: "row",
-              marginBottom: 20,
+              marginTop: 15,
+              position: "absolute",
+              marginLeft: 20,
+              right: 20,
             }}
           >
-            <Text
-              style={{
-                fontSize: 80,
-                marginBottom: 10,
-                marginTop: 4,
-                fontWeight: "bold",
-              }}
-            >
-              {count > 0 ? formatTime(count) : "5:00"}
-            </Text>
-          </View>
+            <Text style={{ fontSize: 20 }}>Done</Text>
+          </TouchableOpacity>
 
-          <View style={{ flexDirection: "row", alignSelf: "center" }}>
-            {!isRunning ? (
-              <TouchableOpacity
-                onPress={handleStart4}
-                style={{
-                  backgroundColor: "green",
-                  height: 50,
-                  width: 100,
-                  borderRadius: 30,
-                  margin: 10,
-                }}
-              >
-                <Text
-                  style={{
-                    alignSelf: "center",
-                    marginTop: 3,
-                    fontSize: 30,
-                    fontWeight: "bold",
-                    color: "#fff",
-                  }}
-                >
-                  Start
+          <View style={{ backgroundColor: "#AFD3E2", marginTop: 110, height: 500, borderTopRightRadius: 20, borderTopLeftRadius: 20, }}>
+            <Text style={styles.exerciseName}>Arm Rotation</Text>
+            {/*Exercise Timer*/}
+            <View style={styles.subModalContainer}>
+              <View style={styles.HeadersContainer}>
+                <Image
+                  style={styles.timeClock}
+                  source={require("../ExercisePlan/picture/clock.png")}
+                />
+                <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4 }}>
+                  5mins
                 </Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                style={{
-                  backgroundColor: "green",
-                  height: 50,
-                  width: 100,
-                  borderRadius: 30,
-                  margin: 10,
-                }}
-                onPress={handleStop4}
-              >
-                <Text
-                  style={{
-                    alignSelf: "center",
-                    marginTop: 3,
-                    fontSize: 30,
-                    fontWeight: "bold",
-                    color: "#fff",
-                  }}
-                >
-                  Stop
+              </View>
+              <View style={styles.CaloriesContainer}>
+                <Image
+                  style={styles.calorieLogo}
+                  source={require("../ExercisePlan/picture/calories.png")}
+                />
+                <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4 }}>
+                  Calories Burn: 10
                 </Text>
-              </TouchableOpacity>
-            )}
-            <TouchableOpacity
+              </View>
+            </View>
+
+            <View
               style={{
-                backgroundColor: "red",
-                height: 50,
-                width: 100,
-                borderRadius: 30,
-                margin: 10,
+                alignSelf: "center",
+                marginTop: 40,
+                flexDirection: "row",
+                marginBottom: 20,
               }}
-              onPress={resetStart4}
             >
               <Text
                 style={{
-                  alignSelf: "center",
-                  marginTop: 3,
-                  fontSize: 30,
+                  fontSize: 80,
+                  marginBottom: 10,
+                  marginTop: 4,
                   fontWeight: "bold",
-                  color: "#fff",
                 }}
               >
-                Reset
+                {count > 0 ? formatTime(count) : "5:00"}
               </Text>
-            </TouchableOpacity>
+            </View>
+
+            <View style={{ flexDirection: "row", alignSelf: "center" }}>
+              {!isRunning ? (
+                <TouchableOpacity
+                  onPress={handleStart4}
+                  style={{
+                    backgroundColor: "green",
+                    height: 50,
+                    width: 100,
+                    borderRadius: 30,
+                    margin: 10,
+                  }}
+                >
+                  <Text
+                    style={{
+                      alignSelf: "center",
+                      marginTop: 3,
+                      fontSize: 30,
+                      fontWeight: "bold",
+                      color: "#fff",
+                    }}
+                  >
+                    Start
+                  </Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: "green",
+                    height: 50,
+                    width: 100,
+                    borderRadius: 30,
+                    margin: 10,
+                  }}
+                  onPress={handleStop4}
+                >
+                  <Text
+                    style={{
+                      alignSelf: "center",
+                      marginTop: 3,
+                      fontSize: 30,
+                      fontWeight: "bold",
+                      color: "#fff",
+                    }}
+                  >
+                    Stop
+                  </Text>
+                </TouchableOpacity>
+              )}
+              <TouchableOpacity
+                style={{
+                  backgroundColor: "red",
+                  height: 50,
+                  width: 100,
+                  borderRadius: 30,
+                  margin: 10,
+                }}
+                onPress={resetStart4}
+              >
+                <Text
+                  style={{
+                    alignSelf: "center",
+                    marginTop: 3,
+                    fontSize: 30,
+                    fontWeight: "bold",
+                    color: "#fff",
+                  }}
+                >
+                  Reset
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
         </View>
       </Modal>
       {/* eighth Exercise */}
@@ -2704,15 +2775,15 @@ const videoRef = useRef(null);
           />
         </TouchableOpacity>
 
-     <Video
-        ref={videoRef}
-        source={require('../ExercisePlan/picture/Ecercise/kneeRotation.mp4')}
-        style={{height: 280, width: 280, alignSelf: "center", marginTop: 20, }}
-        resizeMode="contain"
-        useNativeControls={false}
-        onReadyForDisplay={handleReadyForDisplay}
-        onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
-      />
+        <Video
+          ref={videoRef}
+          source={require('../ExercisePlan/picture/Ecercise/kneeRotation.mp4')}
+          style={{ height: 280, width: 280, alignSelf: "center", marginTop: 20, }}
+          resizeMode="contain"
+          useNativeControls={false}
+          onReadyForDisplay={handleReadyForDisplay}
+          onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
+        />
 
         <TouchableOpacity
           onPress={() => {
@@ -2875,15 +2946,15 @@ const videoRef = useRef(null);
           />
         </TouchableOpacity>
 
-         <Video
-        ref={videoRef}
-        source={require('../ExercisePlan/picture/Ecercise/march.mp4')}
-        style={{height: 280, width: 280, alignSelf: "center", marginTop: 20, }}
-        resizeMode="contain"
-        useNativeControls={false}
-        onReadyForDisplay={handleReadyForDisplay}
-        onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
-      />
+        <Video
+          ref={videoRef}
+          source={require('../ExercisePlan/picture/Ecercise/march.mp4')}
+          style={{ height: 280, width: 280, alignSelf: "center", marginTop: 20, }}
+          resizeMode="contain"
+          useNativeControls={false}
+          onReadyForDisplay={handleReadyForDisplay}
+          onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
+        />
 
         <TouchableOpacity
           onPress={() => {
@@ -3040,23 +3111,23 @@ const videoRef = useRef(null);
           style={{ marginTop: 20, position: "absolute", marginLeft: 20 }}
           onPress={setModalVisible9}
         >
- 
+
           <Image
             style={{ height: 20, width: 25, resizeMode: "stretch" }}
             source={require("../ExercisePlan/picture/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}
           />
         </TouchableOpacity>
         <Video
-        ref={videoRef}
-        source={require('../ExercisePlan/picture/Ecercise/roll.mp4')}
-        style={{height: 280, width: 280, alignSelf: "center", marginTop: 20, }}
-        resizeMode="contain"
-        useNativeControls={false}
-        onReadyForDisplay={handleReadyForDisplay}
-        onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
-      />
+          ref={videoRef}
+          source={require('../ExercisePlan/picture/Ecercise/roll.mp4')}
+          style={{ height: 280, width: 280, alignSelf: "center", marginTop: 20, }}
+          resizeMode="contain"
+          useNativeControls={false}
+          onReadyForDisplay={handleReadyForDisplay}
+          onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
+        />
 
-      
+
         <TouchableOpacity
           onPress={() => {
             setModalVisible9(false);
@@ -3227,7 +3298,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: 'yellow',
     borderWidth: 10,
-      },
+  },
   ButtonContainer: {
     backgroundColor: "#fff",
     height: 150,
@@ -3236,7 +3307,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     margin: 8,
     borderRadius: 10,
-    elevation: 5, 
+    elevation: 5,
     shadowColor: '#000', // iOS
     shadowOffset: { width: 10, height: 1 },
     shadowRadius: 2,
@@ -3340,7 +3411,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
-   videoContainer: {
+  videoContainer: {
     width: 200, // Adjust the width of the video
     height: 120, // Adjust the height of the video
   },

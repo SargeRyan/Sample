@@ -13,10 +13,10 @@ import {
     Modal,
     Pressable,
 } from "react-native";
-import { Button  } from "@react-native-material/core";
+import { Button } from "@react-native-material/core";
 import DropDownPicker from "react-native-dropdown-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import CheckBox from 'react-native-checkbox'; 
+import CheckBox from 'react-native-checkbox';
 
 TouchableOpacity.defaultProps = { ActiveOpacity: 0.8 };
 
@@ -24,67 +24,91 @@ TouchableOpacity.defaultProps = { ActiveOpacity: 0.8 };
 
 export default CompleteProfileScreen = ({ setShowMainScreen }) => {
     const AppButton = ({ onPress, title }) => (
-    <TouchableOpacity disabled={goalWeight === ''} onPress={onPress} style={styles.appButtonContainer}>
-        <Text style={styles.appButtonText}>{title}</Text>
-    </TouchableOpacity>
-);
+        <TouchableOpacity disabled={goalWeight === ''} onPress={onPress} style={styles.appButtonContainer}>
+            <Text style={styles.appButtonText}>{title}</Text>
+        </TouchableOpacity>
+    );
 
-const [checkboxStates, setCheckboxStates] = useState({
-    lackOfTime: '',
-    stressAroundFood: '',
-    foodCravings: '',
-    lackOfProgress: '',
-    expensiveHealthyFood: '',
-  });
+    const [checkboxStates, setCheckboxStates] = useState({
+        lackOfTime: '',
+        stressAroundFood: '',
+        foodCravings: '',
+        lackOfProgress: '',
+        expensiveHealthyFood: '',
+    });
 
-  useEffect(() => {
-    // Load the initial values from AsyncStorage
-    loadCheckboxValues();
-  }, []);
+    const [medHistoryStates, setMedHistoryStates] = useState({
+        Diabetes: '',
+        Stroke: '',
+        Arthritis: '',
+        Asthma: '',
+        Obesity: '',
+        Underweight: '',
+        Fatigue: '',
+        "High Blood": '',
+    });
 
-  const toggleCheckbox = (checkboxKey, customValue) => {
-    // Toggle the checkbox state for the specified checkbox key
-    setCheckboxStates((prevStates) => ({
-      ...prevStates,
-      [checkboxKey]: customValue,
-    }));
+    useEffect(() => {
+        // Load the initial values from AsyncStorage
+        loadCheckboxValues();
+    }, []);
 
-    // Save the new value to AsyncStorage
-    saveCheckboxValue(checkboxKey, customValue);
-  };
+    const toggleCheckbox = (checkboxKey, customValue = "") => {
+        // Toggle the checkbox state for the specified checkbox key
+        setCheckboxStates((prevStates) => ({
+            ...prevStates,
+            [checkboxKey]: checkboxKey,
+        }));
 
-  const saveCheckboxValue = async (key, value) => {
-    try {
-      await AsyncStorage.setItem(key, JSON.stringify(value));
-    } catch (error) {
-      console.error(`Error saving checkbox value for ${key}:`, error);
-    }
-  };
+        // Save the new value to AsyncStorage
+        saveCheckboxValue(checkboxKey, checkboxKey);
+    };
 
-  const loadCheckboxValues = async () => {
-    try {
-      const keys = Object.keys(checkboxStates);
-      const values = await AsyncStorage.multiGet(keys);
+    const toggleCheckboxMedHistory = (checkboxKey) => {
+        // Toggle the checkbox state for the specified checkbox key
+        setMedHistoryStates((prevStates) => ({
+            ...prevStates,
+            [checkboxKey]: checkboxKey,
+        }));
 
-      console.log(values);
-      
+        // Save the new value to AsyncStorage
+        console.log('@medicalHistory_' + checkboxKey, checkboxKey);
+        saveCheckboxValue('@medicalHistory_' + checkboxKey, checkboxKey);
+    };
 
-      const loadedValues = {};
-      values.forEach(([key, value]) => {
-        loadedValues[key] = JSON.parse(value);
-      });
+    const saveCheckboxValue = async (key, value) => {
+        try {
+            console.log(`Saving checkbox value for ${key}:`, value);
+            await AsyncStorage.setItem(key, JSON.stringify(value));
+        } catch (error) {
+            console.error(`Error saving checkbox value for ${key}:`, error);
+        }
+    };
 
-      // Update checkbox states with loaded values
-      setCheckboxStates((prevStates) => ({
-        ...prevStates,
-        ...loadedValues
+    const loadCheckboxValues = async () => {
+        try {
+            const keys = Object.keys(checkboxStates);
+            const values = await AsyncStorage.multiGet(keys);
 
-       
-      }));
-    } catch (error) {
-      console.error('Error loading checkbox values:', error);
-    }
-  };
+            console.log(values);
+
+
+            const loadedValues = {};
+            values.forEach(([key, value]) => {
+                loadedValues[key] = JSON.parse(value);
+            });
+
+            // Update checkbox states with loaded values
+            setCheckboxStates((prevStates) => ({
+                ...prevStates,
+                ...loadedValues
+
+
+            }));
+        } catch (error) {
+            console.error('Error loading checkbox values:', error);
+        }
+    };
 
     const [modalVisible, setModalVisible] = useState(false);
     const [modalVisible1, setModalVisible1] = useState(false);
@@ -96,7 +120,7 @@ const [checkboxStates, setCheckboxStates] = useState({
         { label: 'Highly active (doing zumba or exercises)', value: 'Highly active (doing zumba or exercises)' },
         { label: 'Moderate activite ( doing chores, sweeping floor, walking slowly)', value: 'Moderate activite ( doing chores, sweeping floor,walking slowly)' },
         { label: 'Light active ( doing 10-15 mins activity a day)', value: 'Light active ( doing 10-15 mins activity a day)' },
-        { label: 'Sedentary ( spend much time seated', value: 'Sedentary ( spend much time seated'},
+        { label: 'Sedentary ( spend much time seated', value: 'Sedentary ( spend much time seated' },
     ]);
 
     const [opens, setOpens] = useState(false);
@@ -154,7 +178,7 @@ const [checkboxStates, setCheckboxStates] = useState({
     const [suggestedWeight, setSuggestedWeight] = useState(0);
 
     useEffect(() => {
-        if(!age || !height) return;
+        if (!age || !height) return;
         const suggestedWeight = calculateSuggestedWeight(age, height);
         setSuggestedWeight(suggestedWeight);
     }, [age, height]);
@@ -170,7 +194,7 @@ const [checkboxStates, setCheckboxStates] = useState({
                 gender,
                 goalWeight,
                 medHistory,
-             
+
             };
 
             // Save the data to AsyncStorage
@@ -186,383 +210,395 @@ const [checkboxStates, setCheckboxStates] = useState({
 
     return (
         <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
+            contentInsetAdjustmentBehavior="automatic"
         >
-        <SafeAreaView
-            style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#f6f6f6"}}
-        >
-           
+            <SafeAreaView
+                style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#f6f6f6" }}
+            >
 
-            {/*Logo*/}
-            <View>
-                <Image
-                    style={styles.imageTitleHeader}
-                    source={require("../image/logo.png")}
-                />
-            </View>
 
-            <Text style={styles.textTitleHeader}>Let's complete your profile</Text>
+                {/*Logo*/}
+                <View>
+                    <Image
+                        style={styles.imageTitleHeader}
+                        source={require("../image/logo.png")}
+                    />
+                </View>
 
-            <Text style={styles.subTitleText}>
-                It will help us to know about you!
-            </Text>
-            
-            <Text style={{ width: 320, marginBottom: 5 }}>
-                What is your Name?
-            </Text>
+                <Text style={styles.textTitleHeader}>Let's complete your profile</Text>
 
-            <View style={styles.birthDateContainer}>
-                <Image
-                    style={styles.birthDateImageContainer}
-                    source={require("../image/user.png")}
-                />
-                <TextInput
-                    placeholder="Enter your name"
-                    value={name}
-                    onChangeText={(text) => setName(text)}
-                    style={styles.birthDateTextContainer}
-                ></TextInput>
-            </View>
-            <Text style={{ width: 320 }}>
-                Please select which sex we should use to calculate your calorie needs:
-            </Text>
-            <View style={styles.genderContainer}>
-                <Image
-                    style={styles.genderImageContainer}
-                    source={require("../image/gender.png")}
-                />
-                {/* <TextInput
+                <Text style={styles.subTitleText}>
+                    It will help us to know about you!
+                </Text>
+
+                <Text style={{ width: 320, marginBottom: 5 }}>
+                    What is your Name?
+                </Text>
+
+                <View style={styles.birthDateContainer}>
+                    <Image
+                        style={styles.birthDateImageContainer}
+                        source={require("../image/user.png")}
+                    />
+                    <TextInput
+                        placeholder="Enter your name"
+                        value={name}
+                        onChangeText={(text) => setName(text)}
+                        style={styles.birthDateTextContainer}
+                    ></TextInput>
+                </View>
+                <Text style={{ width: 320 }}>
+                    Please select which sex we should use to calculate your calorie needs:
+                </Text>
+                <View style={styles.genderContainer}>
+                    <Image
+                        style={styles.genderImageContainer}
+                        source={require("../image/gender.png")}
+                    />
+                    {/* <TextInput
                     value={gender}
                     placeholder="Male or Female"
                     onChangeText={(text) => setGender(text)}
                     style={styles.genderTextContainer}></TextInput> */}
-                <Button color={gender === "Male" ? "#146C94" : "#fff"} style={{margin: 5, width: 120}} title="Male" onPress={() => {setGender("Male") }} />
-                <Button color={gender === "Female" ? "#146C94" : "#fff"} style={{margin: 5, width:120}} title="Female" onPress={() => { setGender("Female") }} />
+                    <Button color={gender === "Male" ? "#146C94" : "#fff"} style={{ margin: 5, width: 120 }} title="Male" onPress={() => { setGender("Male") }} />
+                    <Button color={gender === "Female" ? "#146C94" : "#fff"} style={{ margin: 5, width: 120 }} title="Female" onPress={() => { setGender("Female") }} />
 
-            </View>
+                </View>
 
-            <Text style={{ width: 320, marginBottom: 5 }}>
-                How old are you?
-            </Text>
-
-            <View style={styles.birthDateContainer}>
-                <Image
-                    style={styles.birthDateImageContainer}
-                    source={require("../image/calendar.png")}
-                />
-                <TextInput
-                    placeholder="Age"
-                    inputMode="numeric"
-                    value={age}
-                    onChangeText={(text) => setAge(text)}
-                    style={styles.birthDateTextContainer}
-                ></TextInput>
-            </View>
-            <Text style={{ width: 320, marginBottom: 5 }}>
-                How tall are you?
-            </Text>
-
-            <View style={styles.heightContainer}>
-                <Image
-                    style={styles.heightImageContainer}
-                    source={require("../image/computer-icons-ruler-pictogram-length-clip-art-ruler-1ccf0d3be8bd9cc8eeb2db1c88611e1a.png")}
-                />
-
-                <TextInput
-                    placeholder="Height(Centimeter/cm)"
-                    inputMode="numeric"
-                    onChangeText={(text) => setHeight(text)}
-                    value={height}
-                    style={styles.heightTextContainer}
-                ></TextInput>
-            </View>
-            <View style={{display: !age || !height ? "none" : "flex", flexDirection : "row",width: 320, justifyContent: "flex-start", marginBottom: 10}}>
-                <Text style={{marginRight: 10}}>
-                        Suggested weight: {suggestedWeight}kg
+                <Text style={{ width: 320, marginBottom: 5 }}>
+                    How old are you?
                 </Text>
-                <Pressable
-                onPress={() => {setWeight(suggestedWeight.toString())}}>
-                <Text style={{ fontWeight: "800", color: "#156d94"}}>ACCEPT</Text>
-            </Pressable>
-            </View>
 
-            <Text style={{ width: 320, marginBottom: 5 }}>
-                How much do you weigh?
-            </Text>
+                <View style={styles.birthDateContainer}>
+                    <Image
+                        style={styles.birthDateImageContainer}
+                        source={require("../image/calendar.png")}
+                    />
+                    <TextInput
+                        placeholder="Age"
+                        inputMode="numeric"
+                        value={age}
+                        onChangeText={(text) => setAge(text)}
+                        style={styles.birthDateTextContainer}
+                    ></TextInput>
+                </View>
+                <Text style={{ width: 320, marginBottom: 5 }}>
+                    How tall are you?
+                </Text>
 
-            <View style={styles.weightContainer}>
-                <Image
-                    style={styles.weightImageContainer}
-                    source={require("../image/PngItem_4039383.png")}
-                />
-                <TextInput
-                    placeholder="Weight(Kilograms/kg)"
-                    inputMode="numeric"
-                    style={styles.WeightTextContainer}
-                    value={weight}
-                    onChangeText={(text) => setWeight(text)}
-                ></TextInput>
-            </View>
-
-            <Pressable
-                style={{ backgroundColor: "#009688", height: 50, width: 320, borderRadius: 10, marginTop: 20 }}
-                onPress={() => setModalVisible(true)} disabled={age === '' || height === '' || weight === ''}>
-                <Text style={{ alignSelf: "center", marginTop: 10, fontSize: 20, fontWeight: "bold", color: "#fff" }}>NEXT</Text>
-            </Pressable>
-
-
-            <Modal
-                animationType="slide"
-                transparent={false}
-                visible={modalVisible}
-                onRequestClose={() => {
-
-                    setModalVisible(!modalVisible);
-                }}>
-            
-                <View style={{ backgroundColor: "#f6f6f6", height: 700 }}>
-                    <View style={{ flexDirection: "row", backgroundColor: "#f9eed9", height: 60 }}>
-                        <Pressable
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={() => setModalVisible(!modalVisible)}>
-                            <Image style={{ height: 17, width: 23, marginLeft: 10, marginTop: 23 }} source={require("../image/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}
-                            />
-                        </Pressable>
-                        <Text style={{ marginTop: 20, fontSize: 17, marginLeft: 15, fontWeight: "bold" }}>ACTIVITY LEVEL & GOAL</Text>
-                    </View>
-
-                    <Pressable
-                        style={{ backgroundColor: "#009688", height: 50, width: 320, borderRadius: 10, marginTop: 20, position: "absolute", bottom: 30, alignSelf: "center" }}
-                        onPress={() => setModalVisible1(true)}>
-                        <Text style={{ alignSelf: "center", marginTop: 10, fontSize: 20, fontWeight: "bold", color: "#fff" }}>NEXT</Text>
-                    </Pressable>
-
-
-                    <Text style={{ marginTop: 30, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}>What is your baseline activity level</Text>
-                    <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Not including workouts- we count that separately: </Text>
-
-                    <Text style={{ marginTop: 100, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}>What is your Goal</Text>
-                    <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Select your primary goal: </Text>
-
-                   
-
-                      <View style={styles.goalCheckBoxContainer}>
-                            <CheckBox
-                            value={checkboxStates.lackOfTime}
-                            onValueChange={() => toggleCheckbox('Loss Weight')}
-                            label={'Loss Weight'}
-                            containerStyle={styles.goalCheckBox}
-                            />
-                     </View>
-                     <View style={styles.goalCheckBoxContainer}>
-                            <CheckBox
-                            value={checkboxStates.stressAroundFood}
-                            onValueChange={() => toggleCheckbox('Maintain Weight')}
-                            label={'Maintain Weight'}
-                            containerStyle={styles.goalCheckBox}
-                            />
-                     </View>
-
-                      <View style={styles.goalCheckBoxContainer}>
-                            <CheckBox
-                            value={checkboxStates.foodCravings}
-                            onValueChange={() => toggleCheckbox('Gain Weight')}
-                            label={'Gain Weight'}
-                            containerStyle={styles.goalCheckBox}
-                            />
-                     </View>
-                      <View style={styles.goalCheckBoxContainer}>
-                            <CheckBox
-                            value={checkboxStates.lackOfProgress}
-                            onValueChange={() => toggleCheckbox('Increase My Step Count')}
-                            label={'Increase My Step Count'}
-                            containerStyle={styles.goalCheckBox}
-                            />
-                     </View>
-                    
-                    
-
-                    <DropDownPicker
-                        open={opens}
-                        value={values}
-                        items={items}
-                        setOpen={setOpens}
-                        setValue={setValues}
-                        setItems={setItem}
-                        zIndex={3000}
-                        placeholder="Select your Activity baseline level"
-                        zIndexInverse={1000}
-                        containerStyle={{ width: 320, backgroundColor: "#f9eed9", position: "absolute", top: 150, right: 20 }}
+                <View style={styles.heightContainer}>
+                    <Image
+                        style={styles.heightImageContainer}
+                        source={require("../image/computer-icons-ruler-pictogram-length-clip-art-ruler-1ccf0d3be8bd9cc8eeb2db1c88611e1a.png")}
                     />
 
-
+                    <TextInput
+                        placeholder="Height(Centimeter/cm)"
+                        inputMode="numeric"
+                        onChangeText={(text) => setHeight(text)}
+                        value={height}
+                        style={styles.heightTextContainer}
+                    ></TextInput>
                 </View>
-            </Modal>
-               <Modal
-                animationType="slide"
-                transparent={false}
-                visible={modalVisible1}
-                onRequestClose={() => {
-
-                    setModalVisible1(!modalVisible1);
-                }}>
-            
-                <View style={{ backgroundColor: "#f6f6f6", height: 700 }}>
-                    <View style={{ flexDirection: "row", backgroundColor: "#f9eed9", height: 60 }}>
-                        <Pressable
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={() => setModalVisible1(!modalVisible1)}>
-                            <Image style={{ height: 17, width: 23, marginLeft: 10, marginTop: 23 }} source={require("../image/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}
-                            />
-                        </Pressable>
-                        <Text style={{ marginTop: 20, fontSize: 17, marginLeft: 15, fontWeight: "bold" }}>BARIERS AND MEDICAL HISTORY</Text>
-                    </View>
-
+                <View style={{ display: !age || !height ? "none" : "flex", flexDirection: "row", width: 320, justifyContent: "flex-start", marginBottom: 10 }}>
+                    <Text style={{ marginRight: 10 }}>
+                        Suggested weight: {suggestedWeight}kg
+                    </Text>
                     <Pressable
-                        style={{ backgroundColor: "#009688", height: 50, width: 320, borderRadius: 10, marginTop: 20, position: "absolute", bottom: 30, alignSelf: "center" }}
-                        onPress={() => setSampleVisible(true)}>
-                        <Text style={{ alignSelf: "center", marginTop: 10, fontSize: 20, fontWeight: "bold", color: "#fff" }}>NEXT</Text>
+                        onPress={() => { setWeight(suggestedWeight.toString()) }}>
+                        <Text style={{ fontWeight: "800", color: "#156d94" }}>ACCEPT</Text>
                     </Pressable>
-
-
-
-                    <Text style={{ marginTop: 10, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}> In the past, what been your primary barrier to gain and losing weight</Text>
-                    <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Select your primary barrier: </Text>
-
-                    <View style={styles.goalCheckBoxContainer}>
-                            <CheckBox
-                            value={checkboxStates.lackOfTime}
-                            onValueChange={() => toggleCheckbox('lackOfTime')}
-                            label={'Lack of Time'}
-                            containerStyle={styles.goalCheckBox}
-                            />
-                     </View>
-                     <View style={styles.goalCheckBoxContainer}>
-                            <CheckBox
-                            value={checkboxStates.stressAroundFood}
-                            onValueChange={() => toggleCheckbox('stressAroundFood')}
-                            label={'Stress Around Food'}
-                            containerStyle={styles.goalCheckBox}
-                            />
-                     </View>
-
-                      <View style={styles.goalCheckBoxContainer}>
-                            <CheckBox
-                            value={checkboxStates.foodCravings}
-                            onValueChange={() => toggleCheckbox('foodCravings')}
-                            label={'Food Cravings'}
-                            containerStyle={styles.goalCheckBox}
-                            />
-                     </View>
-                      <View style={styles.goalCheckBoxContainer}>
-                            <CheckBox
-                            value={checkboxStates.lackOfProgress}
-                            onValueChange={() => toggleCheckbox('lackOfProgress')}
-                            label={'Lack Of Progress'}
-                            containerStyle={styles.goalCheckBox}
-                            />
-                     </View>
-                      <View style={styles.goalCheckBoxContainer}>
-                            <CheckBox
-                            value={checkboxStates.expensiveHealthyFood}
-                            onValueChange={() => toggleCheckbox('expensiveHealthyFood')}
-                            label={'Expensive Healthy Food'}
-                            containerStyle={styles.goalCheckBox}
-                            />
-                     </View>
-                                 
-                    
-
-                    
-                    <Text style={{ marginTop: 10, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}>What is your past Medical History</Text>
-                    <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Enter Your Medical History: </Text>
-                    
-                    <View style={styles.medicalHistory}>
-                <Image
-                    style={styles.medsImageContainer}
-                    source={require("../image/medical-history.png")}
-                />
-                <TextInput
-                    placeholder="Medical History"
-                    inputMode="text"
-                    value={medHistory}
-                    onChangeText={(text) => setMedHistory(text)}
-                    style={styles.medHistoryTextContainer}
-                ></TextInput>
-            </View>
-                     
                 </View>
-            </Modal>
+
+                <Text style={{ width: 320, marginBottom: 5 }}>
+                    How much do you weigh?
+                </Text>
+
+                <View style={styles.weightContainer}>
+                    <Image
+                        style={styles.weightImageContainer}
+                        source={require("../image/PngItem_4039383.png")}
+                    />
+                    <TextInput
+                        placeholder="Weight(Kilograms/kg)"
+                        inputMode="numeric"
+                        style={styles.WeightTextContainer}
+                        value={weight}
+                        onChangeText={(text) => setWeight(text)}
+                    ></TextInput>
+                </View>
+
+                <Pressable
+                    style={{ backgroundColor: "#009688", height: 50, width: 320, borderRadius: 10, marginTop: 20 }}
+                    onPress={() => setModalVisible(true)} disabled={age === '' || height === '' || weight === ''}>
+                    <Text style={{ alignSelf: "center", marginTop: 10, fontSize: 20, fontWeight: "bold", color: "#fff" }}>NEXT</Text>
+                </Pressable>
 
 
+                <Modal
+                    animationType="slide"
+                    transparent={false}
+                    visible={modalVisible}
+                    onRequestClose={() => {
 
-            <Modal
-                //second modal
-                animationType="slide"
-                transparent={false}
-                visible={modalSampleVisible}
-                onRequestClose={() => {
+                        setModalVisible(!modalVisible);
+                    }}>
 
-                    setModalVisible(!modalSampleVisible);
-                }}>
-                <View style={{ backgroundColor: "#f6f6f6", height: 700 }}>
-                    <View style={{ flexDirection: "row", backgroundColor: "#f9eed9", height: 60 }}>
+                    <View style={{ backgroundColor: "#f6f6f6", height: 700 }}>
+                        <View style={{ flexDirection: "row", backgroundColor: "#f9eed9", height: 60 }}>
+                            <Pressable
+                                style={[styles.button, styles.buttonClose]}
+                                onPress={() => setModalVisible(!modalVisible)}>
+                                <Image style={{ height: 17, width: 23, marginLeft: 10, marginTop: 23 }} source={require("../image/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}
+                                />
+                            </Pressable>
+                            <Text style={{ marginTop: 20, fontSize: 17, marginLeft: 15, fontWeight: "bold" }}>ACTIVITY LEVEL & GOAL</Text>
+                        </View>
+
                         <Pressable
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={() => setSampleVisible(!modalSampleVisible)}>
-                            <Image style={{ height: 17, width: 23, marginLeft: 10, marginTop: 23 }} source={require("../image/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}
-                            />
+                            style={{ backgroundColor: "#009688", height: 50, width: 320, borderRadius: 10, marginTop: 20, position: "absolute", bottom: 30, alignSelf: "center" }}
+                            onPress={() => setModalVisible1(true)}>
+                            <Text style={{ alignSelf: "center", marginTop: 10, fontSize: 20, fontWeight: "bold", color: "#fff" }}>NEXT</Text>
                         </Pressable>
-                        <Text style={{ marginTop: 18, fontSize: 18, marginLeft: 15, fontWeight: "bold" }}>WEEKLY GOAL</Text>
-                    </View>
 
-                    <Text style={{ fontSize: 15, fontWeight: "bold", marginTop: 50, marginLeft: 20 }}>What's your goal weight</Text>
-                    <Text style={{ fontSize: 12, marginTop: 70, marginLeft: 20, marginRight: 15 }}>Don't worry. This doesn't affect your daily calorie goal and can always change it later</Text>
-                    <Text style={{ fontSize: 15, fontWeight: "bold", marginTop: 60, marginLeft: 20, marginRight: 15 }}>What is your Weekly goal?</Text>
 
-                    <View style={styles.goalWeightContainer}>
-                        <Image
-                            style={styles.weightImageContainer}
-                            source={require("../image/PngItem_4039383.png")}
+                        <Text style={{ marginTop: 30, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}>What is your baseline activity level</Text>
+                        <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Not including workouts- we count that separately: </Text>
+
+                        <Text style={{ marginTop: 100, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}>What is your Goal</Text>
+                        <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Select your primary goal: </Text>
+
+
+
+                        <View style={styles.goalCheckBoxContainer}>
+                            <CheckBox
+                                value={checkboxStates.lackOfTime}
+                                onChange={() => toggleCheckbox('Loss Weight')}
+                                label={'Loss Weight'}
+                                containerStyle={styles.goalCheckBox}
+                            />
+                        </View>
+                        <View style={styles.goalCheckBoxContainer}>
+                            <CheckBox
+                                value={checkboxStates.stressAroundFood}
+                                onChange={() => toggleCheckbox('Maintain Weight')}
+                                label={'Maintain Weight'}
+                                containerStyle={styles.goalCheckBox}
+                            />
+                        </View>
+
+                        <View style={styles.goalCheckBoxContainer}>
+                            <CheckBox
+                                value={checkboxStates.foodCravings}
+                                onChange={() => toggleCheckbox('Gain Weight')}
+                                label={'Gain Weight'}
+                                containerStyle={styles.goalCheckBox}
+                            />
+                        </View>
+                        <View style={styles.goalCheckBoxContainer}>
+                            <CheckBox
+                                value={checkboxStates.lackOfProgress}
+                                onChange={() => toggleCheckbox('Increase My Step Count')}
+                                label={'Increase My Step Count'}
+                                containerStyle={styles.goalCheckBox}
+                            />
+                        </View>
+                        <DropDownPicker
+                            open={opens}
+                            value={values}
+                            items={items}
+                            setOpen={setOpens}
+                            setValue={setValues}
+                            setItems={setItem}
+                            zIndex={3000}
+                            placeholder="Select your Activity baseline level"
+                            zIndexInverse={1000}
+                            containerStyle={{ width: 320, backgroundColor: "#f9eed9", position: "absolute", top: 150, right: 20 }}
                         />
 
-                        <TextInput
-                            value={goalWeight}
-                            onChangeText={setGoalWeight}
-                            placeholder="Weight(Kilograms/kg)"
-                            style={styles.WeightTextContainer}
-                            inputMode="numeric"
-                        ></TextInput>
+
                     </View>
+                </Modal>
+                <Modal
+                    animationType="slide"
+                    transparent={false}
+                    visible={modalVisible1}
+                    onRequestClose={() => {
+                        setModalVisible1(!modalVisible1);
+                    }}>
+                    <SafeAreaView style={{ flex: 1, backgroundColor: "#f6f6f6" }}>
+                        <ScrollView style={{ backgroundColor: "#000" }}>
+                            <View style={{ backgroundColor: "#f6f6f6", paddingBottom: 100 }}>
+                                <View style={{ flexDirection: "row", backgroundColor: "#f9eed9", height: 60 }}>
+                                    <Pressable
+                                        style={[styles.button, styles.buttonClose]}
+                                        onPress={() => setModalVisible1(!modalVisible1)}>
+                                        <Image style={{ height: 17, width: 23, marginLeft: 10, marginTop: 23 }} source={require("../image/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}
+                                        />
+                                    </Pressable>
+                                    <Text style={{ marginTop: 20, fontSize: 17, marginLeft: 15, fontWeight: "bold" }}>BARIERS AND MEDICAL HISTORY</Text>
+                                </View>
 
-                    <DropDownPicker
-                        open={Pops}
-                        value={info}
-                        items={Selections}
-                        setOpen={setPops}
-                        setValue={setInfo}
-                        setItems={setSelections}
-                        zIndex={3000}
-                        placeholder="Set Weekly Goal"
-                        zIndexInverse={1000}
-                        containerStyle={{ width: 320, height: 200,  position: "absolute", top: 320, right: 20 }}
-                    />
+                                <Pressable
+                                    style={{ backgroundColor: "#009688", height: 50, width: 320, borderRadius: 10, marginTop: 20, position: "absolute", bottom: 30, alignSelf: "center" }}
+                                    onPress={() => setSampleVisible(true)}>
+                                    <Text style={{ alignSelf: "center", marginTop: 10, fontSize: 20, fontWeight: "bold", color: "#fff" }}>NEXT</Text>
+                                </Pressable>
 
-                    <View style={styles.screenContainer}>
-                        <AppButton
-                            title="Create Account"
-                            onPress={async () => {
-                                await saveData();
-                                setShowMainScreen(false)
-                            }
-                            }
-                        ></AppButton>
+
+
+                                <Text style={{ marginTop: 10, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}> In the past, what been your primary barrier to gain and losing weight</Text>
+                                <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Select your primary barrier: </Text>
+
+                                <View style={styles.goalCheckBoxContainer}>
+                                    <CheckBox
+                                        value={checkboxStates.lackOfTime}
+                                        onChange={() => toggleCheckbox('lackOfTime')}
+                                        label={'Lack of Time'}
+                                        containerStyle={styles.goalCheckBox}
+                                    />
+                                </View>
+                                <View style={styles.goalCheckBoxContainer}>
+                                    <CheckBox
+                                        value={checkboxStates.stressAroundFood}
+                                        onChange={() => toggleCheckbox('stressAroundFood')}
+                                        label={'Stress Around Food'}
+                                        containerStyle={styles.goalCheckBox}
+                                    />
+                                </View>
+
+                                <View style={styles.goalCheckBoxContainer}>
+                                    <CheckBox
+                                        value={checkboxStates.foodCravings}
+                                        onChange={() => toggleCheckbox('foodCravings')}
+                                        label={'Food Cravings'}
+                                        containerStyle={styles.goalCheckBox}
+                                    />
+                                </View>
+                                <View style={styles.goalCheckBoxContainer}>
+                                    <CheckBox
+                                        value={checkboxStates.lackOfProgress}
+                                        onChange={() => toggleCheckbox('lackOfProgress')}
+                                        label={'Lack Of Progress'}
+                                        containerStyle={styles.goalCheckBox}
+                                    />
+                                </View>
+                                <View style={styles.goalCheckBoxContainer}>
+                                    <CheckBox
+                                        value={medHistoryStates.expensiveHealthyFood}
+                                        onChange={() => toggleCheckbox('expensiveHealthyFood')}
+                                        label={'Expensive Healthy Food'}
+                                        containerStyle={styles.goalCheckBox}
+                                    />
+                                </View>
+
+                                <Text style={{ marginTop: 10, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}>What is your past Medical History</Text>
+                                <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Select Your Medical History: </Text>
+
+                                {/* loop through the array of medical history */}
+                                {
+                                    Object.keys(medHistoryStates).map(function (key) {
+                                        return (
+                                            <View style={styles.goalCheckBoxContainer} key={key}>
+                                                <CheckBox
+                                                    value={key}
+                                                    onChange={() => toggleCheckboxMedHistory(key)}
+                                                    label={key}
+                                                    containerStyle={styles.goalCheckBox}
+                                                />
+                                            </View>
+                                        );
+                                    })
+                                }
+
+                                <View style={styles.medicalHistory}>
+                                    <Image
+                                        style={styles.medsImageContainer}
+                                        source={require("../image/medical-history.png")}
+                                    />
+                                    <TextInput
+                                        placeholder="Other (specify)"
+                                        inputMode="text"
+                                        value={medHistory}
+                                        onChangeText={(text) => setMedHistory(text)}
+                                        style={styles.medHistoryTextContainer}
+                                    ></TextInput>
+                                </View>
+
+                            </View>
+                        </ScrollView>
+                    </SafeAreaView>
+                </Modal>
+
+
+
+                <Modal
+                    //second modal
+                    animationType="slide"
+                    transparent={false}
+                    visible={modalSampleVisible}
+                    onRequestClose={() => {
+
+                        setModalVisible(!modalSampleVisible);
+                    }}>
+                    <View style={{ backgroundColor: "#f6f6f6", height: 700 }}>
+                        <View style={{ flexDirection: "row", backgroundColor: "#f9eed9", height: 60 }}>
+                            <Pressable
+                                style={[styles.button, styles.buttonClose]}
+                                onPress={() => setSampleVisible(!modalSampleVisible)}>
+                                <Image style={{ height: 17, width: 23, marginLeft: 10, marginTop: 23 }} source={require("../image/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}
+                                />
+                            </Pressable>
+                            <Text style={{ marginTop: 18, fontSize: 18, marginLeft: 15, fontWeight: "bold" }}>WEEKLY GOAL</Text>
+                        </View>
+
+                        <Text style={{ fontSize: 15, fontWeight: "bold", marginTop: 50, marginLeft: 20 }}>What's your goal weight</Text>
+                        <Text style={{ fontSize: 12, marginTop: 70, marginLeft: 20, marginRight: 15 }}>Don't worry. This doesn't affect your daily calorie goal and can always change it later</Text>
+                        <Text style={{ fontSize: 15, fontWeight: "bold", marginTop: 60, marginLeft: 20, marginRight: 15 }}>What is your Weekly goal?</Text>
+
+                        <View style={styles.goalWeightContainer}>
+                            <Image
+                                style={styles.weightImageContainer}
+                                source={require("../image/PngItem_4039383.png")}
+                            />
+
+                            <TextInput
+                                value={goalWeight}
+                                onChangeText={setGoalWeight}
+                                placeholder="Weight(Kilograms/kg)"
+                                style={styles.WeightTextContainer}
+                                inputMode="numeric"
+                            ></TextInput>
+                        </View>
+
+                        <DropDownPicker
+                            open={Pops}
+                            value={info}
+                            items={Selections}
+                            setOpen={setPops}
+                            setValue={setInfo}
+                            setItems={setSelections}
+                            zIndex={3000}
+                            placeholder="Set Weekly Goal"
+                            zIndexInverse={1000}
+                            containerStyle={{ width: 320, height: 200, position: "absolute", top: 320, right: 20 }}
+                        />
+
+                        <View style={styles.screenContainer}>
+                            <AppButton
+                                title="Create Account"
+                                onPress={async () => {
+                                    await saveData();
+                                    setShowMainScreen(false)
+                                }
+                                }
+                            ></AppButton>
+                        </View>
                     </View>
-                </View>
-            </Modal>
+                </Modal>
 
-            
-        </SafeAreaView>
+
+            </SafeAreaView>
         </ScrollView>
     );
 };
@@ -575,8 +611,8 @@ function calculateSuggestedWeight(age, height) {
     let suggestedWeight = bmi * Math.pow(heightInMeters, 2);
     // Adjust suggested weight based on age (optional)
     if (age < 18) {
-      // Adjust for children/adolescents if needed
-      suggestedWeight = suggestedWeight * 0.85;
+        // Adjust for children/adolescents if needed
+        suggestedWeight = suggestedWeight * 0.85;
     }
     // Round the suggested weight to the nearest integer
     return Math.round(suggestedWeight);
@@ -733,7 +769,7 @@ const styles = StyleSheet.create({
     },
 
     goalCheckBoxContainer: {
-        backgroundColor: '#f9eed9', 
+        backgroundColor: '#f9eed9',
         height: 50,
         margin: 10,
         width: 330,
@@ -744,18 +780,18 @@ const styles = StyleSheet.create({
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.3,
-        
- 
+
+
     },
 
-    goalCheckBox : {
+    goalCheckBox: {
         marginLeft: 10,
         marginTop: 12,
         marginBottom: 20,
-       
-        
+
+
     },
-      medicalHistory: {
+    medicalHistory: {
         flexDirection: "row",
         borderBottomColor: "#ccc",
         marginBottom: 15,
@@ -775,7 +811,7 @@ const styles = StyleSheet.create({
         fontSize: 17,
         marginTop: 6,
     },
-     medsImageContainer: {
+    medsImageContainer: {
         marginTop: 13,
         height: 30,
         marginRight: 12,
