@@ -65,6 +65,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
     };
 
     const toggleCheckboxMedHistory = (checkboxKey) => {
+        setSelectMedHistory([...selectMedHistory, checkboxKey]);
         // Toggle the checkbox state for the specified checkbox key
         setMedHistoryStates((prevStates) => ({
             ...prevStates,
@@ -79,7 +80,6 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
     const saveCheckboxValue = async (key, value) => {
         try {
             console.log(`Saving checkbox value for ${key}:`, value);
-            await AsyncStorage.setItem(key, JSON.stringify(value));
         } catch (error) {
             console.error(`Error saving checkbox value for ${key}:`, error);
         }
@@ -173,6 +173,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
     const [gender, setGender] = useState('Male');
     const [age, setAge] = useState('');
     const [medHistory, setMedHistory] = useState('');
+    const [selectMedHistory, setSelectMedHistory] = useState([]);
     const [name, setName] = useState('');
     const [goalWeight, setGoalWeight] = useState('');
     const [suggestedWeight, setSuggestedWeight] = useState(0);
@@ -194,7 +195,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                 gender,
                 goalWeight,
                 medHistory,
-
+                selectMedHistory: selectMedHistory.toString()
             };
 
             // Save the data to AsyncStorage
@@ -403,6 +404,17 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                 containerStyle={styles.goalCheckBox}
                             />
                         </View>
+                        <View style={[styles.goalCheckBoxContainer, {
+                            paddingLeft: 20,
+                        }]}>
+                            <TextInput
+                                placeholder="Other (specify)"
+                                inputMode="text"
+                                style={[styles.medHistoryTextContainer, {
+                                    marginTop: 0,
+                                }]}
+                            ></TextInput>
+                        </View>
                         <DropDownPicker
                             open={opens}
                             value={values}
@@ -491,9 +503,20 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                         containerStyle={styles.goalCheckBox}
                                     />
                                 </View>
+                                <View style={[styles.goalCheckBoxContainer, {
+                                    paddingLeft: 20,
+                                }]}>
+                                    <TextInput
+                                        placeholder="Other (specify)"
+                                        inputMode="text"
+                                        style={[styles.medHistoryTextContainer, {
+                                            marginTop: 0,
+                                        }]}
+                                    ></TextInput>
+                                </View>
 
-                                <Text style={{ marginTop: 10, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}>What is your past Medical History</Text>
-                                <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Select Your Medical History: </Text>
+                                <Text style={{ marginTop: 10, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}>What is your past Medical History / health condition </Text>
+                                <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Select Your Medical History / health condition : </Text>
 
                                 {/* loop through the array of medical history */}
                                 {
@@ -793,14 +816,15 @@ const styles = StyleSheet.create({
     },
     medicalHistory: {
         flexDirection: "row",
-        borderBottomColor: "#ccc",
         marginBottom: 15,
         backgroundColor: "#f9eed9",
-        borderRadius: 18,
+        borderRadius: 10,
         width: 320,
         height: 50,
         alignSelf: 'center',
-        marginTop: 10
+        marginTop: 10,
+        borderWidth: 1,
+        borderColor: "#000"
     },
     medHistoryTextContainer: {
         marginTop: 10,
@@ -817,5 +841,6 @@ const styles = StyleSheet.create({
         marginRight: 12,
         width: 30,
         marginLeft: 17,
+
     },
 });

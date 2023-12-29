@@ -38,7 +38,7 @@ export default BmiCalculator = ({ navigation, route }) => {
     const [userData, setUserData] = useState({});
     const [calories, setCalories] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
-    const [calorieIntake, setCalorieIntake] = useState([0, 0, 0, 0, 0, 0,0]);
+    const [calorieIntake, setCalorieIntake] = useState([0, 0, 0, 0, 0, 0, 0]);
     const [calorieIntakeToday, setCalorieIntakeToday] = useState(0);
     const [bmr, setBmr] = useState('');
     const [burnedCalorie, setBurnedCalorie] = useState(0);
@@ -143,7 +143,7 @@ export default BmiCalculator = ({ navigation, route }) => {
         const currentDayIndex = currentDate.getDay();
         let storage_Key = `${currentDayIndex}_exerciseBurnedCalories`;
         const previousBurned = await getData(storage_Key);
-        if (previousBurned)burnedCalorie = Number(previousBurned);
+        if (previousBurned) burnedCalorie = Number(previousBurned);
         setBurnedCalorie(burnedCalorie);
     };
 
@@ -253,14 +253,14 @@ export default BmiCalculator = ({ navigation, route }) => {
                             <View style={{ position: "absolute", height: 600 }}>
                                 {userData.gender === "Male" &&
                                     <Image
-                                    style={{ height: 410, width: 142, top: 70, left: 40 }}
-                                    source={require("../Dashboard/image/pngaaa.com-1130346.png")}
+                                        style={{ height: 410, width: 142, top: 70, left: 40 }}
+                                        source={require("../Dashboard/image/pngaaa.com-1130346.png")}
                                     />
                                 }
                                 {userData.gender === "Female" &&
                                     <Image
-                                    style={{ height: 430, width: 280, top: 70, left: -50, resizeMode: "stretch" }}
-                                    source={require("../Dashboard/image/female-workout.png")}
+                                        style={{ height: 430, width: 280, top: 70, left: -50, resizeMode: "stretch" }}
+                                        source={require("../Dashboard/image/female-workout.png")}
                                     />
                                 }
                             </View>
@@ -310,7 +310,7 @@ export default BmiCalculator = ({ navigation, route }) => {
                             </ScrollView>
 
                         </Modal> */}
-                        <BmiGoal bmr={bmr} calorieIntake={calorieIntakeToday} burnedCalorie={burnedCalorie}/>
+                        <BmiGoal bmr={bmr} calorieIntake={calorieIntakeToday} burnedCalorie={burnedCalorie} />
 
                         <View style={{ backgroundColor: "#156d94", padding: 10, marginHorizontal: 10, marginTop: 35, marginBottom: 50, borderRadius: 10 }}>
                             <Text style={{ fontSize: 20, color: "#fff", textAlign: "center" }}>DAILY CALORIE INTAKE</Text>

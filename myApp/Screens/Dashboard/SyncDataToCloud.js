@@ -19,10 +19,10 @@ export default SyncDataToCloud = ({ isFocused }) => {
                 toSaveDataKey.forEach(async (dataKey) => {
                     try {
                         const newData = await saveDataToCloud(dataKey);
-                        if(dataKey == "userData"){
+                        if (dataKey == "userData") {
                             setUserId(newData.id);
                         }
-                        else{
+                        else {
                             console.log(`Cannot save ${dataKey} to cloud - no user data`);
                             return;
                         }
@@ -113,28 +113,28 @@ export default SyncDataToCloud = ({ isFocused }) => {
             <View style={{ flexDirection: "column", alignSelf: "center" }}>
                 {savedElement}
                 <View style={{ flexDirection: "row", marginHorizontal: 10 }}>
-                <Text
-                    style={{
-                        fontSize: 15,
-                        fontWeight: "bold",
-                        color: "#fff",
-                        textAlign: "center",
-                        marginRight: 5,
-                    }}
-                >
-                ✓ 
-                </Text>
-                <Text
-                    style={{
-                        fontSize: 15,
-                        fontWeight: "bold",
-                        color: "#fff",
-                        textAlign: "center",
-                    }}
-                >
-                    Meals Data
-                </Text>
-            </View>
+                    <Text
+                        style={{
+                            fontSize: 15,
+                            fontWeight: "bold",
+                            color: "#fff",
+                            textAlign: "center",
+                            marginRight: 5,
+                        }}
+                    >
+                        ✓
+                    </Text>
+                    <Text
+                        style={{
+                            fontSize: 15,
+                            fontWeight: "bold",
+                            color: "#fff",
+                            textAlign: "center",
+                        }}
+                    >
+                        Meals Data
+                    </Text>
+                </View>
             </View>
         </View>
     );
