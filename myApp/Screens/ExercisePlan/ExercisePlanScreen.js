@@ -2593,7 +2593,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
           setModalVisible6(!modalVisible6);
         }}
       >
-        <View style={{ backgroundColor: '#f9eed9', borderRadius: 10, borderBottomColor: 'black' }}>
+        <View style={{ backgroundColor: '#fff', borderRadius: 10, borderBottomColor: 'black' }}>
           <View style={{ borderRadius: 100, height: 200, width: 120, alignSelf: "center", borderRadius: 20, }}>
             <Video
               ref={videoRef}
