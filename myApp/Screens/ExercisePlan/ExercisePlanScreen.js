@@ -2807,7 +2807,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
         </TouchableOpacity>
 
         <View style={styles.modalMainContainer}>
-          <Text style={styles.exerciseName}>Hip Rotation</Text>
+          <Text style={styles.exerciseName}>Knee Rotation</Text>
           {/*Exercise Timer*/}
           <View style={styles.subModalContainer}>
             <View style={styles.HeadersContainer}>
