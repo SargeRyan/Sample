@@ -27,6 +27,7 @@ import RNSpeedometer from 'react-native-speedometer'
 import { getEatenMealAsync, getData } from "../../AsyncStorageFunctions";
 import { useIsFocused } from "@react-navigation/native";
 import BmiGoal from "./BmiGoal";
+import { saveDataToCloud } from "./global";
 
 export default BmiCalculator = ({ navigation, route }) => {
     const [height, setHeight] = useState('');
@@ -213,6 +214,8 @@ export default BmiCalculator = ({ navigation, route }) => {
                             color="#87a3af"
                             title={"Reset BMI Details"}
                             onPress={async () => {
+                                userData.isOld = true;
+                                await saveDataToCloud(userData.id, "userData", JSON.stringify(userData));
                                 await AsyncStorage.removeItem('userData');
                                 setUserData({});
                                 setBmi('');
