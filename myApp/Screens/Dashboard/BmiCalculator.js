@@ -223,26 +223,26 @@ export default BmiCalculator = ({ navigation, route }) => {
 
                         <View>
                             <View style={{ width: 150, left: 200, marginTop: 20 }}>
-                                <Text style={{ fontSize: 20, fontWeight: "bold", }}>Name</Text>
+                                <Text style={{ fontSize: 20, fontWeight: "bold", }}>Name (Pangalan)</Text>
                                 <TextInput editable={false} selectTextOnFocus={false} style={{ width: 150, alignSelf: "center" }} value={userData.name}></TextInput>
                             </View>
                             <View style={{ width: 150, left: 200, marginTop: 20 }}>
-                                <Text style={{ fontSize: 20, fontWeight: "bold", }}>Gender</Text>
+                                <Text style={{ fontSize: 20, fontWeight: "bold", }}>Gender (Kasarian)</Text>
                                 <TextInput editable={false} selectTextOnFocus={false} style={{ width: 150, alignSelf: "center" }} value={userData.gender}></TextInput>
                             </View>
 
                             <View style={{ width: 150, left: 200, marginTop: 20 }}>
-                                <Text style={{ fontSize: 20, fontWeight: "bold", }}>Age</Text>
+                                <Text style={{ fontSize: 20, fontWeight: "bold", }}>Age (Edad)</Text>
                                 <TextInput editable={false} selectTextOnFocus={false} style={{ width: 150, alignSelf: "center" }} value={userData.age}></TextInput>
                             </View>
 
                             <View style={{ width: 150, left: 200, marginTop: 20 }}>
-                                <Text style={{ fontSize: 20, fontWeight: "bold", }}>Height</Text>
+                                <Text style={{ fontSize: 20, fontWeight: "bold", }}>Height (Tangkad)</Text>
                                 <TextInput editable={false} selectTextOnFocus={false} style={{ width: 150, alignSelf: "center" }} value={userData.height}></TextInput>
                             </View>
 
                             <View style={{ width: 150, left: 200, marginTop: 20 }}>
-                                <Text style={{ fontSize: 20, fontWeight: "bold", }}>Weight</Text>
+                                <Text style={{ fontSize: 20, fontWeight: "bold", }}>Weight (Timbang)</Text>
                                 <TextInput editable={false} selectTextOnFocus={false} style={{ width: 150, alignSelf: "center" }} value={userData.weight}></TextInput>
                             </View>
 

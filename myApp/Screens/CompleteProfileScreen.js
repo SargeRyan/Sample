@@ -133,7 +133,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
     const [opened, setOpened] = useState(false);
     const [valued, setValued] = useState(null);
     const [itemed, setItemed] = useState([
-        { label: 'Lose Weight', value: 'Lose Weight' },
+        { label: 'Lose Weight (Magbawas ng timbang)', value: 'Lose Weight' },
         { label: 'Maintain Weight', value: 'Maintain Weight' },
         { label: 'Gain Weight', value: 'Gain Weight' },
         { label: 'Manage Stress', value: 'Manage Stress' },
@@ -233,7 +233,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                 </Text>
 
                 <Text style={{ width: 320, marginBottom: 5 }}>
-                    What is your Name?
+                    What is your Name?(Ano ang iyong pangalan?) 
                 </Text>
 
                 <View style={styles.birthDateContainer}>
@@ -249,7 +249,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                     ></TextInput>
                 </View>
                 <Text style={{ width: 320 }}>
-                    Please select which sex we should use to calculate your calorie needs:
+                   Which sex we should use to calculate your calorie needs: (Aling kasarian ang dapat naming gamitin upang kalkulahin ang iyong mga pangangailangan sa calorie:)
                 </Text>
                 <View style={styles.genderContainer}>
                     <Image
@@ -267,7 +267,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                 </View>
 
                 <Text style={{ width: 320, marginBottom: 5 }}>
-                    How old are you?
+                    How old are you? (Ilan taon ka na?)
                 </Text>
 
                 <View style={styles.birthDateContainer}>
@@ -284,7 +284,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                     ></TextInput>
                 </View>
                 <Text style={{ width: 320, marginBottom: 5 }}>
-                    How tall are you?
+                    How tall are you?(Gaano ka katangkad?)
                 </Text>
 
                 <View style={styles.heightContainer}>
@@ -312,7 +312,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                 </View>
 
                 <Text style={{ width: 320, marginBottom: 5 }}>
-                    How much do you weigh?
+                    How much do you weigh?(Gaano ka kabigat?)
                 </Text>
 
                 <View style={styles.weightContainer}>
@@ -330,7 +330,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                 </View>
 
                 <Pressable
-                    style={{ backgroundColor: "#009688", height: 50, width: 320, borderRadius: 10, marginTop: 20 }}
+                    style={{ backgroundColor: "#009688", height: 50, width: 320, borderRadius: 10, marginTop: 5 }}
                     onPress={() => setModalVisible(true)} disabled={age === '' || height === '' || weight === ''}>
                     <Text style={{ alignSelf: "center", marginTop: 10, fontSize: 20, fontWeight: "bold", color: "#fff" }}>NEXT</Text>
                 </Pressable>
@@ -357,17 +357,17 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                         </View>
 
                         <Pressable
-                            style={{ backgroundColor: "#009688", height: 50, width: 320, borderRadius: 10, marginTop: 20, position: "absolute", bottom: 30, alignSelf: "center" }}
+                            style={{ backgroundColor: "#009688", height: 50, width: 320, borderRadius: 10, marginTop: 30, position: "absolute", bottom: 20, alignSelf: "center" }}
                             onPress={() => setModalVisible1(true)}>
                             <Text style={{ alignSelf: "center", marginTop: 10, fontSize: 20, fontWeight: "bold", color: "#fff" }}>NEXT</Text>
                         </Pressable>
 
 
-                        <Text style={{ marginTop: 30, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}>What is your baseline activity level</Text>
-                        <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Not including workouts- we count that separately: </Text>
+                        <Text style={{ marginTop: 30, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}>What is your baseline activity level (Ano ang iyong baseline na antas ng aktibidad)</Text>
+                        <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Not including workouts- we count that separately: (Hindi kasama ang mga ehersisyo- hiwalay naming binibilang iyon:)</Text>
 
-                        <Text style={{ marginTop: 100, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}>What is your Goal</Text>
-                        <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Select your primary goal: </Text>
+                        <Text style={{ marginTop: 80, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}>What is your Goal (Ano ang iyong Layunin)</Text>
+                        <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Select your primary goal: (Piliin ang iyong pangunahing layunin:)</Text>
 
 
 
@@ -375,7 +375,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                             <CheckBox
                                 value={checkboxStates.lackOfTime}
                                 onChange={() => toggleCheckbox('Loss Weight')}
-                                label={'Loss Weight'}
+                                label={'Loss Weight (Magbawas ng timbang)'}
                                 containerStyle={styles.goalCheckBox}
                             />
                         </View>
@@ -383,7 +383,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                             <CheckBox
                                 value={checkboxStates.stressAroundFood}
                                 onChange={() => toggleCheckbox('Maintain Weight')}
-                                label={'Maintain Weight'}
+                                label={'Maintain Weight (Panatilihin ang Timbang)'}
                                 containerStyle={styles.goalCheckBox}
                             />
                         </View>
@@ -392,7 +392,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                             <CheckBox
                                 value={checkboxStates.foodCravings}
                                 onChange={() => toggleCheckbox('Gain Weight')}
-                                label={'Gain Weight'}
+                                label={'Gain Weight (Magdagdag ng timbang)'}
                                 containerStyle={styles.goalCheckBox}
                             />
                         </View>
@@ -408,7 +408,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                             paddingLeft: 20,
                         }]}>
                             <TextInput
-                                placeholder="Other (specify)"
+                                placeholder="Other (specify) (Iba pa (tukuyin))"
                                 inputMode="text"
                                 style={[styles.medHistoryTextContainer, {
                                     marginTop: 0,
@@ -425,7 +425,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                             zIndex={3000}
                             placeholder="Select your Activity baseline level"
                             zIndexInverse={1000}
-                            containerStyle={{ width: 320, backgroundColor: "#f9eed9", position: "absolute", top: 150, right: 20 }}
+                            containerStyle={{ width: 320, backgroundColor: "#f9eed9", position: "absolute", top: 170, right: 20 }}
                         />
 
 
@@ -459,14 +459,14 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
 
 
 
-                                <Text style={{ marginTop: 10, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}> In the past, what been your primary barrier to gain and losing weight</Text>
-                                <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Select your primary barrier: </Text>
+                                <Text style={{ marginTop: 10, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}> In the past, what been your primary barrier to gain and losing weight: (Sa nakaraan, kung ano ang iyong pangunahing hadlang upang makakuha at mawalan ng timbang)</Text>
+                                <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Select your primary barrier: (Piliin ang iyong pangunahing hadlang:)</Text>
 
                                 <View style={styles.goalCheckBoxContainer}>
                                     <CheckBox
                                         value={checkboxStates.lackOfTime}
                                         onChange={() => toggleCheckbox('lackOfTime')}
-                                        label={'Lack of Time'}
+                                        label={'Lack of Time (Kulang sa oras)'}
                                         containerStyle={styles.goalCheckBox}
                                     />
                                 </View>
@@ -474,7 +474,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                     <CheckBox
                                         value={checkboxStates.stressAroundFood}
                                         onChange={() => toggleCheckbox('stressAroundFood')}
-                                        label={'Stress Around Food'}
+                                        label={'Stress Around Food (Stress sa Pagkain)'}
                                         containerStyle={styles.goalCheckBox}
                                     />
                                 </View>
@@ -483,7 +483,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                     <CheckBox
                                         value={checkboxStates.foodCravings}
                                         onChange={() => toggleCheckbox('foodCravings')}
-                                        label={'Food Cravings'}
+                                        label={'Food Cravings (Paghahangad ng mga pagkain)'}
                                         containerStyle={styles.goalCheckBox}
                                     />
                                 </View>
@@ -491,7 +491,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                     <CheckBox
                                         value={checkboxStates.lackOfProgress}
                                         onChange={() => toggleCheckbox('lackOfProgress')}
-                                        label={'Lack Of Progress'}
+                                        label={'Lack Of Progress(Kakulangan ng Pag-unlad)'}
                                         containerStyle={styles.goalCheckBox}
                                     />
                                 </View>
@@ -499,7 +499,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                     <CheckBox
                                         value={medHistoryStates.expensiveHealthyFood}
                                         onChange={() => toggleCheckbox('expensiveHealthyFood')}
-                                        label={'Expensive Healthy Food'}
+                                        label={'Expensive Healthy Food(Mahal Malusog na Pagkain)'}
                                         containerStyle={styles.goalCheckBox}
                                     />
                                 </View>
@@ -507,7 +507,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                     paddingLeft: 20,
                                 }]}>
                                     <TextInput
-                                        placeholder="Other (specify)"
+                                        placeholder="Other (specify) Iba pa (tukuyin)"
                                         inputMode="text"
                                         style={[styles.medHistoryTextContainer, {
                                             marginTop: 0,
@@ -515,8 +515,8 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                     ></TextInput>
                                 </View>
 
-                                <Text style={{ marginTop: 10, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}>What is your past Medical History / health condition </Text>
-                                <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Select Your Medical History / health condition : </Text>
+                                <Text style={{ marginTop: 10, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}>What is your past Medical History / health condition (Ano ang iyong nakaraang Medical History / kondisyon sa kalusugan)</Text>
+                                <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Select Your Medical History / health condition (Piliin ang Iyong Medikal na Kasaysayan / kondisyon ng kalusugan :)</Text>
 
                                 {/* loop through the array of medical history */}
                                 {
@@ -575,9 +575,9 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                             <Text style={{ marginTop: 18, fontSize: 18, marginLeft: 15, fontWeight: "bold" }}>WEEKLY GOAL</Text>
                         </View>
 
-                        <Text style={{ fontSize: 15, fontWeight: "bold", marginTop: 50, marginLeft: 20 }}>What's your goal weight</Text>
-                        <Text style={{ fontSize: 12, marginTop: 70, marginLeft: 20, marginRight: 15 }}>Don't worry. This doesn't affect your daily calorie goal and can always change it later</Text>
-                        <Text style={{ fontSize: 15, fontWeight: "bold", marginTop: 60, marginLeft: 20, marginRight: 15 }}>What is your Weekly goal?</Text>
+                        <Text style={{ fontSize: 15, fontWeight: "bold", marginTop: 50, marginLeft: 20 }}>What's your goal weight(Ano ang iyong layunin na timbang)</Text>
+                        <Text style={{ fontSize: 12, marginTop: 70, marginLeft: 20, marginRight: 15 }}>Don't worry. This doesn't affect your daily calorie goal and can always change it later (Huwag kang mag-alala. Hindi nito naaapektuhan ang iyong pang-araw-araw na layunin sa calorie at maaari itong palaging baguhin sa ibang pagkakataon): </Text>
+                        <Text style={{ fontSize: 15, fontWeight: "bold", marginTop: 60, marginLeft: 20, marginRight: 15 }}>What is your Weekly goal? (Ano ang iyong Lingguhang layunin?)</Text>
 
                         <View style={styles.goalWeightContainer}>
                             <Image
@@ -604,7 +604,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                             zIndex={3000}
                             placeholder="Set Weekly Goal"
                             zIndexInverse={1000}
-                            containerStyle={{ width: 320, height: 200, position: "absolute", top: 320, right: 20 }}
+                            containerStyle={{ width: 320, height: 200, position: "absolute", top: 380, right: 20 }}
                         />
 
                         <View style={styles.screenContainer}>
@@ -787,7 +787,7 @@ const styles = StyleSheet.create({
         width: 320,
         height: 50,
         position: "absolute",
-        top: 140,
+        top: 150,
         alignSelf: "center"
     },
 
