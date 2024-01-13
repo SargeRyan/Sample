@@ -366,6 +366,8 @@ const SleepingTrackerTab = () => {
   const timeInHours = parseInt(hours) + parseInt(minutes) / 60;
 
   useEffect(() => {
+
+  
     let interval = null;
     if (timerActive && progress < 1 && timeInHours > 0) {
       interval = setInterval(() => {
@@ -572,6 +574,7 @@ const SleepingTrackerTab = () => {
           </View>
 
           <View
+          
             style={{
               paddingHorizontal: 14,
               paddingVertical: 20,
