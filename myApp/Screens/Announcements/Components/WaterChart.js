@@ -44,7 +44,7 @@ export default WaterChart = ({ currentDayWater, setCurrentDayWater }) => {
                 leading={props => <Ionicons style={{ color: "#177fad" }} name={'water'}  {...props} />}
             />
             <Button
-                style={{ marginTop: 10, width: "100%" }}
+                style={{ marginTop: 10, width: "100%", display: "None" }}
                 color="#fff"
                 title={"Undo"}
                 onPress={() => {
