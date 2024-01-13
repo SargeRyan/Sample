@@ -33,6 +33,7 @@ export default BmiCalculator = ({ navigation, route }) => {
     const [height, setHeight] = useState('');
     const [weight, setWeight] = useState('');
     const [gender, setGender] = useState('');
+     const [heightUnit, setHeightUnit] = useState('cm');
     const [bmi, setBmi] = useState('')
     const [bmiSpeedometer, setBmiSpeedometer] = useState(0)
     const [description, setDescription] = useState('')
@@ -71,6 +72,7 @@ export default BmiCalculator = ({ navigation, route }) => {
                 const heightValue = await AsyncStorage.getItem('height');
                 const weightValue = await AsyncStorage.getItem('weight');
                 const genderValue = await AsyncStorage.getItem('gender');
+                const heightUnitValue = await AsyncStorage.getItem('heightUnit');
 
                 // Update state with retrieved data
                 setHeight(heightValue);
@@ -85,9 +87,13 @@ export default BmiCalculator = ({ navigation, route }) => {
     }, []);
 
     const calculateBmi = (userData) => {
-        const bmi = userData.weight / ((userData.height / 100) * (userData.height / 100))
-        setBmi(bmi.toFixed(1))
-
+    if (userData.heightUnit === 'cm') {
+    const bmi = userData.weight / ((userData.height / 100) * (userData.height / 100));
+    setBmi(bmi.toFixed(1));
+} else {
+    const bmi = userData.weight / (((userData.height * 30.48) / 100) * ((userData.height * 30.48) / 100));
+    setBmi(bmi.toFixed(1));
+}
         if (bmi < 18.5) {
             setDescription('UNDERWEIGHT')
             setBmiSpeedometer(30);
@@ -241,7 +247,7 @@ export default BmiCalculator = ({ navigation, route }) => {
 
                             <View style={{ width: 150, left: 200, marginTop: 20 }}>
                                 <Text style={{ fontSize: 20, fontWeight: "bold", }}>Height (Tangkad)</Text>
-                                <TextInput editable={false} selectTextOnFocus={false} style={{ width: 150, alignSelf: "center" }} value={userData.height}></TextInput>
+                                <TextInput editable={false} selectTextOnFocus={false} style={{ width: 150, alignSelf: "center" }} value={userData.height + userData.heightUnit} ></TextInput>
                             </View>
 
                             <View style={{ width: 150, left: 200, marginTop: 20 }}>

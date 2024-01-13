@@ -28,6 +28,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
             <Text style={styles.appButtonText}>{title}</Text>
         </TouchableOpacity>
     );
+  
 
     const [checkboxStates, setCheckboxStates] = useState({
         lackOfTime: '',
@@ -169,6 +170,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
 
 
     const [height, setHeight] = useState('');
+    const [heightUnit, setHeightUnit] = useState('cm');
     const [weight, setWeight] = useState('');
     const [gender, setGender] = useState('Male');
     const [age, setAge] = useState('');
@@ -195,6 +197,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                 gender,
                 goalWeight,
                 medHistory,
+                heightUnit,
                 selectMedHistory: selectMedHistory.toString()
             };
 
@@ -300,6 +303,8 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                         value={height}
                         style={styles.heightTextContainer}
                     ></TextInput>
+                    <Button color={heightUnit === "cm" ? "#146C94" : "#fff"} style={{ margin: 5, width: 60 }} title="CM" onPress={() => { setHeightUnit("cm") }} />
+                    <Button color={heightUnit === "ft" ? "#146C94" : "#fff"} style={{ margin: 5, width: 60 }} title="ft" onPress={() => { setHeightUnit("ft") }} />
                 </View>
                 <View style={{ display: !age || !height ? "none" : "flex", flexDirection: "row", width: 320, justifyContent: "flex-start", marginBottom: 10 }}>
                     <Text style={{ marginRight: 10 }}>
