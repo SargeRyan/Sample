@@ -17,11 +17,13 @@ export default Announcements = ({ navigation, route }) => {
         onValue(ref(db, "/announcementList"), (dataSnapshot) => {
             if (dataSnapshot.exists()) {
                 const _announcements = dataSnapshot.val();
-                // loop through the announcements and add the id to each announcement
-                const announcements = Object.keys(_announcements).map((key) => {
-                    return { ..._announcements[key], id: key };
-                });
-                setAnnouncements(announcements);
+
+                // Filter out announcements with status "Archived"
+                const filteredAnnouncements = Object.keys(_announcements)
+                    .filter(key => _announcements[key].status !== 'Archived')
+                    .map(key => ({ ..._announcements[key], id: key }));
+
+                setAnnouncements(filteredAnnouncements);
             }
         }, (error) => {
             console.error("Error getting announcements:", error);
@@ -56,6 +58,7 @@ export default Announcements = ({ navigation, route }) => {
                                 <Text style={{ fontSize: 14 }}>{announcement.admin.firstName + ' ' + announcement.admin.lastName}</Text>
                             </View>
                             <Text style={{ fontSize: 16 }}>{announcement.description}</Text>
+                            <Image source={{ uri: announcement.imageBanner }} style={{ width: '100%', height: 200, marginTop: 8, borderRadius: 10 }} />
                         </View>
 
                     );
