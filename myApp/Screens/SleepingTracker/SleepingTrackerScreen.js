@@ -446,7 +446,7 @@ const SleepingTrackerTab = () => {
     if (showAlert) {
       timeout = setTimeout(() => {
         setShowAlert(false);
-      }, 2000); // 2 seconds delay
+      }, 1000 * 60 * 5); // 5 min seconds delay
     }
     return () => clearTimeout(timeout);
   }, [showAlert]);
@@ -456,7 +456,7 @@ const SleepingTrackerTab = () => {
       setShowAlert(true);
       setTimeout(() => {
         setTimerActive(!timerActive);
-      }, 1000*60*5); // 2 seconds delay
+      }, 1000 * 60 * 5); //  seconds delay
     }
     else {
       setTimerActive(!timerActive);
@@ -641,9 +641,10 @@ const SleepingTrackerTab = () => {
                 handlePress()}
               leading={(props) => <Ionicons style={{ color: '#009688' }} name={'bed'} {...props} />}
             />
-            {showAlert &&
+            {showAlert && (
               <Modal transparent={true}>
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0, 0, 0, 0.7)' }}>
+                  {/* Set the background color with rgba to include an alpha channel for transparency */}
                   <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10 }}>
                     <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Tips to Sleep Better and Faster</Text>
                     <Text style={{ marginTop: 10 }}>1. Stick to a sleep schedule.</Text>
@@ -654,7 +655,8 @@ const SleepingTrackerTab = () => {
                   </View>
                 </View>
               </Modal>
-            }
+            )}
+
           </View>
         </View>
         {/*PARENT MODAL */}
