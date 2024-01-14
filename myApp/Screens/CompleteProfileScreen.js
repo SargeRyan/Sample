@@ -358,7 +358,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                 <Image style={{ height: 17, width: 23, marginLeft: 10, marginTop: 23 }} source={require("../image/computer-icons-clip-art-left-arrow-6f4a3e70f15284856f9524e8f47fe2af.png")}
                                 />
                             </Pressable>
-                            <Text style={{ marginTop: 20, fontSize: 17, marginLeft: 15, fontWeight: "bold" }}>ACTIVITY LEVEL & GOAL</Text>
+                            <Text style={{ marginTop: 20, fontSize: 17, marginLeft: 15, fontWeight: "bold" }}>YOUR GOAL</Text>
                         </View>
 
                         <Pressable
@@ -368,10 +368,9 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                         </Pressable>
 
 
-                        <Text style={{ marginTop: 30, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}>What is your baseline activity level (Ano ang iyong baseline na antas ng aktibidad)</Text>
-                        <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Not including workouts- we count that separately: (Hindi kasama ang mga ehersisyo- hiwalay naming binibilang iyon:)</Text>
+                       
 
-                        <Text style={{ marginTop: 80, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}>What is your Goal (Ano ang iyong Layunin)</Text>
+                        <Text style={{ marginTop: 30, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}>What is your Goal (Ano ang iyong Layunin)</Text>
                         <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Select your primary goal: (Piliin ang iyong pangunahing layunin:)</Text>
 
 
@@ -420,20 +419,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                 }]}
                             ></TextInput>
                         </View>
-                        <DropDownPicker
-                            open={opens}
-                            value={values}
-                            items={items}
-                            setOpen={setOpens}
-                            setValue={setValues}
-                            setItems={setItem}
-                            zIndex={3000}
-                            placeholder="Select your Activity baseline level"
-                            zIndexInverse={1000}
-                            containerStyle={{ width: 320, backgroundColor: "#f9eed9", position: "absolute", top: 170, right: 20 }}
-                        />
-
-
+                       
                     </View>
                 </Modal>
                 <Modal

@@ -24,6 +24,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
     burnedCalories: 0,
   });
   //Exercise Modal
+   const [userData, setUserData] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisible1, setModalVisible1] = useState(false);
   const [modalVisible2, setModalVisible2] = useState(false);
@@ -53,6 +54,8 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
     return () => clearInterval(interval);
   }, [isRunning]);
 
+  
+
   useEffect(() => {
     const getData = async () => {
       try {
@@ -61,19 +64,40 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
         const weightValue = await AsyncStorage.getItem('weight');
         const genderValue = await AsyncStorage.getItem('gender');
         const medHistoryValue = await AsyncStorage.getItem('medHistory');
+        const weightGoalValue = await AsyncStorage.getItem('goalWeight');
+
+        console.log(weightGoalValue);
+
+
 
         // Update state with retrieved data
         setHeight(heightValue);
         setWeight(weightValue);
         setGender(genderValue);
         setMedHistory(medHistoryValue);
+        setWeightGoal(weightGoalValue);
       } catch (error) {
         console.log(error);
       }
     };
 
     getData();
+    fetchData();
   }, []);
+  const fetchData = async () => {
+        try {
+            // Retrieve the stored data from AsyncStorage
+            const storedData = await AsyncStorage.getItem('userData');
+
+            if (storedData) {
+                const parsedData = JSON.parse(storedData);
+                setUserData(parsedData);
+                calculateBmi(parsedData);
+            }
+        } catch (error) {
+            console.log('Error retrieving data:', error);
+        }
+    };
 
 
 
@@ -85,28 +109,52 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
 
-  const handleStart = () => {
-    setCount(1800); // 10 minutes in seconds
-    setIsRunning(true);
-  };
+ const handleStart = () => {
+  console.log('userWeight:', userData.weight)
+  console.log('userWeightGoal:', userData.goalWeight)
+
+  // Check if userData.weight is greater than userData.goalWeight
+  if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
+    setCount(90 + 90); // 10 minutes + additional 90 seconds
+  } else {
+    setCount(90); // 10 minutes in seconds
+  }
+
+
+  setIsRunning(true);
+};
 
   const handleStop = () => {
     setIsRunning(false);
   };
   const resetStart = () => {
-    setCount(1800); // 10 minutes in seconds
+     if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
+    setCount(90 + 90); // 10 minutes + additional 90 seconds
+  } else {
+    setCount(90); // 10 minutes in seconds
+  }
+
     setIsRunning(false);
   };
   const handleStart1 = () => {
-    setCount1(600); // 10 minutes in seconds
+     if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
+    setCount(90 + 90); // 10 minutes + additional 90 seconds
+  } else {
+    setCount(90); // 10 minutes in seconds
+  }
     setIsRunning(true);
   };
 
   const handleStop1 = () => {
+    
     setIsRunning(false);
   };
   const resetStart1 = () => {
-    setCount(600); // 10 minutes in seconds
+     if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
+    setCount(90 + 90); // 10 minutes + additional 90 seconds
+  } else {
+    setCount(90); // 10 minutes in seconds
+  } // 10 minutes in seconds
     setIsRunning(false);
   };
 
@@ -1086,7 +1134,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Walking</Text>
                 <Text>Calories Burn: 67</Text>
-                <Text>Duration: 10 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1100,7 +1148,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
                 <Text>Calories Burn: 36</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1567,7 +1615,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
         <TouchableOpacity
           onPress={() => {
             setModalVisible(false);
-            markExerciseDone(93, "10 minutes", "Jogging");
+            markExerciseDone(20, "3 minutes", "Jogging");
           }}
           style={{
             marginTop: 15,
@@ -1589,7 +1637,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
                 source={require("../ExercisePlan/picture/clock.png")}
               />
               <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4 }}>
-                30mins
+                3 mins 
               </Text>
             </View>
             <View style={styles.CaloriesContainer}>
@@ -1598,7 +1646,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
                 source={require("../ExercisePlan/picture/calories.png")}
               />
               <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4 }}>
-                Calories Burn: 93
+                Calories Burn: 20
               </Text>
             </View>
           </View>
@@ -1619,8 +1667,9 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
                 fontWeight: "bold",
               }}
             >
-              {count > 0 ? formatTime(count) : "30:00"}
+              {count > 0 ? formatTime(count) : "3:00"}
             </Text>
+           
           </View>
 
           <View style={{ flexDirection: "row", alignSelf: "center" }}>
@@ -1789,7 +1838,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               marginBottom: 20,
             }}
           >
-            <Text
+           <Text
               style={{
                 fontSize: 80,
                 marginBottom: 10,
@@ -1797,7 +1846,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
                 fontWeight: "bold",
               }}
             >
-              {count > 0 ? formatTime(count) : "10:00"}
+              {count > 0 ? formatTime(count) : "3:00"}
             </Text>
           </View>
 
