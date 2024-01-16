@@ -28,7 +28,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
             <Text style={styles.appButtonText}>{title}</Text>
         </TouchableOpacity>
     );
-  
+
 
     const [checkboxStates, setCheckboxStates] = useState({
         lackOfTime: '',
@@ -80,6 +80,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
 
     const saveCheckboxValue = async (key, value) => {
         try {
+            await AsyncStorage.setItem(key, value);
             console.log(`Saving checkbox value for ${key}:`, value);
         } catch (error) {
             console.error(`Error saving checkbox value for ${key}:`, error);
@@ -236,7 +237,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                 </Text>
 
                 <Text style={{ width: 320, marginBottom: 5 }}>
-                    What is your Name?(Ano ang iyong pangalan?) 
+                    What is your Name?(Ano ang iyong pangalan?)
                 </Text>
 
                 <View style={styles.birthDateContainer}>
@@ -252,7 +253,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                     ></TextInput>
                 </View>
                 <Text style={{ width: 320 }}>
-                   Which sex we should use to calculate your calorie needs: (Aling kasarian ang dapat naming gamitin upang kalkulahin ang iyong mga pangangailangan sa calorie:)
+                    Which sex we should use to calculate your calorie needs: (Aling kasarian ang dapat naming gamitin upang kalkulahin ang iyong mga pangangailangan sa calorie:)
                 </Text>
                 <View style={styles.genderContainer}>
                     <Image
@@ -368,7 +369,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                         </Pressable>
 
 
-                       
+
 
                         <Text style={{ marginTop: 30, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}>What is your Goal (Ano ang iyong Layunin)</Text>
                         <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Select your primary goal: (Piliin ang iyong pangunahing layunin:)</Text>
@@ -419,7 +420,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                 }]}
                             ></TextInput>
                         </View>
-                       
+
                     </View>
                 </Modal>
                 <Modal

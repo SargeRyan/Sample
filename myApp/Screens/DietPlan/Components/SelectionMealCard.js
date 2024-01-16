@@ -10,7 +10,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { storeDataObject } from "../../../AsyncStorageFunctions";
 import { Button } from "@react-native-material/core";
 
-export default SelectionMealCard = ({ mealsToday, mealData, onToggleCheckFunction }) => {
+export default SelectionMealCard = ({ mealsToday, mealData, onToggleCheckFunction, isDisabled }) => {
   const [isChecked, setChecked] = useState(false);
   const [mealDayTimeId, setMealDayTimeId] = useState();
   const [addMealModalVisible, setAddMealModalVisible] = useState(false);
@@ -37,10 +37,11 @@ export default SelectionMealCard = ({ mealsToday, mealData, onToggleCheckFunctio
   return (
     <TouchableHighlight
       onPress={() => {
+        if (isDisabled) return;
         toggleChecked();
       }}
       activeOpacity={0.9}
-      style={{ marginVertical: 5 }}
+      style={{ marginVertical: 5, opacity: isDisabled ? 0.5 : 1 }}
     >
       <View style={[styles.card, styles.shadowProp]}>
         <View
