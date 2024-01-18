@@ -490,14 +490,16 @@ export const newLocalMeals = [
                 "mealImage": "https://drive.google.com/uc?id=1BonvxVToUD-vmJ_Teo8erezzn7nLVsy2",
                 "mealName": "Octopus (1 Pc)",
                 "quantity": "40",
-                "quantityUnit": "g"
+                "quantityUnit": "g",
+                "notGoodFor": ["Diabetes", "High Blood", "Asthma"]
             },
             {
                 "calories": "41",
                 "mealImage": "https://drive.google.com/uc?id=1Bo0ia8XyZGDJpihdsCdlICdMhQyMUJ41",
                 "mealName": "Crab (1 pc)",
                 "quantity": "25",
-                "quantityUnit": "g"
+                "quantityUnit": "g",
+                "notGoodFor": ["Diabetes", "High Blood", "Asthma"]
             }
         ]
     },
