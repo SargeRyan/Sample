@@ -170,7 +170,8 @@ export const newLocalMeals = [
                 "mealImage": "https://drive.google.com/uc?id=1CLfhbNdR8ZhhSwgKQtpslR2opoltCXrT",
                 "mealName": "White Rice (½ cup)",
                 "quantity": "80",
-                "quantityCurrency": "g"
+                "quantityCurrency": "g",
+                "notGoodFor": ["Stroke", "Obesity", "High Blood"]
             },
             {
                 "calories": "100",
@@ -443,28 +444,32 @@ export const newLocalMeals = [
                 "mealImage": "https://drive.google.com/uc?id=1CKBfig5X2OsUsKPrjLKt8PdyhNKRuWZE",
                 "mealName": "Ribs (1 slice)",
                 "quantity": "35",
-                "quantityUnit": "g"
+                "quantityUnit": "g",
+                "notGoodFor": ["Stroke", "Obesity", "High Blood"]
             },
             {
                 "calories": "86",
                 "mealImage": "https://drive.google.com/uc?id=1CCs3fDLdiUGFtZKPuWxlH-sHvdf9fKN2",
                 "mealName": "Pata (1 slice)",
                 "quantity": "35",
-                "quantityUnit": "g"
+                "quantityUnit": "g",
+                "notGoodFor": ["Stroke", "Obesity", "High Blood"]
             },
             {
                 "calories": "122",
                 "mealImage": "https://drive.google.com/uc?id=1C6lq-wEIYyetY_qW7gwkdwbW_en83r9n",
                 "mealName": "Liempo (1 slice)",
                 "quantity": "35",
-                "quantityUnit": "g"
+                "quantityUnit": "g",
+                "notGoodFor": ["Stroke", "Obesity", "High Blood"]
             },
             {
                 "calories": "122",
                 "mealImage": "https://drive.google.com/uc?id=1CA-us8XSsrFrvyYrhhAvumEnIPv-QT6w",
                 "mealName": "Kasim (1 slice)",
                 "quantity": "35",
-                "quantityUnit": "g"
+                "quantityUnit": "g",
+                "notGoodFor": ["Stroke", "Obesity", "High Blood"]
             }
         ]
     },
@@ -477,21 +482,24 @@ export const newLocalMeals = [
                 "mealImage": "https://drive.google.com/uc?id=1C0p-vEWwq9Ibm_DQ1H_5Sse2fioYnrAH",
                 "mealName": "Shrimp (4 Pc)",
                 "quantity": "40",
-                "quantityUnit": "g"
+                "quantityUnit": "g",
+                "notGoodFor": ["Stroke", "Obesity", "High Blood"]
             },
             {
                 "calories": "41",
                 "mealImage": "https://drive.google.com/uc?id=1BonvxVToUD-vmJ_Teo8erezzn7nLVsy2",
                 "mealName": "Octopus (1 Pc)",
                 "quantity": "40",
-                "quantityUnit": "g"
+                "quantityUnit": "g",
+                "notGoodFor": ["Diabetes", "High Blood", "Asthma"]
             },
             {
                 "calories": "41",
                 "mealImage": "https://drive.google.com/uc?id=1Bo0ia8XyZGDJpihdsCdlICdMhQyMUJ41",
                 "mealName": "Crab (1 pc)",
                 "quantity": "25",
-                "quantityUnit": "g"
+                "quantityUnit": "g",
+                "notGoodFor": ["Diabetes", "High Blood", "Asthma"]
             }
         ]
     },

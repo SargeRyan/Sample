@@ -11,18 +11,19 @@ const MedicineTracker = () => {
     const [medicineSchedule, setMedicineSchedule] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [schedule, setSchedule] = useState({
-        id: uuid.v4(),
+        id: uuid.v4() + "MEDNOTIF",
         medicineName: '',
         dosage: '',
         time: 'Set Time',
         date: selectedDate,
+        duration: 0, // Default duration is set to 1 day
     });
-
+    const [frequency, setFrequency] = useState(0); // Default frequency is set to 0 (no repetition)
     const handleDateSelect = (date) => {
         setSelectedDate(date.dateString);
     };
-
     const handleScheduleSubmit = async (newSchedule) => {
+        console.log('=====================NEW SCHEDULE=======================');
         if (newSchedule.medicineName && newSchedule.dosage && newSchedule.time !== 'Set Time') {
             setMedicineSchedule([...medicineSchedule, newSchedule]);
             setSchedule({
@@ -33,35 +34,87 @@ const MedicineTracker = () => {
                 date: selectedDate,
             });
             setShowForm(false);
-
-            // Extract hour and minute from the time string
             const [hour, minute] = newSchedule.time.split(':');
-
-            // Extract year, month, and day from the date
             const selectedDateObject = new Date(newSchedule.date);
             const year = selectedDateObject.getFullYear();
-            const month = selectedDateObject.getMonth() + 1; // Months are zero-indexed
+            const month = selectedDateObject.getMonth() + 1;
             const day = selectedDateObject.getDate();
 
-            // Schedule the notification
+            // Schedule the notification for the selected date
             await schedulePushNotification(
                 year,
                 month,
                 day,
                 parseInt(hour),
                 parseInt(minute),
-                newSchedule.medicineName, // Title
-                `Dosage: ${newSchedule.dosage}, \n Time: ${newSchedule.time}` // Body
+                newSchedule.medicineName,
+                `Dosage: ${newSchedule.dosage}, \n Time: ${newSchedule.time}`
             );
 
+            // Save the schedule
             let ID = "@Med_Notification_" + newSchedule.id;
             await AsyncStorage.setItem(ID, JSON.stringify(newSchedule));
+            console.log(ID, JSON.stringify(newSchedule));
             alert('New schedule saved successfully!');
-            getScheduleForDate(selectedDate).then(setSchedulesForSelectedDate);
-            console.log('date : ' + selectedDate);
-            console.log('Schedule saved to AsyncStorage with ID: ' + ID);
+            // Schedule the notification for the subsequent days based on the duration
+            console.log('=======================================START DURATION======================================');
+            for (let i = 1; i < newSchedule.duration; i++) {
+                    await schedulePushNotification(
+                        nextDate.getFullYear(),
+                        nextDate.getMonth() + 1,
+                        nextDate.getDate(),
+                        parseInt(hour),
+                        parseInt(minute),
+                        newSchedule.medicineName,
+                        `Dosage: ${newSchedule.dosage}, \n Time: ${newSchedule.time}`
+                    );
+                // Save the schedule for each subsequent day
+                let nextID = "@Med_Notification_" + newSchedule.id; // Use the same ID and append "_${i}"
+                const serializedSchedule = JSON.stringify({
+                    ...newSchedule,
+                    date: nextDate.toISOString().split('T')[0], // Update the date to the subsequent date
+                });
+                await AsyncStorage.setItem(ID, serializedSchedule);
+                getScheduleForDate(selectedDate).then(setSchedulesForSelectedDate);
+                console.log('date : ' + nextDate.toISOString().split('T')[0]);
+                console.log('Schedule saved to AsyncStorage with ID: ' + nextID);
+                console.log('Schedule Duration :' + serializedSchedule);
+            }
+            console.log('================================END OF DURATION==========================================');
         } else {
             alert('Please fill out all fields and set a valid time.');
+        }
+        console.log('================================END OF SCHEDULE SUBMISSION==========================================');
+        console.log(frequency);
+    };
+    const getScheduleForDate = async (date) => {
+        try {
+            let medicineKeys = [];
+            let allKeys = await AsyncStorage.getAllKeys();
+
+            // Collect all keys related to medicine notifications
+            for (let i = 0; i < allKeys.length; i++) {
+                if (allKeys[i].startsWith("@Med_Notification_")) {
+                    medicineKeys.push(allKeys[i]);
+                }
+            }
+
+            // Get medicine values
+            let medicineSchedules = await AsyncStorage.multiGet(medicineKeys);
+
+            // Filter schedules for the given date
+            const filteredSchedules = medicineSchedules
+                .map(([key, value]) => JSON.parse(value))
+                .filter((schedule) => schedule.date === date);
+
+            // Log the results
+            console.log('Filtered schedules:', filteredSchedules);
+            console.log('date: ' + selectedDate);
+
+            return filteredSchedules;
+        } catch (e) {
+            console.error(e);
+            return [];
         }
     };
     const handleDelete = async (id) => {
@@ -80,6 +133,8 @@ const MedicineTracker = () => {
                         setMedicineSchedule(newMedicineSchedule);
                         try {
                             await AsyncStorage.removeItem(`@Med_Notification_${id}`);
+                            console.log(`Schedule with ID: ${id} has been removed successfully.`);
+                            // await AsyncStorage.clear();
                             alert(`Schedule has been removed successfully.`);
                             getScheduleForDate(selectedDate).then(setSchedulesForSelectedDate);
 
@@ -93,34 +148,6 @@ const MedicineTracker = () => {
     };
 
 
-    const getScheduleForDate = async (date) => {
-        try {
-            // get keys for medicine notifications
-            let medicineKeys = [];
-            let allKeys = await AsyncStorage.getAllKeys();
-            for (let i = 0; i < allKeys.length; i++) {
-                if (allKeys[i].startsWith("@Med_Notification_")) {
-                    medicineKeys.push(allKeys[i]);
-                }
-            }
-
-            // get medicine values
-            let medicineSchedules = await AsyncStorage.multiGet(medicineKeys);
-
-            // filter schedules for the given date
-            const filteredSchedules = medicineSchedules
-                .map(([key, value]) => JSON.parse(value))
-                .filter((schedule) => schedule.date === date);
-
-            // Log the results
-            console.log('Filtered schedules:', filteredSchedules);
-            console.log('date : ' + selectedDate);
-            return filteredSchedules;
-        } catch (e) {
-            console.error(e);
-            return [];
-        }
-    };
 
 
     const [schedulesForSelectedDate, setSchedulesForSelectedDate] = useState([]);
@@ -177,12 +204,13 @@ const MedicineTracker = () => {
                             {schedulesForSelectedDate.map((schedule) => (
                                 <View key={schedule.id} style={styles.scheduleContainer}>
                                     <Text style={styles.scheduleText}>
-                                        MEDICINE: {schedule.medicineName} {"\n"}
-                                        DOSAGE: {schedule.dosage} {"\n"}
-                                        TIME: {schedule.time}
+                                        Medicine    : {schedule.medicineName} {"\n"}
+                                        Dosage      : {schedule.dosage} {"mg\n"}
+                                        Duration   : {schedule.duration} {"Days\n"}
+                                        Time           : {schedule.time}
                                     </Text>
                                     <TouchableOpacity style={styles.deleteButton} onPress={() => handleDelete(schedule.id)}>
-                                        <Text style={styles.deleteButtonText}>Delete</Text>
+                                        <Text style={styles.deleteButtonText}>Archive</Text>
                                     </TouchableOpacity>
                                 </View>
                             ))}
@@ -212,6 +240,19 @@ const MedicineTracker = () => {
                                     placeholder="Dosage"
                                     onChangeText={(text) => setSchedule({ ...schedule, dosage: text })}
                                 />
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="Duration (days)"
+                                    keyboardType="numeric"
+                                    onChangeText={(text) => setSchedule({ ...schedule, duration: parseInt(text) })}
+                                />
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="Frequency (hours)"
+                                    keyboardType="numeric"
+                                    onChangeText={(text) => setFrequency(parseInt(text))}
+                                />
+
                                 {/* Replace the existing "Time" section */}
                                 <View style={styles.timePickerContainer}>
                                     <Text style={styles.timePickerHeading}>
@@ -252,7 +293,7 @@ const MedicineTracker = () => {
                         textShadowOffset: { width: 2, height: 2 },
                         textShadowRadius: 4,
                         alignSelf: 'center',
-                        marginVertical:50,
+                        marginVertical: 50,
                     }}>
                         "Please select a date to view schedules."
                     </Text>
@@ -366,6 +407,8 @@ const styles = StyleSheet.create({
         color: '#009688', // Change text color
         fontWeight: 'bold', // Make text bold
         padding: 10, // Add some padding
+        maxWidth: '75%', // Set a max width
+        width: "75%", // Adjust the width of the text container
         // Round the corners // Add some vertical margin
     },
     scheduleContainer: {

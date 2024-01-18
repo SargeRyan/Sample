@@ -15,7 +15,7 @@ import { Button, Stack } from "@react-native-material/core";
 import { newLocalMeals as localMeals } from "./LocalMeals.js";
 import CollapsibleMeal from "./CollapsibleMeal";
 
-export default SelectionMealList = ({ dayMeal, mealTime, setMealTime, mealsTimeList, indexToTriggerRefresh }) => {
+export default SelectionMealList = ({ dayMeal, mealTime, setMealTime, mealsTimeList, indexToTriggerRefresh, medicalHistory }) => {
     const [mealsSelection, setMealsSelection] = useState(localMeals);
     const [mealsToday, setMealsToday] = useState([]);
 
@@ -61,14 +61,16 @@ export default SelectionMealList = ({ dayMeal, mealTime, setMealTime, mealsTimeL
             <View style={styles.mealCardContainer}>
                 {mealsSelection.map((parentMeal) => (
                     <CollapsibleView
+                        key={parentMeal.id}
                         title={<CollapsibleMeal mealData={parentMeal} />}
                         style={{ borderWidth: 0 }}
                     >
                         <View style={{ marginLeft: 30 }}>
-                            {parentMeal.types.map((mealData) => (
+                            {parentMeal.types.map((mealData, i) => (
                                 <SelectionMealCard
+                                    isDisabled={mealData.notGoodFor ? mealData.notGoodFor.some(ai => medicalHistory.includes(ai)) : false}
                                     mealData={mealData}
-                                    key={mealData.id}
+                                    key={i}
                                     mealsToday={mealsToday}
                                     onToggleCheckFunction={async (isChecked, meal_id) => {
                                         if (isChecked) {

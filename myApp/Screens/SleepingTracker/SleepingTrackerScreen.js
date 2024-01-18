@@ -357,7 +357,7 @@ const SleepingTrackerTab = () => {
   const [isPickerVisible, setPickerVisible] = useState(false);
   const [selectedTime, setSelectedTime] = useState('00:00');
   const [IDEALTEXT, setIDEALTEXT] = useState('Start and Sleep');
-
+  const [showAlert, setShowAlert] = useState(false);
   const [progress, setProgress] = useState(0);
   const [timerActive, setTimerActive] = useState(false);
 
@@ -371,12 +371,13 @@ const SleepingTrackerTab = () => {
       interval = setInterval(() => {
         setProgress((oldProgress) => oldProgress + 1 / (timeInHours * 60 * 60));
       }, 1000);
-      setIDEALTEXT('Ideal Sleep Complete');
+      setIDEALTEXT('Event in Progress');
     } else if (!timerActive && progress !== 0) {
       clearInterval(interval);
     } else if (progress >= 1) {
       setProgress(0);
       setTimerActive(false);
+      setIDEALTEXT('Ideal Sleep Complete');
       scheduleSleepPushNotification("The Ideal " + selectedTime + " Sleep Complete", "Good job!");
     }
     return () => clearInterval(interval);
@@ -440,7 +441,27 @@ const SleepingTrackerTab = () => {
     toggleParentModal();
     // clearAllData();
   };
+  useEffect(() => {
+    let timeout;
+    if (showAlert) {
+      timeout = setTimeout(() => {
+        setShowAlert(false);
+      }, 1000 * 60 * 5); // 5 min seconds delay
+    }
+    return () => clearTimeout(timeout);
+  }, [showAlert]);
 
+  const handlePress = () => {
+    if (IDEALTEXT == "Start and Sleep" || IDEALTEXT == "Ideal Sleep Complete") {
+      setShowAlert(true);
+      setTimeout(() => {
+        setTimerActive(!timerActive);
+      }, 1000 * 60 * 5); //  seconds delay
+    }
+    else {
+      setTimerActive(!timerActive);
+    }
+  };
   return (
     <ScrollView style={styles.scrollView}>
       <SafeAreaView style={styles.container}>
@@ -572,6 +593,7 @@ const SleepingTrackerTab = () => {
           </View>
 
           <View
+
             style={{
               paddingHorizontal: 14,
               paddingVertical: 20,
@@ -616,12 +638,27 @@ const SleepingTrackerTab = () => {
               color="white"
               title={timerActive ? 'Stop' : 'Sleep Now'}
               onPress={() =>
-                setTimerActive(!timerActive)}
+                handlePress()}
               leading={(props) => <Ionicons style={{ color: '#009688' }} name={'bed'} {...props} />}
             />
+            {showAlert && (
+              <Modal transparent={true}>
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0, 0, 0, 0.7)' }}>
+                  {/* Set the background color with rgba to include an alpha channel for transparency */}
+                  <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10 }}>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Tips to Sleep Better and Faster</Text>
+                    <Text style={{ marginTop: 10 }}>1. Stick to a sleep schedule.</Text>
+                    <Text>2. Create a restful environment.</Text>
+                    <Text>3. Limit daytime naps.</Text>
+                    <Text>4. Include physical activity in your daily routine.</Text>
+                    <Text>5. Manage worries.</Text>
+                  </View>
+                </View>
+              </Modal>
+            )}
+
           </View>
         </View>
-
         {/*PARENT MODAL */}
         <Modal visible={isParentModalVisible} animationType="slide" transparent>
           <View style={styles.modalContainer}>
