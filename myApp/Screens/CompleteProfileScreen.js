@@ -171,11 +171,12 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
     const [goalWeight, setGoalWeight] = useState('');
     const [suggestedWeight, setSuggestedWeight] = useState(0);
 
+   
     useEffect(() => {
-        if (!age || !height) return;
-        const suggestedWeight = calculateSuggestedWeight(age, height);
-        setSuggestedWeight(suggestedWeight);
-    }, [age, height]);
+    if (!age || !height || !heightUnit) return;
+    const suggestedWeight = calculateSuggestedWeight(age, height, heightUnit);
+    setSuggestedWeight(suggestedWeight);
+}, [age, height, heightUnit]);
 
     const saveData = async () => {
         console.log('Saving data');
@@ -636,21 +637,56 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
         </ScrollView>
     );
 };
-function calculateSuggestedWeight(age, height) {
-    // Convert height from cm to meters
-    const heightInMeters = height / 100;
+// function calculateSuggestedWeight(age, height) {
+//     // Convert height from cm to meters
+//     const heightInMeters = height / 100;
+//     // Calculate BMI based on a standard BMI formula
+//     const bmi = 22; // You can adjust this to your preferred BMI value
+//     // Calculate suggested weight using BMI formula: weight = BMI * (height in meters)^2
+//     let suggestedWeight = bmi * Math.pow(heightInMeters, 2);
+//     // Adjust suggested weight based on age (optional)
+//     if (age < 18) {
+//         // Adjust for children/adolescents if needed
+//         suggestedWeight = suggestedWeight * 0.85;
+//     }
+//     // Round the suggested weight to the nearest integer
+//     return Math.round(suggestedWeight);
+// }
+
+
+
+
+
+function calculateSuggestedWeight(age, height, heightUnit) {
+    let heightInMeters;
+
+    if (heightUnit === 'ft') {
+        // Convert height from feet to meters
+        heightInMeters = height * 0.3048; // 1 foot = 0.3048 meters
+    } else {
+        // Convert height from cm to meters
+        heightInMeters = height / 100;
+    }
+
     // Calculate BMI based on a standard BMI formula
     const bmi = 22; // You can adjust this to your preferred BMI value
     // Calculate suggested weight using BMI formula: weight = BMI * (height in meters)^2
     let suggestedWeight = bmi * Math.pow(heightInMeters, 2);
+
     // Adjust suggested weight based on age (optional)
     if (age < 18) {
         // Adjust for children/adolescents if needed
         suggestedWeight = suggestedWeight * 0.85;
     }
+
     // Round the suggested weight to the nearest integer
     return Math.round(suggestedWeight);
 }
+
+
+
+
+
 const styles = StyleSheet.create({
     imageTitleHeader: {
         marginTop: 50,
