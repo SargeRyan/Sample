@@ -533,7 +533,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Jogging</Text>
                 <Text>Calories Burn: 93</Text>
-                <Text>Duration: 10 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -547,7 +547,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Walking</Text>
                 <Text>Calories Burn: 67</Text>
-                <Text>Duration: 10 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -561,7 +561,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
                 <Text>Calories Burn: 36</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -575,7 +575,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Jumping Jack</Text>
                 <Text>Calories Burn: 80</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -589,7 +589,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -603,7 +603,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Head Rotation</Text>
                 <Text>Calories Burn: 10</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -620,7 +620,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Arm Rotation</Text>
                 <Text>Calories Burn: 10</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
 
               <Image
@@ -638,7 +638,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Knee Rotation</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -652,7 +652,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Standing March</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -666,7 +666,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Shoulder Roll</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -685,7 +685,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Walking</Text>
                 <Text>Calories Burn: 67</Text>
-                <Text>Duration: 10 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -699,7 +699,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
                 <Text>Calories Burn: 36</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -714,7 +714,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -728,7 +728,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Head Rotation</Text>
                 <Text>Calories Burn: 10</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -745,7 +745,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Arm Rotation</Text>
                 <Text>Calories Burn: 10</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
 
               <Image
@@ -763,7 +763,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Knee Rotation</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -777,7 +777,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Standing March</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -791,7 +791,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Shoulder Roll</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -810,7 +810,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Walking</Text>
                 <Text>Calories Burn: 67</Text>
-                <Text>Duration: 10 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -824,7 +824,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
                 <Text>Calories Burn: 36</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -839,7 +839,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -853,7 +853,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Head Rotation</Text>
                 <Text>Calories Burn: 10</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -870,7 +870,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Arm Rotation</Text>
                 <Text>Calories Burn: 10</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
 
               <Image
@@ -888,7 +888,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Knee Rotation</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -902,7 +902,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Standing March</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -916,7 +916,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Shoulder Roll</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -935,7 +935,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Walking</Text>
                 <Text>Calories Burn: 67</Text>
-                <Text>Duration: 10 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -949,7 +949,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
                 <Text>Calories Burn: 36</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -964,7 +964,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -978,7 +978,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Head Rotation</Text>
                 <Text>Calories Burn: 10</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -995,7 +995,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Arm Rotation</Text>
                 <Text>Calories Burn: 10</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
 
               <Image
@@ -1013,7 +1013,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Knee Rotation</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1027,7 +1027,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Standing March</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1041,7 +1041,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Shoulder Roll</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1060,7 +1060,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Walking</Text>
                 <Text>Calories Burn: 67</Text>
-                <Text>Duration: 10 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1074,7 +1074,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
                 <Text>Calories Burn: 36</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1089,7 +1089,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1103,7 +1103,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Head Rotation</Text>
                 <Text>Calories Burn: 10</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1120,7 +1120,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Arm Rotation</Text>
                 <Text>Calories Burn: 10</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
 
               <Image
@@ -1138,7 +1138,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Knee Rotation</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1152,7 +1152,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Standing March</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1166,7 +1166,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Shoulder Roll</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1184,7 +1184,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Jogging</Text>
                 <Text>Calories Burn: 93</Text>
-                <Text>Duration: 10 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1226,7 +1226,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Jumping Jack</Text>
                 <Text>Calories Burn: 80</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1240,7 +1240,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1254,7 +1254,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Head Rotation</Text>
                 <Text>Calories Burn: 10</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1271,7 +1271,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Arm Rotation</Text>
                 <Text>Calories Burn: 10</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
 
               <Image
@@ -1289,7 +1289,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Knee Rotation</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1303,7 +1303,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Standing March</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1317,7 +1317,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Shoulder Roll</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1336,7 +1336,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Jogging</Text>
                 <Text>Calories Burn: 93</Text>
-                <Text>Duration: 10 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1350,7 +1350,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Walking</Text>
                 <Text>Calories Burn: 67</Text>
-                <Text>Duration: 10 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1364,7 +1364,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
                 <Text>Calories Burn: 36</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1378,7 +1378,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Jumping Jack</Text>
                 <Text>Calories Burn: 80</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1392,7 +1392,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1406,7 +1406,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Head Rotation</Text>
                 <Text>Calories Burn: 10</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1423,7 +1423,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Arm Rotation</Text>
                 <Text>Calories Burn: 10</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
 
               <Image
@@ -1441,7 +1441,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Knee Rotation</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1455,7 +1455,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Standing March</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1469,7 +1469,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Shoulder Roll</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1488,7 +1488,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Walking</Text>
                 <Text>Calories Burn: 67</Text>
-                <Text>Duration: 10 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1502,7 +1502,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Light Dumbbell</Text>
                 <Text>Calories Burn: 36</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1517,7 +1517,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Hip Rotation</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1531,7 +1531,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Head Rotation</Text>
                 <Text>Calories Burn: 10</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1548,7 +1548,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Arm Rotation</Text>
                 <Text>Calories Burn: 10</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
 
               <Image
@@ -1566,7 +1566,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Knee Rotation</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1580,7 +1580,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Standing March</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1594,7 +1594,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Shoulder Roll</Text>
                 <Text>Calories Burn: 20</Text>
-                <Text>Duration: 5 Minutes</Text>
+                <Text>Duration: 3 Minutes</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1681,15 +1681,6 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
           <Text style={styles.exerciseName}>Jogging</Text>
           {/*Exercise Timer*/}
           <View style={styles.subModalContainer}>
-            <View style={styles.HeadersContainer}>
-              <Image
-                style={styles.timeClock}
-                source={require("../ExercisePlan/picture/clock.png")}
-              />
-              <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4 }}>
-                3 mins 
-              </Text>
-            </View>
             <View style={styles.CaloriesContainer}>
               <Image
                 style={styles.calorieLogo}
@@ -1860,15 +1851,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
           <Text style={styles.exerciseName}>Walking</Text>
           {/*Exercise Timer*/}
           <View style={styles.subModalContainer}>
-            <View style={styles.HeadersContainer}>
-              <Image
-                style={styles.timeClock}
-                source={require("../ExercisePlan/picture/clock.png")}
-              />
-              <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4 }}>
-                10mins
-              </Text>
-            </View>
+           
             <View style={styles.CaloriesContainer}>
               <Image
                 style={styles.calorieLogo}
@@ -2032,15 +2015,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
           <Text style={styles.exerciseName}>Light Dumbbell</Text>
           {/*Exercise Timer*/}
           <View style={styles.subModalContainer}>
-            <View style={styles.HeadersContainer}>
-              <Image
-                style={styles.timeClock}
-                source={require("../ExercisePlan/picture/clock.png")}
-              />
-              <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4 }}>
-                5mins
-              </Text>
-            </View>
+           
             <View style={styles.CaloriesContainer}>
               <Image
                 style={styles.calorieLogo}
@@ -2212,15 +2187,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
           <Text style={styles.exerciseName}>Jumping Jack</Text>
           {/*Exercise Timer*/}
           <View style={styles.subModalContainer}>
-            <View style={styles.HeadersContainer}>
-              <Image
-                style={styles.timeClock}
-                source={require("../ExercisePlan/picture/clock.png")}
-              />
-              <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4 }}>
-                5mins
-              </Text>
-            </View>
+            
             <View style={styles.CaloriesContainer}>
               <Image
                 style={styles.calorieLogo}
@@ -2386,15 +2353,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
           <Text style={styles.exerciseName}>Hip Rotation</Text>
           {/*Exercise Timer*/}
           <View style={styles.subModalContainer}>
-            <View style={styles.HeadersContainer}>
-              <Image
-                style={styles.timeClock}
-                source={require("../ExercisePlan/picture/clock.png")}
-              />
-              <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4 }}>
-                5mins
-              </Text>
-            </View>
+            
             <View style={styles.CaloriesContainer}>
               <Image
                 style={styles.calorieLogo}
@@ -2556,15 +2515,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
           <Text style={styles.exerciseName}>Head Rotation</Text>
           {/*Exercise Timer*/}
           <View style={styles.subModalContainer}>
-            <View style={styles.HeadersContainer}>
-              <Image
-                style={styles.timeClock}
-                source={require("../ExercisePlan/picture/clock.png")}
-              />
-              <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4 }}>
-                5mins
-              </Text>
-            </View>
+            
             <View style={styles.CaloriesContainer}>
               <Image
                 style={styles.calorieLogo}
@@ -2733,15 +2684,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
             <Text style={styles.exerciseName}>Arm Rotation</Text>
             {/*Exercise Timer*/}
             <View style={styles.subModalContainer}>
-              <View style={styles.HeadersContainer}>
-                <Image
-                  style={styles.timeClock}
-                  source={require("../ExercisePlan/picture/clock.png")}
-                />
-                <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4 }}>
-                  5mins
-                </Text>
-              </View>
+             
               <View style={styles.CaloriesContainer}>
                 <Image
                   style={styles.calorieLogo}
@@ -2909,15 +2852,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
           <Text style={styles.exerciseName}>Knee Rotation</Text>
           {/*Exercise Timer*/}
           <View style={styles.subModalContainer}>
-            <View style={styles.HeadersContainer}>
-              <Image
-                style={styles.timeClock}
-                source={require("../ExercisePlan/picture/clock.png")}
-              />
-              <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4 }}>
-                5mins
-              </Text>
-            </View>
+          
             <View style={styles.CaloriesContainer}>
               <Image
                 style={styles.calorieLogo}
@@ -3080,15 +3015,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
           <Text style={styles.exerciseName}>Standing March</Text>
           {/*Exercise Timer*/}
           <View style={styles.subModalContainer}>
-            <View style={styles.HeadersContainer}>
-              <Image
-                style={styles.timeClock}
-                source={require("../ExercisePlan/picture/clock.png")}
-              />
-              <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4 }}>
-                5mins
-              </Text>
-            </View>
+            
             <View style={styles.CaloriesContainer}>
               <Image
                 style={styles.calorieLogo}
@@ -3252,15 +3179,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
           <Text style={styles.exerciseName}>Shoulder Roll</Text>
           {/*Exercise Timer*/}
           <View style={styles.subModalContainer}>
-            <View style={styles.HeadersContainer}>
-              <Image
-                style={styles.timeClock}
-                source={require("../ExercisePlan/picture/clock.png")}
-              />
-              <Text style={{ fontSize: 15, marginBottom: 10, marginTop: 4 }}>
-                5mins
-              </Text>
-            </View>
+            
             <View style={styles.CaloriesContainer}>
               <Image
                 style={styles.calorieLogo}
