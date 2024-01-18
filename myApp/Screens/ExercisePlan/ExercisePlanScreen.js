@@ -159,7 +159,11 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
   };
 
   const handleStart2 = () => {
-    setCount(300); // 10 minutes in seconds
+   if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
+    setCount(90 + 90); // 10 minutes + additional 90 seconds
+  } else {
+    setCount(90); // 10 minutes in seconds
+  } // 10 minutes in seconds
     setIsRunning(true);
   };
 
@@ -167,12 +171,20 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
     setIsRunning(false);
   };
   const resetStart2 = () => {
-    setCount(300); // 10 minutes in seconds
+   if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
+    setCount(90 + 90); // 10 minutes + additional 90 seconds
+  } else {
+    setCount(90); // 10 minutes in seconds
+  } // 10 minutes in seconds
     setIsRunning(false);
   };
 
   const handleStart3 = () => {
-    setCount(300); // 10 minutes in seconds
+    if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
+    setCount(90 + 90); // 10 minutes + additional 90 seconds
+  } else {
+    setCount(90); // 10 minutes in seconds
+  } // 10 minutes in seconds // 10 minutes in seconds
     setIsRunning(true);
   };
 
@@ -180,12 +192,20 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
     setIsRunning(false);
   };
   const resetStart3 = () => {
-    setCount(300); // 10 minutes in seconds
+  if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
+    setCount(90 + 90); // 10 minutes + additional 90 seconds
+  } else {
+    setCount(90); // 10 minutes in seconds
+  } // 10 minutes in seconds
     setIsRunning(false);
   };
 
   const handleStart4 = () => {
-    setCount(300); // 10 minutes in seconds
+    if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
+    setCount(90 + 90); // 10 minutes + additional 90 seconds
+  } else {
+    setCount(90); // 10 minutes in seconds
+  } // 10 minutes in seconds
     setIsRunning(true);
   };
 
@@ -193,12 +213,20 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
     setIsRunning(false);
   };
   const resetStart4 = () => {
-    setCount(300); // 10 minutes in seconds
+    if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
+    setCount(90 + 90); // 10 minutes + additional 90 seconds
+  } else {
+    setCount(90); // 10 minutes in seconds
+  } // 10 minutes in seconds
     setIsRunning(false);
   };
 
   const handleStart5 = () => {
-    setCount(300); // 10 minutes in seconds
+    if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
+    setCount(90 + 90); // 10 minutes + additional 90 seconds
+  } else {
+    setCount(90); // 10 minutes in seconds
+  } // 10 minutes in seconds
     setIsRunning(true);
   };
 
@@ -206,12 +234,20 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
     setIsRunning(false);
   };
   const resetStart5 = () => {
-    setCount(300); // 10 minutes in seconds
+   if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
+    setCount(90 + 90); // 10 minutes + additional 90 seconds
+  } else {
+    setCount(90); // 10 minutes in seconds
+  } // 10 minutes in seconds
     setIsRunning(false);
   };
 
   const handleStart6 = () => {
-    setCount(300); // 10 minutes in seconds
+   if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
+    setCount(90 + 90); // 10 minutes + additional 90 seconds
+  } else {
+    setCount(90); // 10 minutes in seconds
+  } // 10 minutes in seconds
     setIsRunning(true);
   };
 
@@ -219,12 +255,20 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
     setIsRunning(false);
   };
   const resetStart6 = () => {
-    setCount(300); // 10 minutes in seconds
+    if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
+    setCount(90 + 90); // 10 minutes + additional 90 seconds
+  } else {
+    setCount(90); // 10 minutes in seconds
+  } // 10 minutes in seconds
     setIsRunning(false);
   };
 
   const handleStart7 = () => {
-    setCount(300); // 10 minutes in seconds
+    if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
+    setCount(90 + 90); // 10 minutes + additional 90 seconds
+  } else {
+    setCount(90); // 10 minutes in seconds
+  } // 10 minutes in seconds // 10 minutes in seconds
     setIsRunning(true);
   };
 
@@ -232,12 +276,20 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
     setIsRunning(false);
   };
   const resetStart7 = () => {
-    setCount(300); // 10 minutes in seconds
+   if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
+    setCount(90 + 90); // 10 minutes + additional 90 seconds
+  } else {
+    setCount(90); // 10 minutes in seconds
+  } // 10 minutes in seconds// 10 minutes in seconds
     setIsRunning(false);
   };
 
   const handleStart8 = () => {
-    setCount(300); // 10 minutes in seconds
+    if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
+    setCount(90 + 90); // 10 minutes + additional 90 seconds
+  } else {
+    setCount(90); // 10 minutes in seconds
+  } // 10 minutes in seconds // 10 minutes in seconds
     setIsRunning(true);
   };
 
@@ -245,11 +297,19 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
     setIsRunning(false);
   };
   const resetStart8 = () => {
-    setCount(300); // 10 minutes in seconds
+    if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
+    setCount(90 + 90); // 10 minutes + additional 90 seconds
+  } else {
+    setCount(90); // 10 minutes in seconds
+  } // 10 minutes in seconds // 10 minutes in seconds
     setIsRunning(false);
   };
   const handleStart9 = () => {
-    setCount(300); // 10 minutes in seconds
+    if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
+    setCount(90 + 90); // 10 minutes + additional 90 seconds
+  } else {
+    setCount(90); // 10 minutes in seconds
+  } // 10 minutes in seconds // 10 minutes in seconds
     setIsRunning(true);
   };
 
@@ -257,7 +317,11 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
     setIsRunning(false);
   };
   const resetStart9 = () => {
-    setCount(300); // 10 minutes in seconds
+    if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
+    setCount(90 + 90); // 10 minutes + additional 90 seconds
+  } else {
+    setCount(90); // 10 minutes in seconds
+  } // 10 minutes in seconds
     setIsRunning(false);
   };
 
@@ -1549,20 +1613,6 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
         </View>
 
       )}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
       {/* 
       <TouchableOpacity style={styles.ButtonContainer} onPress={open}>
