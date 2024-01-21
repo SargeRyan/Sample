@@ -56,29 +56,38 @@ const MedicineTracker = () => {
             await AsyncStorage.setItem(ID, JSON.stringify(newSchedule));
             console.log(ID, JSON.stringify(newSchedule));
             alert('New schedule saved successfully!');
+
+            // Calculate the nextDate based on the duration
+            const nextDate = new Date(selectedDateObject);
+            nextDate.setDate(selectedDateObject.getDate() + 1);
+
             // Schedule the notification for the subsequent days based on the duration
             console.log('=======================================START DURATION======================================');
             for (let i = 1; i < newSchedule.duration; i++) {
-                    await schedulePushNotification(
-                        nextDate.getFullYear(),
-                        nextDate.getMonth() + 1,
-                        nextDate.getDate(),
-                        parseInt(hour),
-                        parseInt(minute),
-                        newSchedule.medicineName,
-                        `Dosage: ${newSchedule.dosage}, \n Time: ${newSchedule.time}`
-                    );
+                await schedulePushNotification(
+                    nextDate.getFullYear(),
+                    nextDate.getMonth() + 1,
+                    nextDate.getDate(),
+                    parseInt(hour),
+                    parseInt(minute),
+                    newSchedule.medicineName,
+                    `Dosage: ${newSchedule.dosage}, \n Time: ${newSchedule.time}`
+                );
+
                 // Save the schedule for each subsequent day
-                let nextID = "@Med_Notification_" + newSchedule.id; // Use the same ID and append "_${i}"
+                let nextID = "@Med_Notification_" + newSchedule.id + `_${i}`;
                 const serializedSchedule = JSON.stringify({
                     ...newSchedule,
                     date: nextDate.toISOString().split('T')[0], // Update the date to the subsequent date
                 });
-                await AsyncStorage.setItem(ID, serializedSchedule);
+                await AsyncStorage.setItem(nextID, serializedSchedule);
                 getScheduleForDate(selectedDate).then(setSchedulesForSelectedDate);
                 console.log('date : ' + nextDate.toISOString().split('T')[0]);
                 console.log('Schedule saved to AsyncStorage with ID: ' + nextID);
                 console.log('Schedule Duration :' + serializedSchedule);
+
+                // Update nextDate for the next iteration
+                nextDate.setDate(nextDate.getDate() + 1);
             }
             console.log('================================END OF DURATION==========================================');
         } else {
@@ -87,6 +96,7 @@ const MedicineTracker = () => {
         console.log('================================END OF SCHEDULE SUBMISSION==========================================');
         console.log(frequency);
     };
+
     const getScheduleForDate = async (date) => {
         try {
             let medicineKeys = [];
@@ -206,7 +216,7 @@ const MedicineTracker = () => {
                                     <Text style={styles.scheduleText}>
                                         Medicine    : {schedule.medicineName} {"\n"}
                                         Dosage      : {schedule.dosage} {"mg\n"}
-                                        Duration   : {schedule.duration} {"Days\n"}
+                                        Duration   : {schedule.duration} {"Day(s)\n"}
                                         Time           : {schedule.time}
                                     </Text>
                                     <TouchableOpacity style={styles.deleteButton} onPress={() => handleDelete(schedule.id)}>
