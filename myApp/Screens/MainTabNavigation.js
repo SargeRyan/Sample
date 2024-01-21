@@ -10,6 +10,7 @@ import MedicineTracker from "./MedicineTracker/MedicineTracker";
 import Dashboard from "./Dashboard/BmiCalculator";
 import WaterPlanScreen from "./WaterPlan/WaterPlanScreen";
 import Announcements from "./Announcements/Announcements";
+import History from "./History/History";
 
 const Tab = createBottomTabNavigator();
 export default MainTabNavigation = () => {
@@ -23,6 +24,7 @@ export default MainTabNavigation = () => {
                 <Tab.Screen name="Sleeping Tracker" component={SleepingTrackerScreen} />
                 <Tab.Screen name="Medicine Tracker" component={MedicineTracker} />
                 <Tab.Screen name="Announcements" component={Announcements} />
+                <Tab.Screen name="History" component={History} />
             </Tab.Navigator>
         </NavigationContainer>
     );
@@ -50,6 +52,8 @@ let navigatorScreenOptions = ({ route }) => ({
         }
         else if (route.name === "Announcements") {
             iconName = focused ? "chatbubble" : "chatbubble-outline";
+        } else if (route.name === "History") {
+            iconName = focused ? "time" : "time-outline";
         }
 
         // You can return any component that you like here!
