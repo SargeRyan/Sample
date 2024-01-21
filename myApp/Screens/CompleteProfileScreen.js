@@ -761,7 +761,7 @@ const styles = StyleSheet.create({
     },
 
     appButtonContainer: {
-        elevation: 8,What is your Goal
+        elevation: 8,
         backgroundColor: "#009688",
         borderRadius: 20,
         width: 340,
