@@ -428,8 +428,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                     setSelections([
                                         { label: 'Gain 0.25kg per week', value: '.25' },
                                         { label: 'Gain 0.5 per week', value: '.50' },
-                                        { label: 'Gain 0.75 per week', value: '.75' },
-                                        { label: 'Gain 1kg per week', value: '1' },
+                                        
                                     ])
                                 }}
                                 label={'Gain Weight (Magdagdag ng timbang)'}
@@ -500,7 +499,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
 
 
 
-                                {goal !== "Maintain Weight" && (
+                                {goal === "Lose Weight" && (
                                     <View>
                                         <Text style={{ marginTop: 10, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}> In the past, what been your primary barrier to gain and losing weight: (Sa nakaraan, kung ano ang iyong pangunahing hadlang upang makakuha at mawalan ng timbang)</Text>
                                         <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Select your primary barrier: (Piliin ang iyong pangunahing hadlang:)</Text>
@@ -560,6 +559,110 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                         </View>
                                     </View>
                                 )}
+                                {goal === "Increase Stamina" && (
+                                    <View>
+                                        <Text style={{ marginTop: 10, fontSize: 15, marginLeft: 15, width: 350, fontWeight: "bold" }}> In the past, what have been your primary barrier to   increase your stamina(Sa nakaraan, ano ang pangunahing hadlang upang mapataas ang iyong Stamina)</Text>
+                                        <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30,  }}>Select your primary barrier: (Piliin ang iyong pangunahing hadlang:)</Text>
+
+                                        <View style={styles.goalCheckBoxContainer}>
+                                            <CheckBox
+                                                value={checkboxStates.lackOfTime}
+                                                onChange={() => toggleCheckbox('InadequteFluidIntake')}
+                                                label={'Inadequte Fluid Intake(Hindi Sapat na Pag-inom ng Fluid)'}
+                                                containerStyle={styles.goalCheckBox}
+                                            />
+                                        </View>
+                                        <View style={styles.goalCheckBoxContainer}>
+                                            <CheckBox
+                                                value={checkboxStates.stressAroundFood}
+                                                onChange={() => toggleCheckbox('Underlyinghealthissues')}
+                                                label={'Underlying health issues(Isyu sa kalusugan)'}
+                                                containerStyle={styles.goalCheckBox}
+                                            />
+                                        </View>
+
+                                        <View style={styles.goalCheckBoxContainer}>
+                                            <CheckBox
+                                                value={checkboxStates.foodCravings}
+                                                onChange={() => toggleCheckbox('Lack of quality sleep')}
+                                                label={'Lack of quality sleep(Kulang sa Sapat na Tulog)'}
+                                                containerStyle={styles.goalCheckBox}
+                                            />
+                                        </View>
+                                        <View style={styles.goalCheckBoxContainer}>
+                                            <CheckBox
+                                                value={checkboxStates.lackOfProgress}
+                                                onChange={() => toggleCheckbox('Inconsistency training')}
+                                                label={'Inconsistency training(Pagsasanay sa hindi pagkakapare-pareho)'}
+                                                containerStyle={styles.goalCheckBox}
+                                            />
+                                        </View>
+                                        <View style={[styles.goalCheckBoxContainer, {
+                                            paddingLeft: 20,
+                                        }]}>
+                                            <TextInput
+                                                placeholder="Other (specify) Iba pa (tukuyin)"
+                                                inputMode="text"
+                                                style={[styles.medHistoryTextContainer, {
+                                                    marginTop: 0,
+                                                }]}
+                                            ></TextInput>
+                                        </View>
+                                    </View>
+                                )}
+                                {goal === "Gain Weight" && (
+                                    <View>
+                                        <Text style={{ marginTop: 10, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}> In the past, what been your primary barrier to gain and losing weight: (Sa nakaraan, kung ano ang iyong pangunahing hadlang upang makakuha at mawalan ng timbang)</Text>
+                                        <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Select your primary barrier: (Piliin ang iyong pangunahing hadlang:)</Text>
+
+                                        <View style={styles.goalCheckBoxContainer}>
+                                            <CheckBox
+                                                value={checkboxStates.lackOfTime}
+                                                onChange={() => toggleCheckbox('lackOfTime')}
+                                                label={'Lack of Time (Kulang sa oras)'}
+                                                containerStyle={styles.goalCheckBox}
+                                            />
+                                        </View>
+                                        <View style={styles.goalCheckBoxContainer}>
+                                            <CheckBox
+                                                value={checkboxStates.stressAroundFood}
+                                                onChange={() => toggleCheckbox('stressAroundFood')}
+                                                label={'Stress Around Food (Stress sa Pagkain)'}
+                                                containerStyle={styles.goalCheckBox}
+                                            />
+                                        </View>
+
+                                        <View style={styles.goalCheckBoxContainer}>
+                                            <CheckBox
+                                                value={checkboxStates.lackOfProgress}
+                                                onChange={() => toggleCheckbox('lackOfProgress')}
+                                                label={'Lack Of Progress(Kakulangan ng Pag-unlad)'}
+                                                containerStyle={styles.goalCheckBox}
+                                            />
+                                        </View>
+                                        <View style={styles.goalCheckBoxContainer}>
+                                            <CheckBox
+                                                value={medHistoryStates.expensiveHealthyFood}
+                                                onChange={() => toggleCheckbox('expensiveHealthyFood')}
+                                                label={'Expensive Healthy Food(Mahal na malusog na Pagkain)'}
+                                                containerStyle={styles.goalCheckBox}
+                                                textStyle={styles.labelText} 
+                                            />
+                                        </View>
+                                        <View style={[styles.goalCheckBoxContainer, {
+                                            paddingLeft: 20,
+                                        }]}>
+                                            <TextInput
+                                                placeholder="Other (specify) Iba pa (tukuyin)"
+                                                inputMode="text"
+                                                style={[styles.medHistoryTextContainer, {
+                                                    marginTop: 0,
+                                                }]}
+                                            ></TextInput>
+                                        </View>
+                                    </View>
+                                )}
+                               
 
 
 
