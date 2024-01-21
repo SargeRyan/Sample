@@ -63,6 +63,37 @@ const SleepingTrackerTab = () => {
   ////SCROLL BAR DATES
   const [graphData, setGraphData] = useState([0, 0, 0, 0, 0, 0, 0]);
 
+
+  const [seconds, setSeconds] = useState(300); // 5 minutes in seconds
+  const [beforeTimerActive, setBeforeTimerActive] = useState(false);
+
+  useEffect(() => {
+    let interval;
+
+    if (beforeTimerActive) {
+      interval = setInterval(() => {
+        setSeconds(prevSeconds => prevSeconds - 1);
+      }, 1000);
+    }
+
+    return () => clearInterval(interval); // Cleanup interval on component unmount
+
+  }, [beforeTimerActive]);
+
+  useEffect(() => {
+    if (seconds === 0) {
+      setBeforeTimerActive(false);
+      // You can perform any action when the timer reaches 0 here
+    }
+
+  }, [seconds]);
+
+  const formatTime = (timeInSeconds) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const remainingSeconds = timeInSeconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+  };
+
   const daysOfWeek = [
     "Sunday",
     "Monday",
@@ -454,6 +485,7 @@ const SleepingTrackerTab = () => {
   const handlePress = () => {
     if (IDEALTEXT == "Start and Sleep" || IDEALTEXT == "Ideal Sleep Complete") {
       setShowAlert(true);
+      setBeforeTimerActive(true);
       setTimeout(() => {
         setTimerActive(!timerActive);
       }, 1000 * 60 * 5); //  seconds delay
@@ -646,12 +678,15 @@ const SleepingTrackerTab = () => {
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0, 0, 0, 0.7)' }}>
                   {/* Set the background color with rgba to include an alpha channel for transparency */}
                   <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10 }}>
-                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Tips to Sleep Better and Faster</Text>
+                    <Button onPress={() => setShowAlert(false)} title="X" color="#fff" style={{ marginLeft: "auto", marginBottom: 12 }}>
+                    </Button>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: "center" }}>Tips to Sleep Better and Faster</Text>
                     <Text style={{ marginTop: 10 }}>1. Stick to a sleep schedule.</Text>
                     <Text>2. Create a restful environment.</Text>
                     <Text>3. Limit daytime naps.</Text>
                     <Text>4. Include physical activity in your daily routine.</Text>
                     <Text>5. Manage worries.</Text>
+                    <Text style={{ textAlign: 'center', marginTop: 15, color: '#002e2b', fontSize: 16 }}>Sleep Timer Will Start on {formatTime(seconds)}</Text>
                   </View>
                 </View>
               </Modal>
