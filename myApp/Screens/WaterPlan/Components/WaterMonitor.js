@@ -31,7 +31,7 @@ export default WaterMonitor = ({ waterData }) => {
                     ]
                 }}
                 style={{
-                    marginLeft: - 40,
+                    marginLeft: - 70,
                 }}
                 width={screenWidth} // from react-native
                 height={250}
