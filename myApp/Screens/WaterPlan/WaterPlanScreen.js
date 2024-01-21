@@ -38,7 +38,16 @@ export default DietPlanScreen = ({ navigation, route }) => {
             if (userData) userData = JSON.parse(userData);
             const today = new Date();
             const numericDate = today.getTime();
+            const dateObj = new Date();
+            const monthNames = [
+                'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+            ];
+            const month = monthNames[dateObj.getMonth()];
+            const day = dateObj.getDate();
+            const year = dateObj.getFullYear();
+            const dateTaken = `${month} ${day}`;
             await saveDataToCloud("timeTaken", `water/${userData.id}/${amount}`, numericDate);
+            await saveDataToCloud(dateTaken, `water/${userData.id}/byDay`, amount);
         }
         await getWaterData();
     }
