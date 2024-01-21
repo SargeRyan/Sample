@@ -33,7 +33,7 @@ export default BmiCalculator = ({ navigation, route }) => {
     const [height, setHeight] = useState('');
     const [weight, setWeight] = useState('');
     const [gender, setGender] = useState('');
-     const [heightUnit, setHeightUnit] = useState('cm');
+    const [heightUnit, setHeightUnit] = useState('cm');
     const [bmi, setBmi] = useState('')
     const [bmiSpeedometer, setBmiSpeedometer] = useState(0)
     const [description, setDescription] = useState('')
@@ -86,43 +86,43 @@ export default BmiCalculator = ({ navigation, route }) => {
         fetchData();
     }, []);
 
-  const calculateBmi = (userData) => {
-    let bmi;
+    const calculateBmi = (userData) => {
+        let bmi;
 
-    if (userData.heightUnit === 'cm') {
-        bmi = userData.weight / ((userData.height / 100) * (userData.height / 100));
-        setBmi(bmi.toFixed(1));
-    } else {
-        bmi = userData.weight / (((userData.height * 30.48) / 100) * ((userData.height * 30.48) / 100));
-        setBmi(bmi.toFixed(1));
-    }
-
-    if (bmi < 18.5) {
-        setDescription('UNDERWEIGHT');
-        setBmiSpeedometer(30);
-    } else if (bmi >= 18.5 && bmi <= 24.9) {
-        setDescription('NORMAL');
-        setBmiSpeedometer(50);
-    } else if (bmi >= 25 && bmi <= 29.9) {
-        setDescription('OVERWEIGHT');
-        setBmiSpeedometer(70);
-    } else if (bmi >= 30) {
-        setDescription('OBESE');
-        setBmiSpeedometer(90);
-    }
-
-    // setModalVisible(true);
-
-    if (userData.gender) {
-        if (userData.gender === "Male") {
-            let bmr = 66.47 + 13.75 * userData.weight + 5.003 * userData.height - 6.755 * userData.age;
-            setBmr(bmr.toFixed(1));
+        if (userData.heightUnit === 'cm') {
+            bmi = userData.weight / ((userData.height / 100) * (userData.height / 100));
+            setBmi(bmi.toFixed(1));
         } else {
-            let bmr = 66.47 + 13.75 * userData.weight + 5.003 * userData.height - 6.755 * userData.age;
-            setBmr(bmr.toFixed(1));
+            bmi = userData.weight / (((userData.height * 30.48) / 100) * ((userData.height * 30.48) / 100));
+            setBmi(bmi.toFixed(1));
         }
-    }
-};
+
+        if (bmi < 18.5) {
+            setDescription('UNDERWEIGHT');
+            setBmiSpeedometer(30);
+        } else if (bmi >= 18.5 && bmi <= 24.9) {
+            setDescription('NORMAL');
+            setBmiSpeedometer(50);
+        } else if (bmi >= 25 && bmi <= 29.9) {
+            setDescription('OVERWEIGHT');
+            setBmiSpeedometer(70);
+        } else if (bmi >= 30) {
+            setDescription('OBESE');
+            setBmiSpeedometer(90);
+        }
+
+        // setModalVisible(true);
+
+        if (userData.gender) {
+            if (userData.gender === "Male") {
+                let bmr = 66.47 + 13.75 * userData.weight + 5.003 * userData.height - 6.755 * userData.age;
+                setBmr(bmr.toFixed(1));
+            } else {
+                let bmr = 66.47 + 13.75 * userData.weight + 5.003 * userData.height - 6.755 * userData.age;
+                setBmr(bmr.toFixed(1));
+            }
+        }
+    };
 
     const isFocused = useIsFocused();
     useEffect(() => {
@@ -228,6 +228,15 @@ export default BmiCalculator = ({ navigation, route }) => {
                                 setBmi('');
                                 setBmiSpeedometer(0);
                                 setDescription('');
+
+                                // clear medical history
+                                let allKeys = await AsyncStorage.getAllKeys();
+                                for (let i = 0; i < allKeys.length; i++) {
+                                    if (allKeys[i].startsWith("@medicalHistory_")) {
+                                        await AsyncStorage.removeItem(allKeys[i]);
+                                    }
+                                }
+
                                 Updates.reloadAsync()
                             }} />
 

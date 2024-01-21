@@ -519,7 +519,8 @@ export const newLocalMeals = [
                 "mealImage": "https://drive.google.com/uc?id=19Igi44C7_wXz0UipR8qPOu74HV7iIitP",
                 "mealName": "Ensaymada (1 Pc)",
                 "quantity": "35",
-                "quantityUnit": "g"
+                "quantityUnit": "g",
+                "notGoodFor": ["Diabetes"]
             },
             {
                 "calories": "108",

@@ -30,8 +30,11 @@ export default WaterMonitor = ({ waterData }) => {
                         }
                     ]
                 }}
+                style={{
+                    marginLeft: - 40,
+                }}
                 width={screenWidth} // from react-native
-                height={220}
+                height={250}
                 chartConfig={{
                     backgroundColor: "#156d94",
                     backgroundGradientFrom: "#156d94",
