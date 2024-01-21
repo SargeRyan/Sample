@@ -414,7 +414,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                     setGoal('Maintain Weight')
                                     setSelections([])
                                 }}
-                                label={'Maintain Weight (Panatilihin ang Timbang)'}
+                                label={'Maintain Weight(Mapanatili ang Timbang)'}
                                 containerStyle={styles.goalCheckBox}
                             />
                         </View>
@@ -444,9 +444,11 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                     setGoal('Increase Stamina')
                                     setSelections([])
                                 }}
-                                label={'Increase Stamina (Pagpapataas ng stamina)'}
+                                label={'Increase Stamina(Dagdagan ang Stamina)'}
                                 containerStyle={styles.goalCheckBox}
+                                textStyle={styles.labelText} 
                             />
+                            
                         </View>
                         {/* <View style={styles.goalCheckBoxContainer}>
                             <CheckBox
@@ -540,8 +542,9 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                             <CheckBox
                                                 value={medHistoryStates.expensiveHealthyFood}
                                                 onChange={() => toggleCheckbox('expensiveHealthyFood')}
-                                                label={'Expensive Healthy Food(Mahal Malusog na Pagkain)'}
+                                                label={'Expensive Healthy Food(Mahal na malusog na Pagkain)'}
                                                 containerStyle={styles.goalCheckBox}
+                                                textStyle={styles.labelText} 
                                             />
                                         </View>
                                         <View style={[styles.goalCheckBoxContainer, {
@@ -939,4 +942,10 @@ const styles = StyleSheet.create({
         marginLeft: 17,
 
     },
+     labelText: {
+    // Styling for the label text
+    fontSize: 1,  // Adjust the font size as needed
+    fontWeight: 'bold', // Adjust the font weight as needed
+    // Add any other text styling properties as needed
+  },
 });
