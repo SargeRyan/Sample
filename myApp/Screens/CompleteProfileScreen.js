@@ -43,7 +43,6 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
         Stroke: '',
         Arthritis: '',
         Asthma: '',
-        Obesity: '',
         Underweight: '',
         Fatigue: '',
         "High Blood": '',
@@ -282,22 +281,49 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                     How tall are you?(Gaano ka katangkad?)
                 </Text>
 
-                <View style={styles.heightContainer}>
+              <View style={styles.heightContainer}>
                     <Image
                         style={styles.heightImageContainer}
                         source={require("../image/computer-icons-ruler-pictogram-length-clip-art-ruler-1ccf0d3be8bd9cc8eeb2db1c88611e1a.png")}
                     />
 
-                    <TextInput
-                        placeholder="Height(Centimeter/cm)"
-                        inputMode="numeric"
-                        onChangeText={(text) => setHeight(text)}
-                        value={height}
-                        style={styles.heightTextContainer}
-                    ></TextInput>
-                    <Button color={heightUnit === "cm" ? "#146C94" : "#fff"} style={{ margin: 5, width: 60 }} title="CM" onPress={() => { setHeightUnit("cm") }} />
-                    <Button color={heightUnit === "ft" ? "#146C94" : "#fff"} style={{ margin: 5, width: 60 }} title="ft" onPress={() => { setHeightUnit("ft") }} />
-                </View>
+                    {heightUnit === 'cm' && (
+                            <TextInput
+                                placeholder="Height(Centimeter/cm)"
+                                inputMode="numeric"
+                                onChangeText={(text) => setHeight(text)}
+                                value={height}
+                                style={styles.heightTextContainer}
+                    />
+
+
+                    )}
+                     {heightUnit === 'ft' && (
+                            <TextInput
+                                placeholder="Height (ft)"
+                                inputMode="numeric"
+                                onChangeText={(text) => setHeight(text)}
+                                value={height}
+                                style={styles.heightTextContainer}
+                        />
+
+                    
+                    )}
+
+                    <Button
+                        color={heightUnit === "cm" ? "#146C94" : "#fff"}
+                            style={{ margin: 5, width: 60 }}
+                            title="CM"
+                            onPress={() => { setHeightUnit("cm") }}
+                    />
+
+                    <Button
+                        color={heightUnit === "ft" ? "#146C94" : "#fff"}
+                        style={{ margin: 5, width: 60 }}
+                        title="ft"
+                        onPress={() => { setHeightUnit("ft") }}
+                    />
+            </View>
                 <View style={{ display: !age || !height ? "none" : "flex", flexDirection: "row", width: 320, justifyContent: "flex-start", marginBottom: 10 }}>
                     <Text style={{ marginRight: 10 }}>
                         Suggested weight: {suggestedWeight}kg
@@ -373,8 +399,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                     setSelections([
                                         { label: 'Lose 0.25kg per Month', value: '0.25' },
                                         { label: 'Lose 0.5 per Month', value: '0.50' },
-                                        { label: 'Lose 0.75 per Month', value: '0.75' },
-                                        { label: 'Loss 1kg per Month', value: '1' },
+                                        
                                     ])
                                 }}
                                 label={'Loss Weight (Magbawas ng timbang)'}
@@ -408,6 +433,18 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                     ])
                                 }}
                                 label={'Gain Weight (Magdagdag ng timbang)'}
+                                containerStyle={styles.goalCheckBox}
+                            />
+                        </View>
+                         <View style={styles.goalCheckBoxContainer}>
+                            <CheckBox
+                                value={goal}
+                                checked={goal === 'Increase Stamina'}
+                                onChange={() => {
+                                    setGoal('Increase Stamina')
+                                    setSelections([])
+                                }}
+                                label={'Increase Stamina (Pagpapataas ng stamina)'}
                                 containerStyle={styles.goalCheckBox}
                             />
                         </View>
@@ -587,7 +624,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                         <Text style={{ fontSize: 12, marginTop: 70, marginLeft: 20, marginRight: 15 }}>Don't worry. This doesn't affect your daily calorie goal and can always change it later (Huwag kang mag-alala. Hindi nito naaapektuhan ang iyong pang-araw-araw na layunin sa calorie at maaari itong palaging baguhin sa ibang pagkakataon): </Text>
 
                         {Selections.length > 0 && (
-                            <Text style={{ fontSize: 15, fontWeight: "bold", marginTop: 60, marginLeft: 20, marginRight: 15 }}>What is your Weekly goal? (Ano ang iyong Lingguhang layunin?)</Text>
+                            <Text style={{ fontSize: 15, fontWeight: "bold", marginTop: 60, marginLeft: 20, marginRight: 15 }}>What is your Monthly goal? (Ano ang iyong Lingguhang layunin?)</Text>
                         )}
                         <View style={styles.goalWeightContainer}>
                             <Image
@@ -612,7 +649,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                 setValue={setInfo}
                                 setItems={setSelections}
                                 zIndex={3000}
-                                placeholder="Set Weekly Goal"
+                                placeholder="Set Monthly Goal"
                                 zIndexInverse={1000}
                                 containerStyle={{ width: 320, height: 200, position: "absolute", top: 380, right: 20 }}
                             />
@@ -657,15 +694,28 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
 
 
 
+function convertFeetAndInchesToCm(feet, inches) {
+    // Convert feet and inches to centimeters
+    const heightInCm = feet * 30.48 + inches * 2.54;
+    return heightInCm;
+}
+
 function calculateSuggestedWeight(age, height, heightUnit) {
     let heightInMeters;
 
     if (heightUnit === 'ft') {
-        // Convert height from feet to meters
-        heightInMeters = height * 0.3048; // 1 foot = 0.3048 meters
+        // Parse the feet and inches values from the height input
+        const [feet, inches] = height.split(".").map(parseFloat);
+        // Convert feet and inches to centimeters
+        const heightInCm = convertFeetAndInchesToCm(feet, inches);
+        // Convert height from centimeters to meters
+        heightInMeters = heightInCm / 100; // 1 cm = 0.01 meters
+    } else if (heightUnit === 'cm') {
+        // Convert height from centimeters to meters
+        heightInMeters = height / 100; // 1 cm = 0.01 meters
     } else {
-        // Convert height from cm to meters
-        heightInMeters = height / 100;
+        // Assume height is already in meters if heightUnit is not 'ft' or 'cm'
+        heightInMeters = height;
     }
 
     // Calculate BMI based on a standard BMI formula
@@ -682,7 +732,6 @@ function calculateSuggestedWeight(age, height, heightUnit) {
     // Round the suggested weight to the nearest integer
     return Math.round(suggestedWeight);
 }
-
 
 
 
@@ -712,7 +761,7 @@ const styles = StyleSheet.create({
     },
 
     appButtonContainer: {
-        elevation: 8,
+        elevation: 8,What is your Goal
         backgroundColor: "#009688",
         borderRadius: 20,
         width: 340,
