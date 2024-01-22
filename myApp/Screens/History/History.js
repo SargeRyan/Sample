@@ -1,6 +1,8 @@
-import { StyleSheet, Text, SafeAreaView, ScrollView, View, Image } from "react-native";
+import { StyleSheet, Text, SafeAreaView, ScrollView, View, Image, Button } from "react-native";
 import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Ionicons from "react-native-vector-icons/Ionicons";
+
 import {
     BarChart,
     LineChart
@@ -11,6 +13,7 @@ import { db } from "../Dashboard/firebaseConfig";
 import { get, set, ref, push, child } from "firebase/database";
 
 export default DietPlanScreen = ({ navigation, route }) => {
+    const [refreshIndex, setRefreshIndex] = useState(0);
     const currentDayIndex = getCurrentDayIndex();
     const [user, setUser] = useState(null);
     const [weightByWeek, setWeightByWeek] = useState({
@@ -65,7 +68,7 @@ export default DietPlanScreen = ({ navigation, route }) => {
             console.log("useruser", user);
         }
         getUser();
-    }, []);
+    }, [refreshIndex]);
 
     useEffect(() => {
         // Update the chart data whenever weightByWeek changes
@@ -77,7 +80,7 @@ export default DietPlanScreen = ({ navigation, route }) => {
                 },
             ],
         });
-    }, [weightByWeek]);
+    }, [weightByWeek, refreshIndex]);
 
     useEffect(() => {
         // Update the chart data whenever weightByWeek changes
@@ -89,7 +92,7 @@ export default DietPlanScreen = ({ navigation, route }) => {
                 },
             ],
         });
-    }, [waterByDay]);
+    }, [waterByDay, refreshIndex]);
 
     useEffect(() => {
         // Update the chart data whenever weightByWeek changes
@@ -101,7 +104,7 @@ export default DietPlanScreen = ({ navigation, route }) => {
                 },
             ],
         });
-    }, [weightByExercise]);
+    }, [weightByExercise, refreshIndex]);
 
     useEffect(() => {
         if (!user) return;
@@ -193,12 +196,23 @@ export default DietPlanScreen = ({ navigation, route }) => {
             .catch((error) => {
                 console.error(error);
             });
-    }, [user]);
+    }, [user, refreshIndex]);
 
 
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView style={styles.scrollView}>
+                <View style={{ display: 'flex', justifyContent: 'flex-end', width: '100%', alignItems: 'flex-end', marginBottom: 5, marginRight: 5 }}>
+
+                    <Button
+                        title="Refresh"
+                        color="#146C94"
+                        style={{ fontSize: "6px" }}
+                        onPress={() => {
+                            setRefreshIndex(refreshIndex + 1);
+                        }}
+                    />
+                </View>
                 <View
                     style={{
                         paddingHorizontal: 14,
