@@ -501,7 +501,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
 
                                 {goal === "Lose Weight" && (
                                     <View>
-                                        <Text style={{ marginTop: 10, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}> In the past, what been your primary barrier to gain and losing weight: (Sa nakaraan, kung ano ang iyong pangunahing hadlang upang makakuha at mawalan ng timbang)</Text>
+                                        <Text style={{ marginTop: 10, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}> In the past, what have been your primary barrier to gain and losing weight: (Sa nakaraan, kung ano ang iyong pangunahing hadlang upang makakuha at mawalan ng timbang)</Text>
                                         <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Select your primary barrier: (Piliin ang iyong pangunahing hadlang:)</Text>
 
                                         <View style={styles.goalCheckBoxContainer}>
@@ -612,7 +612,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                 )}
                                 {goal === "Gain Weight" && (
                                     <View>
-                                        <Text style={{ marginTop: 10, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}> In the past, what been your primary barrier to gain and losing weight: (Sa nakaraan, kung ano ang iyong pangunahing hadlang upang makakuha at mawalan ng timbang)</Text>
+                                        <Text style={{ marginTop: 10, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}> In the past, what have been your primary barrier to gain and losing weight: (Sa nakaraan, kung ano ang iyong pangunahing hadlang upang makakuha at mawalan ng timbang)</Text>
                                         <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Select your primary barrier: (Piliin ang iyong pangunahing hadlang:)</Text>
 
                                         <View style={styles.goalCheckBoxContainer}>
