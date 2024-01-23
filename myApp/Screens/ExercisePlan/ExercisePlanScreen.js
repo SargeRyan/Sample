@@ -116,8 +116,10 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
   // Check if userData.weight is greater than userData.goalWeight
   if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
     setCount(90 + 90); // 10 minutes + additional 90 seconds
+    setCount1('3:00')
   } else {
-    setCount(90); // 10 minutes in seconds
+    setCount(90);
+    setCount1('1:30') // 10 minutes in seconds
   }
 
 
@@ -129,18 +131,22 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
   };
   const resetStart = () => {
      if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
-    setCount(90 + 90); // 10 minutes + additional 90 seconds
+    setCount(90 + 90);
+     // 10 minutes + additional 90 seconds
   } else {
-    setCount(90); // 10 minutes in seconds
+    setCount(90);
+     // 10 minutes in seconds
   }
 
     setIsRunning(false);
   };
   const handleStart1 = () => {
      if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
-    setCount(90 + 90); // 10 minutes + additional 90 seconds
+    setCount(90 + 90);
+     setCount1('3:00') // 10 minutes + additional 90 seconds
   } else {
-    setCount(90); // 10 minutes in seconds
+    setCount(90);
+    setCount1('1:30') // 10 minutes in seconds
   }
     setIsRunning(true);
   };
@@ -160,9 +166,11 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
 
   const handleStart2 = () => {
    if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
-    setCount(90 + 90); // 10 minutes + additional 90 seconds
+    setCount(90 + 90);
+     setCount1('3:00') // 10 minutes + additional 90 seconds
   } else {
-    setCount(90); // 10 minutes in seconds
+    setCount(90);
+     setCount1('1:30') // 10 minutes in seconds
   } // 10 minutes in seconds
     setIsRunning(true);
   };
@@ -181,9 +189,11 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
 
   const handleStart3 = () => {
     if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
-    setCount(90 + 90); // 10 minutes + additional 90 seconds
+    setCount(90 + 90);
+     setCount1('3:00') // 10 minutes + additional 90 seconds
   } else {
-    setCount(90); // 10 minutes in seconds
+    setCount(90);
+     setCount1('1:30') // 10 minutes in seconds
   } // 10 minutes in seconds // 10 minutes in seconds
     setIsRunning(true);
   };
@@ -202,9 +212,11 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
 
   const handleStart4 = () => {
     if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
-    setCount(90 + 90); // 10 minutes + additional 90 seconds
+    setCount(90 + 90);
+     setCount1('3:00') // 10 minutes + additional 90 seconds
   } else {
-    setCount(90); // 10 minutes in seconds
+    setCount(90);
+    setCount1('1:20') // 10 minutes in seconds
   } // 10 minutes in seconds
     setIsRunning(true);
   };
@@ -223,9 +235,11 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
 
   const handleStart5 = () => {
     if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
-    setCount(90 + 90); // 10 minutes + additional 90 seconds
+    setCount(90 + 90);
+     setCount1('3:00') // 10 minutes + additional 90 seconds
   } else {
-    setCount(90); // 10 minutes in seconds
+    setCount(90);
+     setCount1('1:30') // 10 minutes in seconds
   } // 10 minutes in seconds
     setIsRunning(true);
   };
@@ -244,9 +258,11 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
 
   const handleStart6 = () => {
    if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
-    setCount(90 + 90); // 10 minutes + additional 90 seconds
+    setCount(90 + 90);
+     setCount1('3:00') // 10 minutes + additional 90 seconds
   } else {
-    setCount(90); // 10 minutes in seconds
+    setCount(90);
+     setCount1('1:30') // 10 minutes in seconds
   } // 10 minutes in seconds
     setIsRunning(true);
   };
@@ -265,9 +281,11 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
 
   const handleStart7 = () => {
     if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
-    setCount(90 + 90); // 10 minutes + additional 90 seconds
+    setCount(90 + 90);
+     setCount1('3:00') // 10 minutes + additional 90 seconds
   } else {
-    setCount(90); // 10 minutes in seconds
+    setCount(90);
+     setCount1('1:30') // 10 minutes in seconds
   } // 10 minutes in seconds // 10 minutes in seconds
     setIsRunning(true);
   };
@@ -277,9 +295,11 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
   };
   const resetStart7 = () => {
    if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
-    setCount(90 + 90); // 10 minutes + additional 90 seconds
+    setCount(90 + 90);
+     setCount1('3:00') // 10 minutes + additional 90 seconds
   } else {
-    setCount(90); // 10 minutes in seconds
+    setCount(90);
+     setCount1('1:30') // 10 minutes in seconds
   } // 10 minutes in seconds// 10 minutes in seconds
     setIsRunning(false);
   };
@@ -306,9 +326,11 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
   };
   const handleStart9 = () => {
     if (userData.weight > userData.goalWeight || userData.weight < userData.goalWeight) {
-    setCount(90 + 90); // 10 minutes + additional 90 seconds
+    setCount(90 + 90);
+     setCount1('3:00') // 10 minutes + additional 90 seconds
   } else {
-    setCount(90); // 10 minutes in seconds
+    setCount(90);
+     setCount1('1:30') // 10 minutes in seconds
   } // 10 minutes in seconds // 10 minutes in seconds
     setIsRunning(true);
   };
@@ -533,7 +555,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
               <View style={styles.textContainer}>
                 <Text style={styles.textHeaderContainer}>Jogging</Text>
                 <Text>Calories Burn: 93</Text>
-                <Text>Duration: 3 Minutes</Text>
+                <Text>Duration: {count1}</Text>
               </View>
               <Image
                 style={styles.ImageContainer}
@@ -1708,7 +1730,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
                 fontWeight: "bold",
               }}
             >
-              {count > 0 ? formatTime(count) : "3:00"}
+              {count > 0 ? formatTime(count) : count1}
             </Text>
            
           </View>
@@ -1879,7 +1901,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
                 fontWeight: "bold",
               }}
             >
-              {count > 0 ? formatTime(count) : "3:00"}
+              {count > 0 ? formatTime(count) : count1}
             </Text>
           </View>
 
@@ -2043,7 +2065,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
                 fontWeight: "bold",
               }}
             >
-              {count > 0 ? formatTime(count) : "5:00"}
+              {count > 0 ? formatTime(count) : count1}
             </Text>
           </View>
 
@@ -2215,7 +2237,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
                 fontWeight: "bold",
               }}
             >
-              {count > 0 ? formatTime(count) : "5:00"}
+              {count > 0 ? formatTime(count) : count1}
             </Text>
           </View>
 
@@ -2381,7 +2403,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
                 fontWeight: "bold",
               }}
             >
-              {count > 0 ? formatTime(count) : "5:00"}
+              {count > 0 ? formatTime(count) : count1}
             </Text>
           </View>
 
@@ -2712,7 +2734,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
                   fontWeight: "bold",
                 }}
               >
-                {count > 0 ? formatTime(count) : "5:00"}
+                {count > 0 ? formatTime(count) : count1}
               </Text>
             </View>
 
@@ -2880,7 +2902,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
                 fontWeight: "bold",
               }}
             >
-              {count > 0 ? formatTime(count) : "5:00"}
+              {count > 0 ? formatTime(count) : count1}
             </Text>
           </View>
 
@@ -3043,7 +3065,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
                 fontWeight: "bold",
               }}
             >
-              {count > 0 ? formatTime(count) : "5:00"}
+              {count > 0 ? formatTime(count) : count1}
             </Text>
           </View>
 
@@ -3207,7 +3229,7 @@ export default ExercisePlanScreen = ({ navigation, route }) => {
                 fontWeight: "bold",
               }}
             >
-              {count > 0 ? formatTime(count) : "5:00"}
+              {count > 0 ? formatTime(count) : count1}
             </Text>
           </View>
 
