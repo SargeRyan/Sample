@@ -268,7 +268,8 @@ export default DietPlanScreen = ({ navigation, route }) => {
                             marginLeft: - 40,
                         }}
                         width={screenWidth} // from react-native
-                        height={250}
+                        height={400}
+                        verticalLabelRotation={75}
                         chartConfig={{
                             backgroundColor: "#156d94",
                             backgroundGradientFrom: "#156d94",
