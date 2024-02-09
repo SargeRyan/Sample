@@ -11,19 +11,25 @@ const screenWidth = Dimensions.get("window").width - 50;
 import { Dimensions } from "react-native";
 import { db } from "../Dashboard/firebaseConfig";
 import { get, set, ref, push, child } from "firebase/database";
+import { useIsFocused } from "@react-navigation/native";
 
 export default DietPlanScreen = ({ navigation, route }) => {
     const [refreshIndex, setRefreshIndex] = useState(0);
     const currentDayIndex = getCurrentDayIndex();
     const [user, setUser] = useState(null);
+    const isFocused = useIsFocused();
+    useEffect(() => {
+        setRefreshIndex(refreshIndex + 1);
+    }, [isFocused]);
+
     const [weightByWeek, setWeightByWeek] = useState({
-        "Jan 20": 0,
+        "1": 0,
     });
     const [weightByExercise, setWeightByExercise] = useState({
         "Walking": 0,
     });
     const [waterByDay, setWaterByDay] = useState({
-        "Jan 20": 0,
+        "Jan 28": 0,
     });
     const [exerciseChartData, setExerciseChartData] = useState({
         labels: Object.keys(weightByExercise),
@@ -52,6 +58,45 @@ export default DietPlanScreen = ({ navigation, route }) => {
         ]
     });
 
+    const [goalHeight, setGoalHeight] = useState(250);
+    const [segmentChart, setSegmentChart] = useState(5);
+    const [minGoal, setMinGoal] = useState(0);
+    const [maxGoal, setMaxGoal] = useState(0);
+    const [weightGoal, setWeightGoal] = useState({
+        "Week 1": 0,
+    });
+    const [goalChartData, setGoalChartData] = useState({
+        labels: Object.keys(weightGoal),
+        datasets: [
+            {
+                data: Object.values(weightGoal),
+            }
+        ]
+    });
+
+    useEffect(() => {
+        // if (!user) return;
+        console.log("ZZZZZZZZZZZZZZZZZZZZZZ", weightGoal);
+        if (!weightGoal) return;
+        // Update the chart data whenever weightGoal changes
+        setGoalChartData({
+            labels: Object.keys(weightGoal),
+            datasets: [
+                {
+                    data: Object.values(weightGoal),
+                },
+                {
+                    data: [minGoal],
+                    withDots: false
+                },
+                {
+                    data: [maxGoal],
+                    withDots: false
+                }
+            ],
+        });
+    }, [weightGoal]);
+
     function getCurrentDayIndex() {
         const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         const currentDate = new Date();
@@ -66,21 +111,63 @@ export default DietPlanScreen = ({ navigation, route }) => {
             const userObj = JSON.parse(user);
             setUser(userObj);
             console.log("useruser", user);
+            const weight = userObj && userObj.weight ? Number(userObj.weight) : 0;
+            const goalWeight = userObj && userObj.goalWeight ? Number(userObj.goalWeight) : 0;
+            setMinGoal(weight);
+            setMaxGoal(goalWeight);
+            // setWeightGoal({
+            //     "Week 1": weight,
+            // });
+            const segments = Math.abs(goalWeight - weight);
+            let sementMultiplier = 1;
+            if (userObj && userObj.info) sementMultiplier = userObj.info.includes('.50') ? 2 : 4;
+            setSegmentChart(segments * sementMultiplier);
+            setGoalHeight(segments * 60);
         }
         getUser();
     }, [refreshIndex]);
 
     useEffect(() => {
         // Update the chart data whenever weightByWeek changes
+        const labeledWeeks = Object.keys(weightByWeek).map(label => "Week " + label);
         setChartData({
-            labels: Object.keys(weightByWeek),
+            labels: labeledWeeks,
             datasets: [
                 {
                     data: Object.values(weightByWeek),
                 },
             ],
         });
-    }, [weightByWeek, refreshIndex]);
+        if (!user) return;
+        const weeklyBurned = weightGoal;
+        const userWeight = user && user.weight ? Number(user.weight) : 0;
+        // calculate the burned calories
+        for (let week in weightByWeek) {
+            const burnedCalories = weightByWeek[week];
+            let burnedKg = burnedCalories / 7700;
+            const baseWeight = weeklyBurned[week] || userWeight;
+            weeklyBurned["Week " + week] = baseWeight + burnedKg;
+        }
+        setWeightGoal(weeklyBurned);
+        setGoalChartData({
+            labels: Object.keys(weeklyBurned),
+            datasets: [
+                {
+                    data: Object.values(weeklyBurned),
+                },
+                {
+                    data: [minGoal],
+                    withDots: false
+                },
+                {
+                    data: [maxGoal],
+                    withDots: false
+                }
+            ],
+        });
+    }, [weightByWeek, refreshIndex, user]);
+
+
 
     useEffect(() => {
         // Update the chart data whenever weightByWeek changes
@@ -118,8 +205,26 @@ export default DietPlanScreen = ({ navigation, route }) => {
 
                     // Use a single batch update to avoid potential timing issues
                     setWeightByWeek((prevWeight) => {
-                        Object.keys(burnedDetails).forEach(function (key) {
+                        const sortedDates = Object.keys(burnedDetails).sort((a, b) => new Date(a) - new Date(b));
+                        let currentWeekNumber = 1;
+                        let startDate = null;
+
+                        sortedDates.forEach(function (key) {
                             const dateObj = new Date(key);
+
+                            if (!startDate) {
+                                startDate = dateObj;
+                            }
+
+                            const timeDiff = dateObj - startDate;
+                            const daysDiff = timeDiff / (1000 * 3600 * 24);
+
+                            if (daysDiff >= 7) {
+                                // Move to the next week after processing the current date
+                                currentWeekNumber++;
+                                startDate = dateObj;
+                            }
+
                             const monthNames = [
                                 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
                             ];
@@ -130,12 +235,17 @@ export default DietPlanScreen = ({ navigation, route }) => {
 
                             let exerciseDetails = burnedDetails[key];
 
-                            Object.keys(exerciseDetails).forEach(function (key) {
-                                const exerciseSpecific = JSON.parse(exerciseDetails[key]);
+                            Object.keys(exerciseDetails).forEach(function (exerciseKey) {
+                                const exerciseSpecific = JSON.parse(exerciseDetails[exerciseKey]);
                                 let burnedCalories = exerciseSpecific.exerciseBurnedDetails.burnedCalories;
 
+                                // If the week doesn't exist in the state, initialize it
+                                if (!prevWeight[currentWeekNumber]) {
+                                    prevWeight[currentWeekNumber] = 0;
+                                }
+
                                 // Update the state using the previous state
-                                prevWeight[date] = burnedCalories;
+                                prevWeight[currentWeekNumber] = (prevWeight[currentWeekNumber] || 0) + Number(burnedCalories);
 
                                 console.log("prevWeight", prevWeight);
                             });
@@ -144,6 +254,7 @@ export default DietPlanScreen = ({ navigation, route }) => {
                         // Return the updated state
                         return { ...prevWeight };
                     });
+
 
                     // Use a single batch update to avoid potential timing issues
                     setWeightByExercise((prevWeight) => {
@@ -202,8 +313,7 @@ export default DietPlanScreen = ({ navigation, route }) => {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView style={styles.scrollView}>
-                <View style={{ display: 'flex', justifyContent: 'flex-end', width: '100%', alignItems: 'flex-end', marginBottom: 5, marginRight: 5 }}>
-
+                <View style={{ display: 'none', justifyContent: 'flex-end', width: '100%', alignItems: 'flex-end', marginBottom: 5, marginRight: 5 }}>
                     <Button
                         title="Refresh"
                         color="#146C94"
@@ -226,7 +336,43 @@ export default DietPlanScreen = ({ navigation, route }) => {
                     keyboardShouldPersistTaps="handled"
                 >
                     <Text style={{ color: "#fff", fontSize: 20, fontWeight: "bold" }}>
-                        Burned Calories by day
+                        Weight Goal Chart
+                    </Text>
+                    <LineChart
+                        data={goalChartData}
+                        style={{
+                            marginLeft: - 40,
+                            paddingBottom: (goalHeight * -0.15),
+                        }}
+                        segments={segmentChart}
+                        width={screenWidth} // from react-native
+                        height={goalHeight}
+                        chartConfig={{
+                            backgroundColor: "#156d94",
+                            backgroundGradientFrom: "#156d94",
+                            backgroundGradientTo: "#156d94",
+                            decimalPlaces: 2, // Specify 0 decimal places for whole numbers
+                            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                        }}
+
+                    />
+
+                </View>
+                <View
+                    style={{
+                        paddingHorizontal: 14,
+                        paddingVertical: 20,
+                        backgroundColor: "#146C94",
+                        marginBottom: 15,
+                        borderRadius: 10,
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                    }}
+                    keyboardShouldPersistTaps="handled"
+                >
+                    <Text style={{ color: "#fff", fontSize: 20, fontWeight: "bold" }}>
+                        Burned Calories per week
                     </Text>
                     <LineChart
                         data={chartData}

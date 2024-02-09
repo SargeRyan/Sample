@@ -170,12 +170,12 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
     const [goalWeight, setGoalWeight] = useState('');
     const [suggestedWeight, setSuggestedWeight] = useState(0);
 
-   
+
     useEffect(() => {
-    if (!age || !height || !heightUnit) return;
-    const suggestedWeight = calculateSuggestedWeight(age, height, heightUnit);
-    setSuggestedWeight(suggestedWeight);
-}, [age, height, heightUnit]);
+        if (!age || !height || !heightUnit) return;
+        const suggestedWeight = calculateSuggestedWeight(age, height, heightUnit);
+        setSuggestedWeight(suggestedWeight);
+    }, [age, height, heightUnit]);
 
     const saveData = async () => {
         console.log('Saving data');
@@ -189,6 +189,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                 goalWeight,
                 medHistory,
                 heightUnit,
+                info: JSON.stringify(info),
                 selectMedHistory: selectMedHistory.toString()
             };
 
@@ -226,7 +227,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                     It will help us to know about you!
                 </Text>
 
-                <Text style={{ width: 320, marginBottom: 5 }}>
+                <Text style={{ width: 380, marginBottom: 5 }}>
                     What is your Name?(Ano ang iyong pangalan?)
                 </Text>
 
@@ -242,7 +243,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                         style={styles.birthDateTextContainer}
                     ></TextInput>
                 </View>
-                <Text style={{ width: 320 }}>
+                <Text style={{ width: 380 }}>
                     Which sex we should use to calculate your calorie needs: (Aling kasarian ang dapat naming gamitin upang kalkulahin ang iyong mga pangangailangan sa calorie:)
                 </Text>
                 <View style={styles.genderContainer}>
@@ -260,7 +261,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
 
                 </View>
 
-                <Text style={{ width: 320, marginBottom: 5 }}>
+                <Text style={{ width: 380, marginBottom: 5 }}>
                     How old are you? (Ilan taon ka na?)
                 </Text>
 
@@ -277,44 +278,44 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                         style={styles.birthDateTextContainer}
                     ></TextInput>
                 </View>
-                <Text style={{ width: 320, marginBottom: 5 }}>
+                <Text style={{ width: 380, marginBottom: 5 }}>
                     How tall are you?(Gaano ka katangkad?)
                 </Text>
 
-              <View style={styles.heightContainer}>
+                <View style={styles.heightContainer}>
                     <Image
                         style={styles.heightImageContainer}
                         source={require("../image/computer-icons-ruler-pictogram-length-clip-art-ruler-1ccf0d3be8bd9cc8eeb2db1c88611e1a.png")}
                     />
 
                     {heightUnit === 'cm' && (
-                            <TextInput
-                                placeholder="Height(Centimeter/cm)"
-                                inputMode="numeric"
-                                onChangeText={(text) => setHeight(text)}
-                                value={height}
-                                style={styles.heightTextContainer}
-                    />
+                        <TextInput
+                            placeholder="Height(Centimeter/cm)"
+                            inputMode="numeric"
+                            onChangeText={(text) => setHeight(text)}
+                            value={height}
+                            style={styles.heightTextContainer}
+                        />
 
 
                     )}
-                     {heightUnit === 'ft' && (
-                            <TextInput
-                                placeholder="Height (ft)"
-                                inputMode="numeric"
-                                onChangeText={(text) => setHeight(text)}
-                                value={height}
-                                style={styles.heightTextContainer}
+                    {heightUnit === 'ft' && (
+                        <TextInput
+                            placeholder="Height (ft)"
+                            inputMode="numeric"
+                            onChangeText={(text) => setHeight(text)}
+                            value={height}
+                            style={styles.heightTextContainer}
                         />
 
-                    
+
                     )}
 
                     <Button
                         color={heightUnit === "cm" ? "#146C94" : "#fff"}
-                            style={{ margin: 5, width: 60 }}
-                            title="CM"
-                            onPress={() => { setHeightUnit("cm") }}
+                        style={{ margin: 5, width: 60 }}
+                        title="CM"
+                        onPress={() => { setHeightUnit("cm") }}
                     />
 
                     <Button
@@ -323,8 +324,8 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                         title="ft"
                         onPress={() => { setHeightUnit("ft") }}
                     />
-            </View>
-                <View style={{ display: !age || !height ? "none" : "flex", flexDirection: "row", width: 320, justifyContent: "flex-start", marginBottom: 10 }}>
+                </View>
+                <View style={{ display: !age || !height ? "none" : "none", flexDirection: "row", width: 380, justifyContent: "flex-start", marginBottom: 10 }}>
                     <Text style={{ marginRight: 10 }}>
                         Suggested weight: {suggestedWeight}kg
                     </Text>
@@ -334,7 +335,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                     </Pressable>
                 </View>
 
-                <Text style={{ width: 320, marginBottom: 5 }}>
+                <Text style={{ width: 380, marginBottom: 5 }}>
                     How much do you weigh?(Gaano ka kabigat?)
                 </Text>
 
@@ -353,7 +354,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                 </View>
 
                 <Pressable
-                    style={{ backgroundColor: "#009688", height: 50, width: 320, borderRadius: 10, marginTop: 5 }}
+                    style={{ backgroundColor: "#009688", height: 50, width: 380, borderRadius: 10, marginTop: 5 }}
                     onPress={() => setModalVisible(true)} disabled={age === '' || height === '' || weight === ''}>
                     <Text style={{ alignSelf: "center", marginTop: 10, fontSize: 20, fontWeight: "bold", color: "#fff" }}>NEXT</Text>
                 </Pressable>
@@ -380,7 +381,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                         </View>
 
                         <Pressable
-                            style={{ backgroundColor: "#009688", height: 50, width: 320, borderRadius: 10, marginTop: 30, position: "absolute", bottom: 20, alignSelf: "center" }}
+                            style={{ backgroundColor: "#009688", height: 50, width: 380, borderRadius: 10, marginTop: 30, position: "absolute", bottom: 20, alignSelf: "center" }}
                             onPress={() => setModalVisible1(true)}>
                             <Text style={{ alignSelf: "center", marginTop: 10, fontSize: 20, fontWeight: "bold", color: "#fff" }}>NEXT</Text>
                         </Pressable>
@@ -390,7 +391,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
 
                         <Text style={{ marginTop: 30, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}>What is your Goal (Ano ang iyong Layunin)</Text>
                         <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Select your primary goal: (Piliin ang iyong pangunahing layunin:)</Text>
-                        <View style={styles.goalCheckBoxContainer}>
+                        <View style={[styles.goalCheckBoxContainer, { opacity: weight < 40 ? 0 : 1, marginTop: weight < 40 ? -50 : 10 }]}>
                             <CheckBox
                                 value={goal}
                                 checked={goal === 'Lose Weight'}
@@ -399,7 +400,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                     setSelections([
                                         { label: 'Lose 0.25kg per Month', value: '0.25' },
                                         { label: 'Lose 0.5 per Month', value: '0.50' },
-                                        
+
                                     ])
                                 }}
                                 label={'Loss Weight (Magbawas ng timbang)'}
@@ -428,14 +429,14 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                     setSelections([
                                         { label: 'Gain 0.25kg per week', value: '.25' },
                                         { label: 'Gain 0.5 per week', value: '.50' },
-                                        
+
                                     ])
                                 }}
                                 label={'Gain Weight (Magdagdag ng timbang)'}
                                 containerStyle={styles.goalCheckBox}
                             />
                         </View>
-                         <View style={styles.goalCheckBoxContainer}>
+                        <View style={styles.goalCheckBoxContainer}>
                             <CheckBox
                                 value={goal}
                                 checked={goal === 'Increase Stamina'}
@@ -445,9 +446,9 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                 }}
                                 label={'Increase Stamina(Dagdagan ang Stamina)'}
                                 containerStyle={styles.goalCheckBox}
-                                textStyle={styles.labelText} 
+                                textStyle={styles.labelText}
                             />
-                            
+
                         </View>
                         {/* <View style={styles.goalCheckBoxContainer}>
                             <CheckBox
@@ -492,7 +493,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                 </View>
 
                                 <Pressable
-                                    style={{ backgroundColor: "#009688", height: 50, width: 320, borderRadius: 10, marginTop: 20, position: "absolute", bottom: 30, alignSelf: "center" }}
+                                    style={{ backgroundColor: "#009688", height: 50, width: 380, borderRadius: 10, marginTop: 20, position: "absolute", bottom: 30, alignSelf: "center" }}
                                     onPress={() => setSampleVisible(true)}>
                                     <Text style={{ alignSelf: "center", marginTop: 10, fontSize: 20, fontWeight: "bold", color: "#fff" }}>NEXT</Text>
                                 </Pressable>
@@ -543,7 +544,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                                 onChange={() => toggleCheckbox('expensiveHealthyFood')}
                                                 label={'Expensive Healthy Food(Mahal na malusog na Pagkain)'}
                                                 containerStyle={styles.goalCheckBox}
-                                                textStyle={styles.labelText} 
+                                                textStyle={styles.labelText}
                                             />
                                         </View>
                                         <View style={[styles.goalCheckBoxContainer, {
@@ -562,7 +563,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                 {goal === "Increase Stamina" && (
                                     <View>
                                         <Text style={{ marginTop: 10, fontSize: 15, marginLeft: 15, width: 350, fontWeight: "bold" }}> In the past, what have been your primary barrier to   increase your stamina(Sa nakaraan, ano ang pangunahing hadlang upang mapataas ang iyong Stamina)</Text>
-                                        <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30,  }}>Select your primary barrier: (Piliin ang iyong pangunahing hadlang:)</Text>
+                                        <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Select your primary barrier: (Piliin ang iyong pangunahing hadlang:)</Text>
 
                                         <View style={styles.goalCheckBoxContainer}>
                                             <CheckBox
@@ -646,7 +647,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                                 onChange={() => toggleCheckbox('expensiveHealthyFood')}
                                                 label={'Expensive Healthy Food(Mahal na malusog na Pagkain)'}
                                                 containerStyle={styles.goalCheckBox}
-                                                textStyle={styles.labelText} 
+                                                textStyle={styles.labelText}
                                             />
                                         </View>
                                         <View style={[styles.goalCheckBoxContainer, {
@@ -662,7 +663,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                         </View>
                                     </View>
                                 )}
-                               
+
 
 
 
@@ -757,19 +758,22 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                 zIndex={3000}
                                 placeholder="Set Monthly Goal"
                                 zIndexInverse={1000}
-                                containerStyle={{ width: 320, height: 200, position: "absolute", top: 380, right: 20 }}
+                                containerStyle={{ width: 380, height: 200, position: "absolute", top: 380, right: 20 }}
                             />
                         )}
 
 
-                        <View style={styles.screenContainer}>
+                        <View style={[{ marginTop: 100, display: 'flex', flexDirection: 'row', justifyContent: 'center' }]}>
                             <AppButton
                                 title="Create Account"
+                                style={{
+                                    alignSelf: "center",
+                                }}
                                 onPress={async () => {
                                     await saveData();
                                     setShowMainScreen(false)
-                                }
-                                }
+                                }}
+
                             ></AppButton>
                         </View>
                     </View>
@@ -889,7 +893,7 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         backgroundColor: "#f9eed9",
         borderRadius: 18,
-        width: 320,
+        width: 380,
         height: 50,
     },
     genderImageContainer: {
@@ -914,7 +918,7 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         backgroundColor: "#f9eed9",
         borderRadius: 18,
-        width: 320,
+        width: 380,
         height: 50,
     },
     birthDateImageContainer: {
@@ -938,7 +942,7 @@ const styles = StyleSheet.create({
         marginBottom: 12,
         backgroundColor: "#f9eed9",
         borderRadius: 18,
-        width: 320,
+        width: 380,
         height: 50,
     },
     weightImageContainer: {
@@ -962,7 +966,7 @@ const styles = StyleSheet.create({
         marginBottom: 12,
         backgroundColor: "#f9eed9",
         borderRadius: 18,
-        width: 320,
+        width: 380,
         height: 50,
     },
     heightImageContainer: {
@@ -986,7 +990,7 @@ const styles = StyleSheet.create({
         marginBottom: 12,
         backgroundColor: "#f9eed9",
         borderRadius: 18,
-        width: 320,
+        width: 380,
         height: 50,
         position: "absolute",
         top: 150,
@@ -997,7 +1001,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#f9eed9',
         height: 50,
         margin: 10,
-        width: 330,
+        width: 380,
         alignSelf: 'center',
         borderRadius: 10,
         borderStyle: 'solid',
@@ -1013,7 +1017,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         marginTop: 12,
         marginBottom: 20,
-
+        flexDirection: 'row', alignItems: 'center', marginBottom: 10
 
     },
     medicalHistory: {
@@ -1021,7 +1025,7 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         backgroundColor: "#f9eed9",
         borderRadius: 10,
-        width: 320,
+        width: 380,
         height: 50,
         alignSelf: 'center',
         marginTop: 10,
@@ -1045,10 +1049,10 @@ const styles = StyleSheet.create({
         marginLeft: 17,
 
     },
-     labelText: {
-    // Styling for the label text
-    fontSize: 1,  // Adjust the font size as needed
-    fontWeight: 'bold', // Adjust the font weight as needed
-    // Add any other text styling properties as needed
-  },
+    labelText: {
+        // Styling for the label text
+        fontSize: 1,  // Adjust the font size as needed
+        fontWeight: 'bold', // Adjust the font weight as needed
+        // Add any other text styling properties as needed
+    },
 });
