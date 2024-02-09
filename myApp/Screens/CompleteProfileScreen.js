@@ -289,7 +289,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
 
                     {heightUnit === 'cm' && (
                             <TextInput
-                                placeholder="Height(Centimeter/cm)"
+                                placeholder="Height(cm)"
                                 inputMode="numeric"
                                 onChangeText={(text) => setHeight(text)}
                                 value={height}
@@ -397,8 +397,10 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                 onChange={() => {
                                     setGoal('Lose Weight')
                                     setSelections([
-                                        { label: 'Lose 0.25kg per Month', value: '0.25' },
-                                        { label: 'Lose 0.5 per Month', value: '0.50' },
+                                        { label: 'Lose 0.25kg per Weekly', value: '0.25' },
+                                        { label: 'Lose 0.5 per Weekly', value: '0.50' },
+                                        { label: 'Lose 0.75kg per Month', value: '0.75' }
+                                       
                                         
                                     ])
                                 }}
@@ -537,15 +539,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                                 containerStyle={styles.goalCheckBox}
                                             />
                                         </View>
-                                        <View style={styles.goalCheckBoxContainer}>
-                                            <CheckBox
-                                                value={medHistoryStates.expensiveHealthyFood}
-                                                onChange={() => toggleCheckbox('expensiveHealthyFood')}
-                                                label={'Expensive Healthy Food(Mahal na malusog na Pagkain)'}
-                                                containerStyle={styles.goalCheckBox}
-                                                textStyle={styles.labelText} 
-                                            />
-                                        </View>
+                                        
                                         <View style={[styles.goalCheckBoxContainer, {
                                             paddingLeft: 20,
                                         }]}>
@@ -644,7 +638,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                             <CheckBox
                                                 value={medHistoryStates.expensiveHealthyFood}
                                                 onChange={() => toggleCheckbox('expensiveHealthyFood')}
-                                                label={'Expensive Healthy Food(Mahal na malusog na Pagkain)'}
+                                                label={'Expensive Healthy Food \n (Mahal na malusog na Pagkain)'}
                                                 containerStyle={styles.goalCheckBox}
                                                 textStyle={styles.labelText} 
                                             />
