@@ -4,7 +4,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import DietPlanScreen from "./DietPlan/DietPlanScreen";
-import ExercisePlanScreen from "./ExercisePlan/ExercisePlanScreen";
+// import ExercisePlanScreen from "./ExercisePlan/ExercisePlanScreen";
+import ExercisePlan from "./ExercisePlan/ExercisePlan";
 import SleepingTrackerScreen from "./SleepingTracker/SleepingTrackerScreen.js";
 import MedicineTracker from "./MedicineTracker/MedicineTracker";
 import Dashboard from "./Dashboard/BmiCalculator";
@@ -18,7 +19,7 @@ export default MainTabNavigation = () => {
         <NavigationContainer>
             <Tab.Navigator screenOptions={navigatorScreenOptions}>
                 <Tab.Screen name="Dashboard" component={BmiCalculator} />
-                <Tab.Screen name="Exercise Plan" component={ExercisePlanScreen} />
+                <Tab.Screen name="Exercise Plan" component={ExercisePlan} />
                 <Tab.Screen name="Diet Plan" component={DietPlanScreen} />
                 <Tab.Screen name="Water Tracker" component={WaterPlanScreen} />
                 <Tab.Screen name="Sleeping Tracker" component={SleepingTrackerScreen} />
