@@ -51,17 +51,16 @@ export default SelectionMealCard = ({ mealsToday, mealData, onToggleCheckFunctio
             justifyContent: "space-between",
           }}
         >
-          <View style={{ display: "flex", flexDirection: "row" }}>
+          <View style={{ display: "flex", flexDirection: "row", flexShrink: 2 }}>
             <View
               style={{
                 height: 70,
                 marginRight: 10,
                 borderRadius: 8,
-                overflow: "hidden",
               }}
             >
               <Image
-                style={{ width: 80, borderRadius: 8, height: 70 }}
+                style={{ width: 60, borderRadius: 8, height: 60 }}
                 source={{
                   uri: mealData.mealImage,
                 }}
@@ -88,6 +87,8 @@ export default SelectionMealCard = ({ mealsToday, mealData, onToggleCheckFunctio
             style={{
               display: "flex",
               justifyContent: "center",
+              flexShrink: 0,
+              flexGrow: 1,
             }}
           >
             {isChecked ? (

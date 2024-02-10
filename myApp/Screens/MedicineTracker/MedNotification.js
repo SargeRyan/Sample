@@ -20,7 +20,7 @@ export async function schedulePushNotification(year, month, day, hour, minute, t
 
     await Notifications.scheduleNotificationAsync({
         content: {
-            title: "💊 "+title,
+            title: "💊 " + title,
             body: body,
             data: {},
             sound: 'default',
@@ -55,7 +55,7 @@ async function registerForPushNotificationsAsync() {
             finalStatus = status;
         }
         if (finalStatus !== 'granted') {
-            alert('Failed to get push token for push notification!');
+            //alert('Failed to get push token for push notification!');
             return;
         }
         token = (await Notifications.getExpoPushTokenAsync()).data;

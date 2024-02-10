@@ -223,19 +223,20 @@ export default BmiCalculator = ({ navigation, route }) => {
                             onPress={async () => {
                                 userData.isOld = true;
                                 await saveDataToCloud(userData.id, "userData", JSON.stringify(userData));
-                                await AsyncStorage.removeItem('userData');
+                                // await AsyncStorage.removeItem('userData');
+                                await AsyncStorage.clear();
                                 setUserData({});
                                 setBmi('');
                                 setBmiSpeedometer(0);
                                 setDescription('');
 
                                 // clear medical history
-                                let allKeys = await AsyncStorage.getAllKeys();
-                                for (let i = 0; i < allKeys.length; i++) {
-                                    if (allKeys[i].startsWith("@medicalHistory_")) {
-                                        await AsyncStorage.removeItem(allKeys[i]);
-                                    }
-                                }
+                                // let allKeys = await AsyncStorage.getAllKeys();
+                                // for (let i = 0; i < allKeys.length; i++) {
+                                //     if (allKeys[i].startsWith("@medicalHistory_")) {
+                                //         await AsyncStorage.removeItem(allKeys[i]);
+                                //     }
+                                // }
 
                                 Updates.reloadAsync()
                             }} />

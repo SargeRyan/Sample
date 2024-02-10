@@ -47,6 +47,7 @@ export default DietPlanScreen = ({ navigation, route }) => {
             const year = dateObj.getFullYear();
             const dateTaken = `${month} ${day}`;
             await saveDataToCloud("timeTaken", `water/${userData.id}/${amount}`, numericDate);
+            console.log("ZZZZZZZZ", userData.id, dateTaken, amount);
             await saveDataToCloud(dateTaken, `water/${userData.id}/byDay`, amount);
         }
         await getWaterData();
@@ -62,9 +63,18 @@ export default DietPlanScreen = ({ navigation, route }) => {
                 let waterAmount = await AsyncStorage.getItem(allKeys[i]);
                 console.log(allKeys[i], waterAmount);
                 const index = daysOfWeek.indexOf(day);
+                if (index <= currentDayIndex) newWaterData[index] = parseInt(waterAmount);
                 console.log("index", index);
-                newWaterData[index] = parseInt(waterAmount);
-                if (index == currentDayIndex) setCurrentDayWater(parseInt(waterAmount));
+                if (index == currentDayIndex) {
+                    const today = new Date();
+                    const hasData = await AsyncStorage.getItem(`@water_${today.toString()}`);
+                    if (!hasData) {
+                        waterAmount = 0;
+                        newWaterData[index] = 0;
+                        await AsyncStorage.removeItem(`@water_${today.toString()}`);
+                    }
+                    setCurrentDayWater(parseInt(waterAmount));
+                }
             }
         }
         setWaterData(newWaterData);

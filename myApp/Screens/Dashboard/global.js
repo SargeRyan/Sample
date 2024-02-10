@@ -39,6 +39,7 @@ export async function saveDataToCloud(asyncDataKey, parentKey = "", _storedData 
             parsedData.isSaved = true;
             const newDataID = parentKey || newDataRef.key;
             parsedData.id = newDataID;
+            console.log("___firebaseToSaveInformation", newDataRef, JSON.stringify(parsedData));
             await set(newDataRef, JSON.stringify(parsedData));
             await AsyncStorage.setItem(asyncDataKey, JSON.stringify(parsedData));
 

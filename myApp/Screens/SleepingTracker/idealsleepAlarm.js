@@ -23,7 +23,7 @@ export async function scheduleSleepPushNotification(title, body) {
     });
     await Notifications.scheduleNotificationAsync({
         content: {
-            title: "🛏️ "+title,
+            title: "🛏️ " + title,
             body: body,
             data: {},
             sound: 'default',
@@ -54,7 +54,7 @@ async function registerForPushNotificationsAsync() {
             finalStatus = status;
         }
         if (finalStatus !== 'granted') {
-            alert('Failed to get push token for push notification!');
+            //alert('Failed to get push token for push notification!');
             return;
         }
         token = (await Notifications.getExpoPushTokenAsync()).data;

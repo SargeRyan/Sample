@@ -402,6 +402,7 @@ export default DietPlanScreen = ({ navigation, route }) => {
                         borderRadius: 10,
                         justifyContent: "space-between",
                         alignItems: "center",
+                        display: "none"
                     }}
                     keyboardShouldPersistTaps="handled"
                 >
@@ -442,7 +443,7 @@ export default DietPlanScreen = ({ navigation, route }) => {
                     keyboardShouldPersistTaps="handled"
                 >
                     <Text style={{ color: "#fff", fontSize: 20, fontWeight: "bold" }}>
-                        Water Taken Per Day
+                        Water Taken Per Week
                     </Text>
                     <BarChart
                         data={waterChartData}
