@@ -13,23 +13,30 @@ import {
     Modal,
     Pressable,
 } from "react-native";
+import { db } from "./Dashboard/firebaseConfig";
+import { get, set, ref, push, child } from "firebase/database";
 import { Button } from "@react-native-material/core";
 import DropDownPicker from "react-native-dropdown-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CheckBox from 'react-native-checkbox';
-
+import LoginScreen from "./LoginScreen";
 TouchableOpacity.defaultProps = { ActiveOpacity: 0.8 };
 
 
 
 export default CompleteProfileScreen = ({ setShowMainScreen }) => {
+    const [showRegisterScreen, setShowRegisterScreen] = useState(false);
     const AppButton = ({ onPress, title }) => (
         <TouchableOpacity disabled={goalWeight === ''} onPress={onPress} style={styles.appButtonContainer}>
             <Text style={styles.appButtonText}>{title}</Text>
         </TouchableOpacity>
     );
-
+    const [username, setUsername] = useState("");
+    const [userNameError, setUserNameError] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [goal, setGoal] = useState('');
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [checkboxStates, setCheckboxStates] = useState({
         lackOfTime: '',
         stressAroundFood: '',
@@ -37,6 +44,17 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
         lackOfProgress: '',
         expensiveHealthyFood: '',
     });
+
+    useEffect(() => {
+        const checkIfLoggedIn = async () => {
+            const username = await AsyncStorage.getItem('username');
+            if (username) {
+                setIsLoggedIn(true);
+                setShowRegisterScreen(true);
+            }
+        };
+        checkIfLoggedIn();
+    }, [showRegisterScreen]);
 
     const [limitationWeight, setLimitationWeight] = useState({
         max: 300,
@@ -186,6 +204,8 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
         console.log('Saving data');
         try {
             const userData = {
+                username,
+                password,
                 name,
                 height,
                 weight,
@@ -209,6 +229,41 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
         }
     };
 
+    const registerUser = async () => {
+        const usernameRef = ref(db, `userLogIn/${username}`);
+        await AsyncStorage.setItem('username', username);
+        const allAsyncData = await getAllAsyncData();
+        set(usernameRef, {
+            password,
+            username,
+            allAsyncData
+        })
+    };
+
+    const getAllAsyncData = async () => {
+        try {
+            const allKeys = await AsyncStorage.getAllKeys();
+            const allData = await AsyncStorage.multiGet(allKeys);
+
+            // Step 2: Convert the data into a JSON object
+            const dataObject = {};
+            allData.forEach(([key, value]) => {
+                dataObject[key] = value;
+            });
+
+            // Step 3: Convert the JSON object into a JSON string
+            const jsonString = JSON.stringify(dataObject);
+
+            return jsonString;
+        } catch (error) {
+            console.error('Error retrieving or converting AsyncStorage data:', error);
+            // Handle errors as needed
+        }
+    };
+
+    if (!showRegisterScreen) {
+        return <LoginScreen setShowRegisterScreen={setShowRegisterScreen} setShowMainScreen={setShowMainScreen} />
+    }
     return (
         <ScrollView
             contentInsetAdjustmentBehavior="automatic"
@@ -216,8 +271,6 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
             <SafeAreaView
                 style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#f6f6f6" }}
             >
-
-
                 {/*Logo*/}
                 <View>
                     <Image
@@ -226,7 +279,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                     />
                 </View>
 
-                <Text style={styles.textTitleHeader}>Let's complete your profile</Text>
+                <Text style={styles.textTitleHeader}>Register</Text>
 
                 <Text style={styles.subTitleText}>
                     It will help us to know about you!
@@ -248,6 +301,83 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                         style={styles.birthDateTextContainer}
                     ></TextInput>
                 </View>
+
+                {
+                    !isLoggedIn && (
+                        <View>
+                            {/* USERNAME */}
+                            <Text style={{ width: 330, marginBottom: 5 }}>
+                                Enter your username (Ilagay ang iyong username)
+                            </Text>
+                            <View style={styles.birthDateContainer}>
+                                <Image
+                                    style={styles.birthDateImageContainer}
+                                    source={require("../image/user.png")}
+                                />
+                                <TextInput
+                                    placeholder="Enter your username"
+                                    value={username}
+                                    onChangeText={(text) => {
+                                        if (text === ' ' || text === "/") return;
+                                        setUserNameError("");
+                                        setUsername(text)
+                                    }}
+                                    style={styles.birthDateTextContainer}
+                                ></TextInput>
+                            </View>
+                            {userNameError && (
+                                <Text style={{ width: 330, marginBottom: 15, color: "red" }}>
+                                    {userNameError}
+                                </Text>
+                            )}
+
+                            {/* PASSWORD */}
+                            <Text style={{ width: 330, marginBottom: 5 }}>
+                                Enter your password (Ilagay ang iyong password)
+                            </Text>
+                            <View style={styles.birthDateContainer}>
+                                <Image
+                                    style={styles.birthDateImageContainer}
+                                    source={require("../image/password.png")}
+                                />
+                                <TextInput
+                                    secureTextEntry={true}
+                                    placeholder="Enter your password"
+                                    value={password}
+                                    onChangeText={(text) => setPassword(text)}
+                                    style={styles.birthDateTextContainer}
+                                ></TextInput>
+                            </View>
+
+                            {/* CONFIRM PASSWORD */}
+                            <Text style={{ width: 330, marginBottom: 5 }}>
+                                Confirm your password (Kumpirmahin ang iyong password)
+                            </Text>
+                            <View style={styles.birthDateContainer}>
+                                <Image
+                                    style={styles.birthDateImageContainer}
+                                    source={require("../image/password.png")}
+                                />
+                                <TextInput
+                                    secureTextEntry={true}
+                                    placeholder="Enter your password again"
+                                    value={confirmPassword}
+                                    onChangeText={(text) => setConfirmPassword(text)}
+                                    style={styles.birthDateTextContainer}
+                                ></TextInput>
+                            </View>
+                            {confirmPassword && password !== confirmPassword &&
+                                (
+                                    <Text style={{ width: 330, marginBottom: 15, color: "red" }}>
+                                        Password does not match (Ang mga password ay hindi tugma)
+                                    </Text>
+                                )
+                            }
+                        </View>
+                    )
+
+                }
+
                 <Text style={{ width: 330 }}>
                     Which sex we should use to calculate your calorie needs: (Aling kasarian ang dapat naming gamitin upang kalkulahin ang iyong mga pangangailangan sa calorie:)
                 </Text>
@@ -367,8 +497,33 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
 
                 <Pressable
                     style={{ backgroundColor: "#009688", height: 50, width: 330, borderRadius: 10, marginTop: 5 }}
-                    onPress={() => setModalVisible(true)} disabled={age === '' || height === '' || weight === ''}>
+                    onPress={() => {
+                        if (isLoggedIn) return setModalVisible(true);
+                        if (password !== confirmPassword) return;
+                        if (!username) return setUserNameError("Username is required");
+                        if (!password) return;
+                        const usernameRef = ref(db, `userLogIn/${username}`);
+                        get(usernameRef)
+                            .then((snapshot) => {
+                                if (snapshot.exists()) {
+                                    return setUserNameError("Username already exists");
+                                } else {
+                                    setModalVisible(true);
+
+                                }
+                            })
+                    }}
+                    disabled={age === '' || height === '' || weight === ''}>
                     <Text style={{ alignSelf: "center", marginTop: 10, fontSize: 20, fontWeight: "bold", color: "#fff" }}>NEXT</Text>
+                </Pressable>
+
+                <Pressable
+                    style={{ height: 50, width: 330, borderRadius: 10, marginTop: 5, marginBottom: 30 }}
+                    onPress={() => {
+                        setShowRegisterScreen(false);
+                    }}>
+                    <Text style={{ alignSelf: "center", marginTop: 10, fontSize: 13, fontWeight: "bold", color: "#009688" }}>Log in Instead</Text>
+                    <Text style={{ alignSelf: "center", marginTop: 0, fontSize: 10, fontWeight: "bold", color: "#009688" }}>Mag Log in na lamang</Text>
                 </Pressable>
 
 
@@ -799,6 +954,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                 }}
                                 onPress={async () => {
                                     await saveData();
+                                    if (!isLoggedIn) await registerUser();
                                     setShowMainScreen(false)
                                 }}
 

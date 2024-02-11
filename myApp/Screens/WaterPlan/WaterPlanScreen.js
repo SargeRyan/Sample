@@ -33,10 +33,13 @@ export default DietPlanScreen = ({ navigation, route }) => {
 
     async function saveAsyncCurrentDayWater(amount) {
         if (amount && amount > 0) {
+
             await AsyncStorage.setItem(`@water_${currentDay}`, amount.toString());
             let userData = await AsyncStorage.getItem('userData');
             if (userData) userData = JSON.parse(userData);
             const today = new Date();
+
+
             const numericDate = today.getTime();
             const dateObj = new Date();
             const monthNames = [
@@ -46,6 +49,7 @@ export default DietPlanScreen = ({ navigation, route }) => {
             const day = dateObj.getDate();
             const year = dateObj.getFullYear();
             const dateTaken = `${month} ${day}`;
+            await AsyncStorage.setItem(`@water_${dateTaken}`, String(amount));
             await saveDataToCloud("timeTaken", `water/${userData.id}/${amount}`, numericDate);
             console.log("ZZZZZZZZ", userData.id, dateTaken, amount);
             await saveDataToCloud(dateTaken, `water/${userData.id}/byDay`, amount);
@@ -66,12 +70,21 @@ export default DietPlanScreen = ({ navigation, route }) => {
                 if (index <= currentDayIndex) newWaterData[index] = parseInt(waterAmount);
                 console.log("index", index);
                 if (index == currentDayIndex) {
-                    const today = new Date();
-                    const hasData = await AsyncStorage.getItem(`@water_${today.toString()}`);
+                    const dateObj = new Date();
+                    const monthNames = [
+                        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+                    ];
+                    const month = monthNames[dateObj.getMonth()];
+                    const day = dateObj.getDate();
+                    const year = dateObj.getFullYear();
+                    const dateTaken = `${month} ${day}`;
+                    const hasData = await AsyncStorage.getItem(`@water_${dateTaken}`);
+                    console.log("hasData", hasData);
                     if (!hasData) {
+                        console.log("no data for today");
                         waterAmount = 0;
                         newWaterData[index] = 0;
-                        await AsyncStorage.removeItem(`@water_${today.toString()}`);
+                        // await AsyncStorage.removeItem(`@water_${today.toString()}`);
                     }
                     setCurrentDayWater(parseInt(waterAmount));
                 }

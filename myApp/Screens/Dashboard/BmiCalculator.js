@@ -221,6 +221,7 @@ export default BmiCalculator = ({ navigation, route }) => {
                             color="#87a3af"
                             title={"Reset BMI Details"}
                             onPress={async () => {
+                                const username = await AsyncStorage.getItem('username');
                                 userData.isOld = true;
                                 await saveDataToCloud(userData.id, "userData", JSON.stringify(userData));
                                 // await AsyncStorage.removeItem('userData');
@@ -229,7 +230,30 @@ export default BmiCalculator = ({ navigation, route }) => {
                                 setBmi('');
                                 setBmiSpeedometer(0);
                                 setDescription('');
+                                await AsyncStorage.setItem('username', username);
+                                // clear medical history
+                                // let allKeys = await AsyncStorage.getAllKeys();
+                                // for (let i = 0; i < allKeys.length; i++) {
+                                //     if (allKeys[i].startsWith("@medicalHistory_")) {
+                                //         await AsyncStorage.removeItem(allKeys[i]);
+                                //     }
+                                // }
 
+                                Updates.reloadAsync()
+                            }} />
+
+                        <Button style={{ marginHorizontal: 10, marginTop: 5 }}
+                            color="#87a3af"
+                            title={"Log Out"}
+                            onPress={async () => {
+                                userData.isOld = true;
+                                await saveDataToCloud(userData.username, "userDataLogIn/" + userData.username, JSON.stringify(userData));
+                                // await AsyncStorage.removeItem('userData');
+                                await AsyncStorage.clear();
+                                setUserData({});
+                                setBmi('');
+                                setBmiSpeedometer(0);
+                                setDescription('');
                                 // clear medical history
                                 // let allKeys = await AsyncStorage.getAllKeys();
                                 // for (let i = 0; i < allKeys.length; i++) {

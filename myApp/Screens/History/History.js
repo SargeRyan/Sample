@@ -29,7 +29,7 @@ export default DietPlanScreen = ({ navigation, route }) => {
         "Walking": 0,
     });
     const [waterByDay, setWaterByDay] = useState({
-        "Jan 28": 0,
+        "Week 1": 0,
     });
     const [exerciseChartData, setExerciseChartData] = useState({
         labels: Object.keys(weightByExercise),
@@ -202,7 +202,9 @@ export default DietPlanScreen = ({ navigation, route }) => {
                 if (snapshot.exists()) {
                     let burnedDetails = snapshot.val();
                     console.log("burnedDetailsXXX", burnedDetails);
-
+                    setWeightByWeek({
+                        "1": 0,
+                    });
                     // Use a single batch update to avoid potential timing issues
                     setWeightByWeek((prevWeight) => {
                         const sortedDates = Object.keys(burnedDetails).sort((a, b) => new Date(a) - new Date(b));
@@ -294,14 +296,49 @@ export default DietPlanScreen = ({ navigation, route }) => {
             });
 
         const waterRef = ref(db, `water/${user.id}/byDay`);
+        const convertToWeekly = (inputStr) => {
+            const inputObj = JSON.parse(inputStr);
+            const weeklyObj = {};
+            const monthsTemplate = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const yearNum = "2024";
+            const dates = Object.keys(inputObj).map(dateString => {
+                let parts = dateString.split(' ');
+                const monthNum = monthsTemplate.indexOf(parts[0]);
+                const dayNum = parseInt(parts[1], 10);
+
+                return new Date(`${yearNum}-${monthNum + 1}-${dayNum}`);
+            });
+
+            dates.sort((a, b) => a - b);
+            console.log("dates", dates);
+            let leastDate = null;
+            let weekIndex = 1;
+            dates.forEach(date => {
+                const currentDate = new Date(date);
+                const monthNum = currentDate.getMonth();
+                const dayNum = currentDate.getDate();
+                const dateKey = `${monthsTemplate[monthNum]} ${dayNum}`;
+                if (!leastDate || areDates7DaysApart(leastDate, currentDate)) {
+                    leastDate = currentDate;
+                    weekIndex++;
+                }
+                weeklyObj["Week " + weekIndex] = (weeklyObj["Week " + weekIndex] || 0) + (Number(inputObj[dateKey]) || 0);
+            });
+
+            return weeklyObj;
+        };
+
+
+
         get(waterRef)
             .then((snapshot) => {
                 if (snapshot.exists()) {
-                    let waterData = snapshot.val();
-                    console.log("######waterData", waterData);
-                    setWaterByDay(waterData);
+                    const waterData = snapshot.val();
+                    const weeklyResult = convertToWeekly(JSON.stringify(waterData));
+                    console.log("weeklyResult", weeklyResult);
+                    setWaterByDay(weeklyResult);
                 } else {
-                    console.log("No data available XXXXXXX Water");
+                    console.log("No data available for water");
                 }
             })
             .catch((error) => {
@@ -309,6 +346,16 @@ export default DietPlanScreen = ({ navigation, route }) => {
             });
     }, [user, refreshIndex]);
 
+    function areDates7DaysApart(date1, date2) {
+        // Calculate the time difference in milliseconds
+        const timeDifference = Math.abs(date1.getTime() - date2.getTime());
+
+        // Number of milliseconds in 7 days
+        const sevenDaysInMilliseconds = 7 * 24 * 60 * 60 * 1000;
+
+        // Compare the time difference with 7 days
+        return timeDifference === sevenDaysInMilliseconds;
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -464,6 +511,49 @@ export default DietPlanScreen = ({ navigation, route }) => {
                     />
 
                 </View>
+
+                <View
+                    style={{
+                        paddingHorizontal: 14,
+                        paddingVertical: 20,
+                        backgroundColor: "#146C94",
+                        marginBottom: 65,
+                        borderRadius: 10,
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                    }}
+                    keyboardShouldPersistTaps="handled"
+                >
+                    <Text style={{ color: "#fff", fontSize: 20, fontWeight: "bold" }}>
+                        Sleep Hours Per Week
+                    </Text>
+                    <BarChart
+                        data={{
+                            labels: ["Week 1"],
+                            datasets: [
+                                {
+                                    data: [0]
+                                }
+                            ]
+                        }}
+                        style={{
+                            marginLeft: - 40,
+                        }}
+                        width={screenWidth} // from react-native
+                        height={250}
+                        chartConfig={{
+                            backgroundColor: "#156d94",
+                            backgroundGradientFrom: "#156d94",
+                            backgroundGradientTo: "#156d94",
+                            decimalPlaces: 0, // Specify 0 decimal places for whole numbers
+                            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                        }}
+
+                    />
+
+                </View>
+
             </ScrollView>
         </SafeAreaView>
     );
