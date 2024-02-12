@@ -13,29 +13,52 @@ import {
     Modal,
     Pressable,
 } from "react-native";
+import { db } from "./Dashboard/firebaseConfig";
+import { get, set, ref, push, child } from "firebase/database";
 import { Button } from "@react-native-material/core";
 import DropDownPicker from "react-native-dropdown-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CheckBox from 'react-native-checkbox';
-
+import LoginScreen from "./LoginScreen";
 TouchableOpacity.defaultProps = { ActiveOpacity: 0.8 };
 
 
 
 export default CompleteProfileScreen = ({ setShowMainScreen }) => {
+    const [showRegisterScreen, setShowRegisterScreen] = useState(false);
     const AppButton = ({ onPress, title }) => (
         <TouchableOpacity disabled={goalWeight === ''} onPress={onPress} style={styles.appButtonContainer}>
             <Text style={styles.appButtonText}>{title}</Text>
         </TouchableOpacity>
     );
-
+    const [username, setUsername] = useState("");
+    const [userNameError, setUserNameError] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [goal, setGoal] = useState('');
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [checkboxStates, setCheckboxStates] = useState({
         lackOfTime: '',
         stressAroundFood: '',
         foodCravings: '',
         lackOfProgress: '',
         expensiveHealthyFood: '',
+    });
+
+    useEffect(() => {
+        const checkIfLoggedIn = async () => {
+            const username = await AsyncStorage.getItem('username');
+            if (username) {
+                setIsLoggedIn(true);
+                setShowRegisterScreen(true);
+            }
+        };
+        checkIfLoggedIn();
+    }, [showRegisterScreen]);
+
+    const [limitationWeight, setLimitationWeight] = useState({
+        max: 300,
+        min: 0
     });
 
     const [medHistoryStates, setMedHistoryStates] = useState({
@@ -181,6 +204,8 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
         console.log('Saving data');
         try {
             const userData = {
+                username,
+                password,
                 name,
                 height,
                 weight,
@@ -204,6 +229,41 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
         }
     };
 
+    const registerUser = async () => {
+        const usernameRef = ref(db, `userLogIn/${username}`);
+        await AsyncStorage.setItem('username', username);
+        const allAsyncData = await getAllAsyncData();
+        set(usernameRef, {
+            password,
+            username,
+            allAsyncData
+        })
+    };
+
+    const getAllAsyncData = async () => {
+        try {
+            const allKeys = await AsyncStorage.getAllKeys();
+            const allData = await AsyncStorage.multiGet(allKeys);
+
+            // Step 2: Convert the data into a JSON object
+            const dataObject = {};
+            allData.forEach(([key, value]) => {
+                dataObject[key] = value;
+            });
+
+            // Step 3: Convert the JSON object into a JSON string
+            const jsonString = JSON.stringify(dataObject);
+
+            return jsonString;
+        } catch (error) {
+            console.error('Error retrieving or converting AsyncStorage data:', error);
+            // Handle errors as needed
+        }
+    };
+
+    if (!showRegisterScreen) {
+        return <LoginScreen setShowRegisterScreen={setShowRegisterScreen} setShowMainScreen={setShowMainScreen} />
+    }
     return (
         <ScrollView
             contentInsetAdjustmentBehavior="automatic"
@@ -211,8 +271,6 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
             <SafeAreaView
                 style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#f6f6f6" }}
             >
-
-
                 {/*Logo*/}
                 <View>
                     <Image
@@ -221,13 +279,13 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                     />
                 </View>
 
-                <Text style={styles.textTitleHeader}>Let's complete your profile</Text>
+                <Text style={styles.textTitleHeader}>Register</Text>
 
                 <Text style={styles.subTitleText}>
                     It will help us to know about you!
                 </Text>
 
-                <Text style={{ width: 380, marginBottom: 5 }}>
+                <Text style={{ width: 330, marginBottom: 5 }}>
                     What is your Name?(Ano ang iyong pangalan?)
                 </Text>
 
@@ -243,7 +301,84 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                         style={styles.birthDateTextContainer}
                     ></TextInput>
                 </View>
-                <Text style={{ width: 380 }}>
+
+                {
+                    !isLoggedIn && (
+                        <View>
+                            {/* USERNAME */}
+                            <Text style={{ width: 330, marginBottom: 5 }}>
+                                Enter your username (Ilagay ang iyong username)
+                            </Text>
+                            <View style={styles.birthDateContainer}>
+                                <Image
+                                    style={styles.birthDateImageContainer}
+                                    source={require("../image/user.png")}
+                                />
+                                <TextInput
+                                    placeholder="Enter your username"
+                                    value={username}
+                                    onChangeText={(text) => {
+                                        if (text === ' ' || text === "/") return;
+                                        setUserNameError("");
+                                        setUsername(text)
+                                    }}
+                                    style={styles.birthDateTextContainer}
+                                ></TextInput>
+                            </View>
+                            {userNameError && (
+                                <Text style={{ width: 330, marginBottom: 15, color: "red" }}>
+                                    {userNameError}
+                                </Text>
+                            )}
+
+                            {/* PASSWORD */}
+                            <Text style={{ width: 330, marginBottom: 5 }}>
+                                Enter your password (Ilagay ang iyong password)
+                            </Text>
+                            <View style={styles.birthDateContainer}>
+                                <Image
+                                    style={styles.birthDateImageContainer}
+                                    source={require("../image/password.png")}
+                                />
+                                <TextInput
+                                    secureTextEntry={true}
+                                    placeholder="Enter your password"
+                                    value={password}
+                                    onChangeText={(text) => setPassword(text)}
+                                    style={styles.birthDateTextContainer}
+                                ></TextInput>
+                            </View>
+
+                            {/* CONFIRM PASSWORD */}
+                            <Text style={{ width: 330, marginBottom: 5 }}>
+                                Confirm your password (Kumpirmahin ang iyong password)
+                            </Text>
+                            <View style={styles.birthDateContainer}>
+                                <Image
+                                    style={styles.birthDateImageContainer}
+                                    source={require("../image/password.png")}
+                                />
+                                <TextInput
+                                    secureTextEntry={true}
+                                    placeholder="Enter your password again"
+                                    value={confirmPassword}
+                                    onChangeText={(text) => setConfirmPassword(text)}
+                                    style={styles.birthDateTextContainer}
+                                ></TextInput>
+                            </View>
+                            {confirmPassword && password !== confirmPassword &&
+                                (
+                                    <Text style={{ width: 330, marginBottom: 15, color: "red" }}>
+                                        Password does not match (Ang mga password ay hindi tugma)
+                                    </Text>
+                                )
+                            }
+                        </View>
+                    )
+
+                }
+
+                <Text style={{ width: 330 }}>
                     Which sex we should use to calculate your calorie needs: (Aling kasarian ang dapat naming gamitin upang kalkulahin ang iyong mga pangangailangan sa calorie:)
                 </Text>
                 <View style={styles.genderContainer}>
@@ -261,7 +396,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
 
                 </View>
 
-                <Text style={{ width: 380, marginBottom: 5 }}>
+                <Text style={{ width: 330, marginBottom: 5 }}>
                     How old are you? (Ilan taon ka na?)
                 </Text>
 
@@ -278,7 +413,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                         style={styles.birthDateTextContainer}
                     ></TextInput>
                 </View>
-                <Text style={{ width: 380, marginBottom: 5 }}>
+                <Text style={{ width: 330, marginBottom: 5 }}>
                     How tall are you?(Gaano ka katangkad?)
                 </Text>
 
@@ -289,13 +424,13 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                     />
 
                     {heightUnit === 'cm' && (
-                            <TextInput
-                                placeholder="Height(cm)"
-                                inputMode="numeric"
-                                onChangeText={(text) => setHeight(text)}
-                                value={height}
-                                style={styles.heightTextContainer}
-                    />
+                        <TextInput
+                            placeholder="Height(cm)"
+                            inputMode="numeric"
+                            onChangeText={(text) => setHeight(text)}
+                            value={height}
+                            style={styles.heightTextContainer}
+                        />
 
 
                     )}
@@ -325,7 +460,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                         onPress={() => { setHeightUnit("ft") }}
                     />
                 </View>
-                <View style={{ display: !age || !height ? "none" : "none", flexDirection: "row", width: 380, justifyContent: "flex-start", marginBottom: 10 }}>
+                <View style={{ display: !age || !height ? "none" : "flex", flexDirection: "row", width: 330, justifyContent: "flex-start", marginBottom: 10 }}>
                     <Text style={{ marginRight: 10 }}>
                         Suggested weight: {suggestedWeight}kg
                     </Text>
@@ -335,7 +470,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                     </Pressable>
                 </View>
 
-                <Text style={{ width: 380, marginBottom: 5 }}>
+                <Text style={{ width: 330, marginBottom: 5 }}>
                     How much do you weigh?(Gaano ka kabigat?)
                 </Text>
 
@@ -349,14 +484,46 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                         inputMode="numeric"
                         style={styles.WeightTextContainer}
                         value={weight}
-                        onChangeText={(text) => setWeight(text)}
+                        onChangeText={(text) => {
+                            setWeight(text);
+                            const suggestWeightNum = parseFloat(suggestedWeight);
+                            if (!suggestWeightNum) return;
+                            const max = suggestWeightNum + 10;
+                            const min = suggestWeightNum - 10;
+                            setLimitationWeight({ max, min });
+                        }}
                     ></TextInput>
                 </View>
 
                 <Pressable
-                    style={{ backgroundColor: "#009688", height: 50, width: 380, borderRadius: 10, marginTop: 5 }}
-                    onPress={() => setModalVisible(true)} disabled={age === '' || height === '' || weight === ''}>
+                    style={{ backgroundColor: "#009688", height: 50, width: 330, borderRadius: 10, marginTop: 5 }}
+                    onPress={() => {
+                        if (isLoggedIn) return setModalVisible(true);
+                        if (password !== confirmPassword) return;
+                        if (!username) return setUserNameError("Username is required");
+                        if (!password) return;
+                        const usernameRef = ref(db, `userLogIn/${username}`);
+                        get(usernameRef)
+                            .then((snapshot) => {
+                                if (snapshot.exists()) {
+                                    return setUserNameError("Username already exists");
+                                } else {
+                                    setModalVisible(true);
+
+                                }
+                            })
+                    }}
+                    disabled={age === '' || height === '' || weight === ''}>
                     <Text style={{ alignSelf: "center", marginTop: 10, fontSize: 20, fontWeight: "bold", color: "#fff" }}>NEXT</Text>
+                </Pressable>
+
+                <Pressable
+                    style={{ height: 50, width: 330, borderRadius: 10, marginTop: 5, marginBottom: 30 }}
+                    onPress={() => {
+                        setShowRegisterScreen(false);
+                    }}>
+                    <Text style={{ alignSelf: "center", marginTop: 10, fontSize: 13, fontWeight: "bold", color: "#009688" }}>Log in Instead</Text>
+                    <Text style={{ alignSelf: "center", marginTop: 0, fontSize: 10, fontWeight: "bold", color: "#009688" }}>Mag Log in na lamang</Text>
                 </Pressable>
 
 
@@ -381,7 +548,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                         </View>
 
                         <Pressable
-                            style={{ backgroundColor: "#009688", height: 50, width: 380, borderRadius: 10, marginTop: 30, position: "absolute", bottom: 20, alignSelf: "center" }}
+                            style={{ backgroundColor: "#009688", height: 50, width: 330, borderRadius: 10, marginTop: 30, position: "absolute", bottom: 20, alignSelf: "center" }}
                             onPress={() => setModalVisible1(true)}>
                             <Text style={{ alignSelf: "center", marginTop: 10, fontSize: 20, fontWeight: "bold", color: "#fff" }}>NEXT</Text>
                         </Pressable>
@@ -391,16 +558,17 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
 
                         <Text style={{ marginTop: 30, fontSize: 15, marginLeft: 15, fontWeight: "bold" }}>What is your Goal (Ano ang iyong Layunin)</Text>
                         <Text style={{ marginTop: 2, fontSize: 12, marginLeft: 30, }}>Select your primary goal: (Piliin ang iyong pangunahing layunin:)</Text>
-                        <View style={[styles.goalCheckBoxContainer, { opacity: weight < 40 ? 0 : 1, marginTop: weight < 40 ? -50 : 10 }]}>
+                        <View style={[styles.goalCheckBoxContainer, { opacity: weight <= limitationWeight.min ? 0 : 1, marginTop: weight <= limitationWeight.min ? -50 : 10 }]}>
                             <CheckBox
                                 value={goal}
                                 checked={goal === 'Lose Weight'}
                                 onChange={() => {
                                     setGoal('Lose Weight')
                                     setSelections([
-                                        { label: 'Lose 0.25kg per Month', value: '0.25' },
-                                        { label: 'Lose 0.5 per Month', value: '0.50' },
-                                        
+                                        { label: 'Lose 0.25kg per week', value: '0.25' },
+                                        { label: 'Lose 0.50kg per week', value: '0.50' },
+                                        { label: 'Lose 0.75kg per month', value: '0.18' },
+
                                     ])
                                 }}
                                 label={'Loss Weight (Magbawas ng timbang)'}
@@ -419,16 +587,16 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                 containerStyle={styles.goalCheckBox}
                             />
                         </View>
-
-                        <View style={styles.goalCheckBoxContainer}>
+                        <View style={[styles.goalCheckBoxContainer, { opacity: weight >= limitationWeight.max ? 0 : 1, marginTop: weight >= limitationWeight.max ? -50 : 10 }]}>
                             <CheckBox
                                 value={goal}
                                 checked={goal === 'Gain Weight'}
                                 onChange={() => {
                                     setGoal('Gain Weight')
                                     setSelections([
-                                        { label: 'Gain 0.25kg per week', value: '.25' },
-                                        { label: 'Gain 0.5 per week', value: '.50' },
+                                        { label: 'Gain 0.25kg per week', value: '0.25' },
+                                        { label: 'Gain 0.50kg per week', value: '0.50' },
+                                        { label: 'Gain 0.75kg per month', value: '0.18' },
 
                                     ])
                                 }}
@@ -493,7 +661,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                 </View>
 
                                 <Pressable
-                                    style={{ backgroundColor: "#009688", height: 50, width: 380, borderRadius: 10, marginTop: 20, position: "absolute", bottom: 30, alignSelf: "center" }}
+                                    style={{ backgroundColor: "#009688", height: 50, width: 330, borderRadius: 10, marginTop: 20, position: "absolute", bottom: 30, alignSelf: "center" }}
                                     onPress={() => setSampleVisible(true)}>
                                     <Text style={{ alignSelf: "center", marginTop: 10, fontSize: 20, fontWeight: "bold", color: "#fff" }}>NEXT</Text>
                                 </Pressable>
@@ -509,44 +677,50 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                             <CheckBox
                                                 value={checkboxStates.lackOfTime}
                                                 onChange={() => toggleCheckbox('lackOfTime')}
-                                                label={'Lack of Time (Kulang sa oras)'}
+                                                label={'Lack of Time'}
                                                 containerStyle={styles.goalCheckBox}
                                             />
+                                            <Text style={{ position: "absolute", bottom: 0, left: 46, color: "#8d8f94" }}>Kulang sa oras</Text>
                                         </View>
                                         <View style={styles.goalCheckBoxContainer}>
                                             <CheckBox
                                                 value={checkboxStates.stressAroundFood}
                                                 onChange={() => toggleCheckbox('stressAroundFood')}
-                                                label={'Stress Around Food (Stress sa Pagkain)'}
+                                                label={'Stress Around Food'}
                                                 containerStyle={styles.goalCheckBox}
                                             />
+                                            <Text style={{ position: "absolute", bottom: 0, left: 46, color: "#8d8f94" }}>Stress sa Pagkain</Text>
                                         </View>
 
                                         <View style={styles.goalCheckBoxContainer}>
                                             <CheckBox
                                                 value={checkboxStates.foodCravings}
                                                 onChange={() => toggleCheckbox('foodCravings')}
-                                                label={'Food Cravings (Paghahangad ng mga pagkain)'}
+                                                label={'Food Cravings'}
                                                 containerStyle={styles.goalCheckBox}
                                             />
+                                            <Text style={{ position: "absolute", bottom: 0, left: 46, color: "#8d8f94" }}>Paghahangad ng mga pagkain</Text>
+
                                         </View>
                                         <View style={styles.goalCheckBoxContainer}>
                                             <CheckBox
                                                 value={checkboxStates.lackOfProgress}
                                                 onChange={() => toggleCheckbox('lackOfProgress')}
-                                                label={'Lack Of Progress(Kakulangan ng Pag-unlad)'}
+                                                label={'Lack Of Progress'}
                                                 containerStyle={styles.goalCheckBox}
                                             />
+                                            <Text style={{ position: "absolute", bottom: 0, left: 46, color: "#8d8f94" }}>Kakulangan ng Pag-unlad</Text>
+
                                         </View>
-                                        <View style={styles.goalCheckBoxContainer}>
+                                        {/* <View style={styles.goalCheckBoxContainer}>
                                             <CheckBox
                                                 value={medHistoryStates.expensiveHealthyFood}
                                                 onChange={() => toggleCheckbox('expensiveHealthyFood')}
                                                 label={'Expensive Healthy Food(Mahal na malusog na Pagkain)'}
                                                 containerStyle={styles.goalCheckBox}
-                                                textStyle={styles.labelText} 
+                                                textStyle={styles.labelText}
                                             />
-                                        </View>
+                                        </View> */}
                                         <View style={[styles.goalCheckBoxContainer, {
                                             paddingLeft: 20,
                                         }]}>
@@ -557,6 +731,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                                     marginTop: 0,
                                                 }]}
                                             ></TextInput>
+
                                         </View>
                                     </View>
                                 )}
@@ -569,34 +744,38 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                             <CheckBox
                                                 value={checkboxStates.lackOfTime}
                                                 onChange={() => toggleCheckbox('InadequteFluidIntake')}
-                                                label={'Inadequte Fluid Intake(Hindi Sapat na Pag-inom ng Fluid)'}
+                                                label={'Inadequte Fluid Intake'}
                                                 containerStyle={styles.goalCheckBox}
                                             />
+                                            <Text style={{ position: "absolute", bottom: 0, left: 46, color: "#8d8f94" }}>Hindi Sapat na Pag-inom ng Fluid</Text>
                                         </View>
                                         <View style={styles.goalCheckBoxContainer}>
                                             <CheckBox
                                                 value={checkboxStates.stressAroundFood}
                                                 onChange={() => toggleCheckbox('Underlyinghealthissues')}
-                                                label={'Underlying health issues(Isyu sa kalusugan)'}
+                                                label={'Underlying health issues'}
                                                 containerStyle={styles.goalCheckBox}
                                             />
+                                            <Text style={{ position: "absolute", bottom: 0, left: 46, color: "#8d8f94" }}>Isyu sa kalusugan</Text>
                                         </View>
 
                                         <View style={styles.goalCheckBoxContainer}>
                                             <CheckBox
                                                 value={checkboxStates.foodCravings}
                                                 onChange={() => toggleCheckbox('Lack of quality sleep')}
-                                                label={'Lack of quality sleep(Kulang sa Sapat na Tulog)'}
+                                                label={'Lack of quality sleep'}
                                                 containerStyle={styles.goalCheckBox}
                                             />
+                                            <Text style={{ position: "absolute", bottom: 0, left: 46, color: "#8d8f94" }}>Kulang sa Sapat na Tulog</Text>
                                         </View>
                                         <View style={styles.goalCheckBoxContainer}>
                                             <CheckBox
                                                 value={checkboxStates.lackOfProgress}
                                                 onChange={() => toggleCheckbox('Inconsistency training')}
-                                                label={'Inconsistency training(Pagsasanay sa hindi pagkakapare-pareho)'}
+                                                label={'Inconsistency training'}
                                                 containerStyle={styles.goalCheckBox}
                                             />
+                                            <Text style={{ position: "absolute", bottom: 0, left: 46, color: "#8d8f94" }}>Hindi tuloy tuloy na pag eehersisyo</Text>
                                         </View>
                                         <View style={[styles.goalCheckBoxContainer, {
                                             paddingLeft: 20,
@@ -620,35 +799,39 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                             <CheckBox
                                                 value={checkboxStates.lackOfTime}
                                                 onChange={() => toggleCheckbox('lackOfTime')}
-                                                label={'Lack of Time (Kulang sa oras)'}
+                                                label={'Lack of Time'}
                                                 containerStyle={styles.goalCheckBox}
                                             />
+                                            <Text style={{ position: "absolute", bottom: 0, left: 46, color: "#8d8f94" }}>Kulang sa Oras</Text>
                                         </View>
                                         <View style={styles.goalCheckBoxContainer}>
                                             <CheckBox
                                                 value={checkboxStates.stressAroundFood}
                                                 onChange={() => toggleCheckbox('stressAroundFood')}
-                                                label={'Stress Around Food (Stress sa Pagkain)'}
+                                                label={'Stress Around Food'}
                                                 containerStyle={styles.goalCheckBox}
                                             />
+                                            <Text style={{ position: "absolute", bottom: 0, left: 46, color: "#8d8f94" }}>Stress sa Pagkain</Text>
                                         </View>
 
                                         <View style={styles.goalCheckBoxContainer}>
                                             <CheckBox
                                                 value={checkboxStates.lackOfProgress}
                                                 onChange={() => toggleCheckbox('lackOfProgress')}
-                                                label={'Lack Of Progress(Kakulangan ng Pag-unlad)'}
+                                                label={'Lack Of Progress'}
                                                 containerStyle={styles.goalCheckBox}
                                             />
+                                            <Text style={{ position: "absolute", bottom: 0, left: 46, color: "#8d8f94" }}>Kakulangan ng Pag-unlad</Text>
                                         </View>
                                         <View style={styles.goalCheckBoxContainer}>
                                             <CheckBox
                                                 value={medHistoryStates.expensiveHealthyFood}
                                                 onChange={() => toggleCheckbox('expensiveHealthyFood')}
-                                                label={'Expensive Healthy Food \n (Mahal na malusog na Pagkain)'}
+                                                label={'Expensive Healthy Food '}
                                                 containerStyle={styles.goalCheckBox}
                                                 textStyle={styles.labelText}
                                             />
+                                            <Text style={{ position: "absolute", bottom: 0, left: 46, color: "#8d8f94" }}>Mahal na malusog na Pagkain</Text>
                                         </View>
                                         <View style={[styles.goalCheckBoxContainer, {
                                             paddingLeft: 20,
@@ -731,7 +914,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                         <Text style={{ fontSize: 12, marginTop: 70, marginLeft: 20, marginRight: 15 }}>Don't worry. This doesn't affect your daily calorie goal and can always change it later (Huwag kang mag-alala. Hindi nito naaapektuhan ang iyong pang-araw-araw na layunin sa calorie at maaari itong palaging baguhin sa ibang pagkakataon): </Text>
 
                         {Selections.length > 0 && (
-                            <Text style={{ fontSize: 15, fontWeight: "bold", marginTop: 60, marginLeft: 20, marginRight: 15 }}>What is your Monthly goal? (Ano ang iyong Lingguhang layunin?)</Text>
+                            <Text style={{ fontSize: 15, fontWeight: "bold", marginTop: 60, marginLeft: 20, marginRight: 15 }}>What is your Monthly/Weekly goal? (Ano ang iyong Buwanang/Lingguhang layunin?)</Text>
                         )}
                         <View style={styles.goalWeightContainer}>
                             <Image
@@ -756,9 +939,9 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                 setValue={setInfo}
                                 setItems={setSelections}
                                 zIndex={3000}
-                                placeholder="Set Monthly Goal"
+                                placeholder="Set Monthly/Weekly Goal"
                                 zIndexInverse={1000}
-                                containerStyle={{ width: 380, height: 200, position: "absolute", top: 380, right: 20 }}
+                                containerStyle={{ width: 330, height: 200, position: "absolute", top: 400, right: 20 }}
                             />
                         )}
 
@@ -771,6 +954,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                 }}
                                 onPress={async () => {
                                     await saveData();
+                                    if (!isLoggedIn) await registerUser();
                                     setShowMainScreen(false)
                                 }}
 
@@ -893,7 +1077,7 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         backgroundColor: "#f9eed9",
         borderRadius: 18,
-        width: 380,
+        width: 330,
         height: 50,
     },
     genderImageContainer: {
@@ -918,7 +1102,7 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         backgroundColor: "#f9eed9",
         borderRadius: 18,
-        width: 380,
+        width: 330,
         height: 50,
     },
     birthDateImageContainer: {
@@ -942,7 +1126,7 @@ const styles = StyleSheet.create({
         marginBottom: 12,
         backgroundColor: "#f9eed9",
         borderRadius: 18,
-        width: 380,
+        width: 330,
         height: 50,
     },
     weightImageContainer: {
@@ -966,7 +1150,7 @@ const styles = StyleSheet.create({
         marginBottom: 12,
         backgroundColor: "#f9eed9",
         borderRadius: 18,
-        width: 380,
+        width: 330,
         height: 50,
     },
     heightImageContainer: {
@@ -990,7 +1174,7 @@ const styles = StyleSheet.create({
         marginBottom: 12,
         backgroundColor: "#f9eed9",
         borderRadius: 18,
-        width: 380,
+        width: 330,
         height: 50,
         position: "absolute",
         top: 150,
@@ -1001,7 +1185,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#f9eed9',
         height: 50,
         margin: 10,
-        width: 380,
+        width: 330,
         alignSelf: 'center',
         borderRadius: 10,
         borderStyle: 'solid',
@@ -1009,13 +1193,13 @@ const styles = StyleSheet.create({
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.3,
-
+        position: "relative",
 
     },
 
     goalCheckBox: {
         marginLeft: 10,
-        marginTop: 12,
+        marginTop: 8,
         marginBottom: 20,
         flexDirection: 'row', alignItems: 'center', marginBottom: 10
 
@@ -1025,7 +1209,7 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         backgroundColor: "#f9eed9",
         borderRadius: 10,
-        width: 380,
+        width: 330,
         height: 50,
         alignSelf: 'center',
         marginTop: 10,
