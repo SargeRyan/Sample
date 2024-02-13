@@ -242,11 +242,15 @@ export default LogInScreen = ({ setShowRegisterScreen, setShowMainScreen }) => {
         try {
             await AsyncStorage.setItem('username', username);
             const keys = Object.keys(jsonData);
-            console.log("jsonDatajsonData", jsonData);
+            console.log("jsonDatajsonData", keys);
             // Use Promise.all to set AsyncStorage values in parallel
             await Promise.all(keys.map(async (key) => {
                 const value = jsonData[key];
-                await AsyncStorage.setItem(key, value);
+                try {
+                    await AsyncStorage.setItem(key, value);
+                } catch (error) {
+                    console.log(`Error setting AsyncStorage for key: ${key}`, error);
+                }
             }));
             setShowMainScreen(false);
 

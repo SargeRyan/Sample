@@ -170,6 +170,27 @@ export default BmiCalculator = ({ navigation, route }) => {
         }
     };
 
+    const getAllAsyncData = async () => {
+        try {
+            const allKeys = await AsyncStorage.getAllKeys();
+            const allData = await AsyncStorage.multiGet(allKeys);
+
+            // Step 2: Convert the data into a JSON object
+            const dataObject = {};
+            allData.forEach(([key, value]) => {
+                dataObject[key] = value;
+            });
+
+            // Step 3: Convert the JSON object into a JSON string
+            const jsonString = JSON.stringify(dataObject);
+
+            return jsonString;
+        } catch (error) {
+            console.error('Error retrieving or converting AsyncStorage data:', error);
+            // Handle errors as needed
+        }
+    };
+
     return (
         <ScrollView style={{ backgroundColor: "#afd3e2" }}>
             <View>
@@ -247,7 +268,8 @@ export default BmiCalculator = ({ navigation, route }) => {
                             title={"Log Out"}
                             onPress={async () => {
                                 userData.isOld = true;
-                                await saveDataToCloud(userData.username, "userDataLogIn/" + userData.username, JSON.stringify(userData));
+                                const allAsyncData = await getAllAsyncData();
+                                await saveDataToCloud("allAsyncData", "userLogIn/" + userData.username, allAsyncData);
                                 // await AsyncStorage.removeItem('userData');
                                 await AsyncStorage.clear();
                                 setUserData({});
