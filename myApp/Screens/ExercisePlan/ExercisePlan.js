@@ -80,14 +80,30 @@ const ExercisePlanScreen = ({ navigation, route, medicalHistory}) => {
         }
     };
 
-const startTimer = (duration, notGoodFor) => {
+const startTimer = (duration) => {
     console.log('notGoodFor:', notGoodFor); // Log the value of notGoodFor to check if it's being passed correctly
     const diseases = notGoodFor;
-    console.log('notGoodFor:', diseases); // Log the value of
 
+    const medHistory = userData.selectMedHistory ? userData.selectMedHistory.toString() : '';
+    const myArray = ["Asthma", "Fatigue"];
+
+    const hasCommonData = myArray.some(item => medHistory.includes(item));
+    console.log(hasCommonData);
+
+    console.log(myArray);
+    console.log(medHistory);
+    console.log('notGoodFor:', diseases);
+    
     clearInterval(countdown);
 
-    const totalTime = duration;
+    let totalTime = duration; // Default totalTime to duration
+
+    if (hasCommonData) { // No need for === true, as hasCommonData is already a boolean
+        totalTime /= 2; // Divide totalTime by 2 if hasCommonData is true
+    }
+
+    console.log(totalTime);
+  
     let timeRemaining = totalTime;
     let currentSet = 1;
     let restTimeRemaining = 0;
@@ -99,9 +115,9 @@ const startTimer = (duration, notGoodFor) => {
             // Check if the user has any health condition that makes the exercise not suitable
             if (diseases && userData && userData.selectMedHistory) {
                 if (diseases.includes(userData.selectMedHistory)) {
-                  console.log('sdasssssssdiseases', diseases);
-                    // If the user has a health condition listed in notGoodFor, reduce the duration
-                    duration = duration / 2;
+                    console.log('sdasssssssdiseases', userData.selectMedHistory);
+                    // If the user has a health condition listed in notGoodFor, reduce the totalTime
+                    totalTime = duration / 2; // Modify totalTime, not duration
                 }
             }
 
@@ -112,7 +128,7 @@ const startTimer = (duration, notGoodFor) => {
                 if (restTimeRemaining > 0) {
                     restTimeRemaining--;
                     return Math.max(restTimeRemaining, 0);
-                } else if (timeRemaining % (duration + 10) === 0 && timeRemaining !== totalTime) {
+                } else if (timeRemaining % (totalTime + 10) === 0 && timeRemaining !== totalTime) {
                     restTimeRemaining = 10;
                     return -restTimeRemaining;
                 }
@@ -128,7 +144,7 @@ const startTimer = (duration, notGoodFor) => {
                 }
 
                 if (newTime < 0) {
-                    newTime = duration;
+                    newTime = totalTime;
                     currentSet++;
                 }
 
@@ -137,11 +153,12 @@ const startTimer = (duration, notGoodFor) => {
         }, 1000);
 
         setCountdown(newCountdown);
-        setTimer(duration);
+        setTimer(totalTime); // Set timer with totalTime, not duration
     };
 
     timerLoop();
 };
+
 
     const resetTimer = () => {
         clearInterval(countdown); 
