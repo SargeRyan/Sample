@@ -188,10 +188,28 @@ const startTimer = (duration) => {
    {exerciseList.map((exercise, index) => {
     const notGoodForExercise = exercise.notGoodFor ? exercise.notGoodFor.toString() : '';
     const medHistory = userData.selectMedHistory ? userData.selectMedHistory.toString() : '';
+    const healthCondition = ["Asthma", "Fatigue"];
     const notGoodForArray = notGoodForExercise.split(',').map(item => item.trim());
     const medHistoryArray = medHistory.split(',').map(item => item.trim());
+    const hasCommonData2 = medHistoryArray.some(condition => healthCondition.includes(condition));
     const hasCommonData = notGoodForArray.some(condition => medHistoryArray.includes(condition));
     const hideButton = hasCommonData;
+    const dividedDuration = hasCommonData2 ? (parseInt(exercise.duration) / 2 ) : parseInt(exercise.duration);
+
+    console.log(hasCommonData2);
+
+    let result;
+
+if (hasCommonData2) {
+    // If true, add a seconds ad
+    result = <Text style={styles.details}>Duration: {dividedDuration} seconds</Text>;
+} else {
+    // If false, add minutes
+    result = <Text style={styles.details}>Duration: {dividedDuration/60}:00 mins</Text>;
+}
+
+
+  
 
     return (
         !hideButton && (
@@ -207,7 +225,7 @@ const startTimer = (duration) => {
                         <Text style={styles.header}>{exercise.mealName}</Text>
                         <View style={styles.infoCon}>
                             <Text style={styles.details}>Calories Burn: {exercise.caloriesBurn} kcal</Text>
-                            <Text style={styles.details}>Duration: {(parseInt(exercise.duration) / 60) * 3}:00 mins</Text>
+                           <Text style={styles.details}>{result}</Text>
                         </View>
                     </View>
                 </View>     
