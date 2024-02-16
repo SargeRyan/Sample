@@ -10,18 +10,18 @@ import {
     HStack,
     VStack,
 } from "@react-native-material/core";
-import {saveDataToCloud} from "../Dashboard/global";
+import { saveDataToCloud } from "../Dashboard/global";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { View, Image } from "react-native";
 export default ExerciseDone = ({ exerciseBurnedDetails, onCloseFunction }) => {
     const [visible, setVisible] = useState(true);
     const [isSaved, setIsSaved] = useState(false);
     useEffect(() => {
-        
+
         saveData = async () => {
             let userData = await AsyncStorage.getItem("userData");
             setIsSaved(true);
-            if(!userData) return;
+            if (!userData) return;
 
             const today = new Date();
             const day = today.getDate();
@@ -36,7 +36,7 @@ export default ExerciseDone = ({ exerciseBurnedDetails, onCloseFunction }) => {
                 id: userData.id,
                 exerciseBurnedDetails: exerciseBurnedDetails,
             };
-            const idName = exerciseBurnedDetails.exerciseName.replace(" '","");
+            const idName = exerciseBurnedDetails.exerciseName.replace(" '", "");
             await saveDataToCloud(
                 `${userData.id}/${formattedDate}/${idName}`,
                 "exerciseBurnedDetails",
@@ -58,7 +58,7 @@ export default ExerciseDone = ({ exerciseBurnedDetails, onCloseFunction }) => {
             </Text>
             <Button
                 onPress={onCloseFunction}
-                color="green"
+                color="#156d94"
                 enabled={isSaved}
                 style={{ width: 200, alignSelf: "center" }}
                 title="Okay"
