@@ -351,9 +351,9 @@ const SleepingTrackerTab = () => {
   };
   ///Chart
   const chartConfig = {
-    backgroundGradientFrom: "#009688", // Set background color to full black
+    backgroundGradientFrom: "#156d94", // Set background color to full black
     backgroundGradientFromOpacity: 1,
-    backgroundGradientTo: "#009688", // Set background color to full black
+    backgroundGradientTo: "#156d94", // Set background color to full black
     backgroundGradientToOpacity: 1,
     color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`, // Set font color to white
     strokeWidth: 2, // optional, default 3
@@ -498,7 +498,7 @@ const SleepingTrackerTab = () => {
     <ScrollView style={styles.scrollView}>
       <SafeAreaView style={styles.container}>
         <View style={{
-          backgroundColor: "#009688",
+          backgroundColor: "#156d94",
           borderRadius: 20,
           elevation: 8,
         }}>
@@ -607,7 +607,7 @@ const SleepingTrackerTab = () => {
               style={{
                 paddingVertical: 10,
                 paddingHorizontal: 16,
-                backgroundColor: '#009688',
+                backgroundColor: '#156d94',
                 borderRadius: 5,
                 width: '50%',
               }}
@@ -629,7 +629,7 @@ const SleepingTrackerTab = () => {
             style={{
               paddingHorizontal: 14,
               paddingVertical: 20,
-              backgroundColor: "#009688",
+              backgroundColor: "#156d94",
               marginBottom: 15,
               borderRadius: 10,
               justifyContent: "space-between",
@@ -671,7 +671,7 @@ const SleepingTrackerTab = () => {
               title={timerActive ? 'Stop' : 'Sleep Now'}
               onPress={() =>
                 handlePress()}
-              leading={(props) => <Ionicons style={{ color: '#009688' }} name={'bed'} {...props} />}
+              leading={(props) => <Ionicons style={{ color: '#156d94' }} name={'bed'} {...props} />}
             />
             {showAlert && (
               <Modal transparent={true}>
@@ -840,7 +840,7 @@ const styles = StyleSheet.create({
     width: "99%",
     height: "28%",
     textAlign: "left",
-    backgroundColor: "#009688",
+    backgroundColor: "#156d94",
     alignItems: "center",
     flexDirection: "row",
     borderRadius: 20,
@@ -909,7 +909,7 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   highlightedDayContainer: {
-    backgroundColor: "#009688", // Set a different background color for the current day
+    backgroundColor: "#156d94", // Set a different background color for the current day
   },
   dayText: {
     fontSize: 18,
@@ -972,7 +972,7 @@ const styles = StyleSheet.create({
   // MODAL STYLES
   button: {
     alignSelf: "flex-end",
-    backgroundColor: "#009688",
+    backgroundColor: "#156d94",
     borderRadius: 20,
     marginHorizontal: 10,
   },
@@ -990,7 +990,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     zIndex: -1,
     bottom: 50,
-    backgroundColor: "#009688",
+    backgroundColor: "#156d94",
     padding: 10,
     marginBottom: "auto",
     elevation: 8,

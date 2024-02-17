@@ -25,7 +25,7 @@ const ExercisePlanScreen = ({ navigation, route, medicalHistory }) => {
         burnedCalories: 0,
     });
     const [isBurnedCaloriesModalVisible, setIsBurnedCaloriesModalVisible] = useState(false);
-
+    const [bearing, setBearing] = useState(['Exercise burned calories will be calculated based on your weight']);
 
     const notGoodFor = exerciseData.notGoodFor;
 
@@ -75,17 +75,35 @@ const ExercisePlanScreen = ({ navigation, route, medicalHistory }) => {
             if (storedData) {
                 const parsedUserData = JSON.parse(storedData);
                 setUserData(parsedUserData);
-                modifyCalorieBasedOnWeight(parsedUserData.weight);
+                const medHistory = parsedUserData.selectMedHistory ? parsedUserData.selectMedHistory.toString() : '';
+                setBearing(['Exercise burned calories will be calculated based on your weight']);
+                modifyCalorieBasedOnWeight(parsedUserData.weight, parsedUserData.goal, medHistory);
             }
         } catch (error) {
             console.log('Error retrieving data:', error);
         }
     };
 
-    modifyCalorieBasedOnWeight = (weight) => {
+    modifyCalorieBasedOnWeight = (weight, goal, medHistory) => {
         let newExerciseList = baseExerciseList;
+        let hiddenBearingMessage = "";
+        let goalBearing = ``;
+
         for (let i = 0; i < baseExerciseList.length; i++) {
             let exercise = baseExerciseList[i];
+            const medHistoryArray = medHistory.split(',').map(item => item.trim());
+            const notGoodForExercise = exercise.notGoodFor ? exercise.notGoodFor.toString() : '';
+            const notGoodForArray = notGoodForExercise.split(',').map(item => item.trim());
+            const hasMedicalCondition = notGoodForArray.some(condition => medHistoryArray.includes(condition));
+            if (hasMedicalCondition) {
+                exercise["hideButton"] = true;
+                if (!hiddenBearingMessage) hiddenBearingMessage = `Since you indicate that you have ${medHistory} health condition, following exercises are hidden: `;
+                hiddenBearingMessage += `${exercise.mealName}, `;
+            }
+            if (goal == 'Maintain Weight' || goal == 'Increase Stamina') {
+                if (!goalBearing) goalBearing = `Since you chose ${goal} as your goal, the duration of your exercises will be 1min 30sec.`;
+            }
+
             if (!exercise.calorieByWeight) continue;
             let calorieByWeight = exercise.calorieByWeight;
             for (let j = 0; j < calorieByWeight.length; j++) {
@@ -111,6 +129,8 @@ const ExercisePlanScreen = ({ navigation, route, medicalHistory }) => {
                 }
             }
         }
+        if (hiddenBearingMessage) hiddenBearingMessage = hiddenBearingMessage.slice(0, -2);
+        setBearing([...bearing, hiddenBearingMessage, goalBearing]);
         setExerciseList(newExerciseList);
     };
 
@@ -275,25 +295,40 @@ const ExercisePlanScreen = ({ navigation, route, medicalHistory }) => {
 
     return (
         <ScrollView>
+
+
+            <View style={{
+                backgroundColor: '#156d94',
+                padding: 10,
+                margin: 10,
+                marginBottom: 0,
+                borderRadius: 10,
+                display: 'flex',
+                flexDirection: 'column',
+            }}>
+                {bearing.map((_bearing, index) => (
+                    _bearing && <Text style={{ color: '#fff', fontSize: 12, marginVertical: 4 }} key={index}>{_bearing}</Text>
+                ))}
+            </View>
+
             {exerciseList.map((exercise, index) => {
                 const notGoodForExercise = exercise.notGoodFor ? exercise.notGoodFor.toString() : '';
                 const medHistory = userData.selectMedHistory ? userData.selectMedHistory.toString() : '';
                 const healthCondition = ["Asthma", "Fatigue"];
-                const notGoodForArray = notGoodForExercise.split(',').map(item => item.trim());
                 const medHistoryArray = medHistory.split(',').map(item => item.trim());
                 const hasCommonData2 = medHistoryArray.some(condition => healthCondition.includes(condition));
-                const hasCommonData = notGoodForArray.some(condition => medHistoryArray.includes(condition));
-                const hideButton = hasCommonData;
+
                 let exerciseDuration = exercise.duration * numberOfSets; // TODO: when changing duration, modify this line
                 const dividedDuration = hasCommonData2 ? (parseInt(exerciseDuration) / 2) : parseInt(exerciseDuration);
 
                 console.log(hasCommonData2);
+                // TODO: set bearing message for asthma and fatigue
 
                 let result = <Text style={styles.details}>Duration: {convertSecondsToMinutesAndSeconds(dividedDuration || 0)}</Text>;
 
 
                 return (
-                    !hideButton && (
+                    !exercise.hideButton && (
                         <TouchableOpacity
                             key={index}
                             style={[styles.touchable]}
@@ -311,8 +346,7 @@ const ExercisePlanScreen = ({ navigation, route, medicalHistory }) => {
                                 </View>
                             </View>
                         </TouchableOpacity>
-                    )
-                );
+                    ));
             })}
 
 

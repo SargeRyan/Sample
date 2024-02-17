@@ -215,7 +215,8 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                 medHistory,
                 heightUnit,
                 info: JSON.stringify(info),
-                selectMedHistory: selectMedHistory.toString()
+                selectMedHistory: selectMedHistory.toString(),
+                goal,
             };
 
             // Save the data to AsyncStorage
@@ -496,7 +497,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                 </View>
 
                 <Pressable
-                    style={{ backgroundColor: "#009688", height: 50, width: 330, borderRadius: 10, marginTop: 5 }}
+                    style={{ backgroundColor: "#156d94", height: 50, width: 330, borderRadius: 10, marginTop: 5 }}
                     onPress={() => {
                         if (isLoggedIn) return setModalVisible(true);
                         if (password !== confirmPassword) return;
@@ -522,8 +523,8 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                     onPress={() => {
                         setShowRegisterScreen(false);
                     }}>
-                    <Text style={{ alignSelf: "center", marginTop: 10, fontSize: 13, fontWeight: "bold", color: "#009688" }}>Log in Instead</Text>
-                    <Text style={{ alignSelf: "center", marginTop: 0, fontSize: 10, fontWeight: "bold", color: "#009688" }}>Mag Log in na lamang</Text>
+                    <Text style={{ alignSelf: "center", marginTop: 10, fontSize: 13, fontWeight: "bold", color: "#156d94" }}>Log in Instead</Text>
+                    <Text style={{ alignSelf: "center", marginTop: 0, fontSize: 10, fontWeight: "bold", color: "#156d94" }}>Mag Log in na lamang</Text>
                 </Pressable>
 
 
@@ -537,7 +538,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                     }}>
 
                     <View style={{ backgroundColor: "#f6f6f6", height: 700 }}>
-                        <View style={{ flexDirection: "row", backgroundColor: "#f9eed9", height: 60 }}>
+                        <View style={{ flexDirection: "row", backgroundColor: "#afd3e2", height: 60 }}>
                             <Pressable
                                 style={[styles.button, styles.buttonClose]}
                                 onPress={() => setModalVisible(!modalVisible)}>
@@ -548,7 +549,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                         </View>
 
                         <Pressable
-                            style={{ backgroundColor: "#009688", height: 50, width: 330, borderRadius: 10, marginTop: 30, position: "absolute", bottom: 20, alignSelf: "center" }}
+                            style={{ backgroundColor: "#156d94", height: 50, width: 330, borderRadius: 10, marginTop: 30, position: "absolute", bottom: 20, alignSelf: "center" }}
                             onPress={() => setModalVisible1(true)}>
                             <Text style={{ alignSelf: "center", marginTop: 10, fontSize: 20, fontWeight: "bold", color: "#fff" }}>NEXT</Text>
                         </Pressable>
@@ -650,7 +651,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                     <SafeAreaView style={{ flex: 1, backgroundColor: "#f6f6f6" }}>
                         <ScrollView style={{ backgroundColor: "#000" }}>
                             <View style={{ backgroundColor: "#f6f6f6", paddingBottom: 100 }}>
-                                <View style={{ flexDirection: "row", backgroundColor: "#f9eed9", height: 60 }}>
+                                <View style={{ flexDirection: "row", backgroundColor: "#afd3e2", height: 60 }}>
                                     <Pressable
                                         style={[styles.button, styles.buttonClose]}
                                         onPress={() => setModalVisible1(!modalVisible1)}>
@@ -661,7 +662,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                 </View>
 
                                 <Pressable
-                                    style={{ backgroundColor: "#009688", height: 50, width: 330, borderRadius: 10, marginTop: 20, position: "absolute", bottom: 30, alignSelf: "center" }}
+                                    style={{ backgroundColor: "#156d94", height: 50, width: 330, borderRadius: 10, marginTop: 20, position: "absolute", bottom: 30, alignSelf: "center" }}
                                     onPress={() => setSampleVisible(true)}>
                                     <Text style={{ alignSelf: "center", marginTop: 10, fontSize: 20, fontWeight: "bold", color: "#fff" }}>NEXT</Text>
                                 </Pressable>
@@ -900,7 +901,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                         setModalVisible(!modalSampleVisible);
                     }}>
                     <View style={{ backgroundColor: "#f6f6f6", height: 700 }}>
-                        <View style={{ flexDirection: "row", backgroundColor: "#f9eed9", height: 60 }}>
+                        <View style={{ flexDirection: "row", backgroundColor: "#afd3e2", height: 60 }}>
                             <Pressable
                                 style={[styles.button, styles.buttonClose]}
                                 onPress={() => setSampleVisible(!modalSampleVisible)}>
@@ -1056,7 +1057,7 @@ const styles = StyleSheet.create({
 
     appButtonContainer: {
         elevation: 8,
-        backgroundColor: "#009688",
+        backgroundColor: "#156d94",
         borderRadius: 20,
         width: 340,
         paddingVertical: 11,

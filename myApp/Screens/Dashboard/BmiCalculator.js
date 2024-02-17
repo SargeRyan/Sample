@@ -312,7 +312,7 @@ export default BmiCalculator = ({ navigation, route }) => {
                                 <TextInput editable={false} selectTextOnFocus={false} style={{ width: 150, alignSelf: "center" }} value={userData.weight}></TextInput>
                             </View>
 
-                            {/* <TouchableOpacity style={{ backgroundColor: "#009688", height: 50, width: 300, alignSelf: "center", marginTop: 15, borderRadius: 20 }} onPress={calculateBmi}>
+                            {/* <TouchableOpacity style={{ backgroundColor: "#156d94", height: 50, width: 300, alignSelf: "center", marginTop: 15, borderRadius: 20 }} onPress={calculateBmi}>
                                 <Text style={{ alignSelf: "center", marginTop: 10, fontSize: 20, fontWeight: "bold", color: "#fff" }}>Calculate</Text>
                             </TouchableOpacity> */}
 
@@ -333,7 +333,7 @@ export default BmiCalculator = ({ navigation, route }) => {
                         </View>
 
                         {/* <Modal visible={modalVisible} animationType="slide">
-                            <ScrollView style={{ backgroundColor: "#f9eed9" }}>
+                            <ScrollView style={{ backgroundColor: "#afd3e2" }}>
                                 <View style={{ height: 70, backgroundColor: "#fff", flexDirection: "row", borderTopLeftRadius: 10, borderTopRightRadius: 10 }}>
                                     <TouchableOpacity onPress={() => setModalVisible(false)}>
                                         <Image
@@ -439,7 +439,7 @@ const styles = StyleSheet.create({
     },
     appButtonContainer: {
         elevation: 8,
-        backgroundColor: "#009688",
+        backgroundColor: "#156d94",
         borderRadius: 20,
         width: 340,
         paddingVertical: 11,
@@ -459,7 +459,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         borderBottomColor: "#ccc",
         marginBottom: 15,
-        backgroundColor: "#f9eed9",
+        backgroundColor: "#afd3e2",
         borderRadius: 18,
         width: 320,
         height: 70,
@@ -471,7 +471,7 @@ const styles = StyleSheet.create({
         height: 5,
         width: 250,
         marginTop: 7,
-        backgroundColor: "#f9eed9",
+        backgroundColor: "#afd3e2",
 
     },
     genderContainer: {
@@ -479,7 +479,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         borderBottomColor: "#ccc",
         marginBottom: 15,
-        backgroundColor: "#f9eed9",
+        backgroundColor: "#afd3e2",
         borderRadius: 18,
         width: 320,
         height: 70,

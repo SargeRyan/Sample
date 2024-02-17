@@ -414,7 +414,7 @@ const styles = StyleSheet.create({
     },
     scheduleText: {
         fontSize: 18, // Increase font size for better readability
-        color: '#009688', // Change text color
+        color: '#156d94', // Change text color
         fontWeight: 'bold', // Make text bold
         padding: 10, // Add some padding
         maxWidth: '75%', // Set a max width

@@ -53,7 +53,7 @@ export default LogInScreen = ({ setShowRegisterScreen, setShowMainScreen }) => {
 
         appButtonContainer: {
             elevation: 8,
-            backgroundColor: "#009688",
+            backgroundColor: "#156d94",
             borderRadius: 20,
             width: 340,
             paddingVertical: 11,
@@ -317,7 +317,7 @@ export default LogInScreen = ({ setShowRegisterScreen, setShowMainScreen }) => {
                 </View>
 
                 <Pressable
-                    style={{ backgroundColor: "#009688", height: 50, width: 330, borderRadius: 10, marginTop: 5 }}
+                    style={{ backgroundColor: "#156d94", height: 50, width: 330, borderRadius: 10, marginTop: 5 }}
                     onPress={() => {
                         if (!username || !password) return setError("Please fill up all the fields");
                         const usernameRef = ref(db, `userLogIn/${username}`);
@@ -341,8 +341,8 @@ export default LogInScreen = ({ setShowRegisterScreen, setShowMainScreen }) => {
                     onPress={() => {
                         setShowRegisterScreen(true);
                     }}>
-                    <Text style={{ alignSelf: "center", marginTop: 10, fontSize: 13, fontWeight: "bold", color: "#009688" }}>No Account? Register</Text>
-                    <Text style={{ alignSelf: "center", marginTop: 0, fontSize: 10, fontWeight: "bold", color: "#009688" }}>Walang Account? Mag rehistro</Text>
+                    <Text style={{ alignSelf: "center", marginTop: 10, fontSize: 13, fontWeight: "bold", color: "#156d94" }}>No Account? Register</Text>
+                    <Text style={{ alignSelf: "center", marginTop: 0, fontSize: 10, fontWeight: "bold", color: "#156d94" }}>Walang Account? Mag rehistro</Text>
                 </Pressable>
 
             </SafeAreaView>
