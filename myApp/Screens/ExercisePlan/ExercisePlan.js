@@ -26,8 +26,14 @@ const ExercisePlanScreen = ({ navigation, route, medicalHistory }) => {
     });
     const [isBurnedCaloriesModalVisible, setIsBurnedCaloriesModalVisible] = useState(false);
     const [bearing, setBearing] = useState(['Exercise burned calories will be calculated based on your weight']);
-
+    const [currentDuration, setCurrentDuration] = useState(0);
+    const thirtyMins = 30 * 60;
+    const fifteenMins = 15 * 60;
+    const [targetDuration, setTargetDuration] = useState(thirtyMins);
     const notGoodFor = exerciseData.notGoodFor;
+    const todayDate = new Date();
+    const currentDayIndex = todayDate.getDay();
+    const currentMonthIndex = todayDate.getMonth();
 
     if (exerciseData && exerciseData.notGoodFor) {
         const notGoodFor = exerciseData.notGoodFor;
@@ -67,6 +73,14 @@ const ExercisePlanScreen = ({ navigation, route, medicalHistory }) => {
         let currentBurned = burnedCalories;
         if (previousBurned) currentBurned += Number(previousBurned);
         await storeData(storage_Key, currentBurned.toString());
+
+        // save the duration of the exercise
+        const duration_Key = `${currentDayIndex}_exerciseDuration`;
+        const previousDuration = await getData(duration_Key);
+        let currentDuration = duration;
+        if (previousDuration) currentDuration += Number(previousDuration);
+        await storeData(duration_Key, currentDuration.toString());
+        setCurrentDuration(currentDuration);
     }
 
     const fetchData = async () => {
@@ -78,6 +92,11 @@ const ExercisePlanScreen = ({ navigation, route, medicalHistory }) => {
                 const medHistory = parsedUserData.selectMedHistory ? parsedUserData.selectMedHistory.toString() : '';
                 setBearing(['Exercise burned calories will be calculated based on your weight']);
                 modifyCalorieBasedOnWeight(parsedUserData.weight, parsedUserData.goal, medHistory);
+
+                const currentDayIndex = todayDate.getDay();
+                const duration_Key = `${currentDayIndex}_exerciseDuration`;
+                const previousDuration = await getData(duration_Key);
+                if (previousDuration) setCurrentDuration(Number(previousDuration));
             }
         } catch (error) {
             console.log('Error retrieving data:', error);
@@ -102,6 +121,7 @@ const ExercisePlanScreen = ({ navigation, route, medicalHistory }) => {
             }
             if (goal == 'Maintain Weight' || goal == 'Increase Stamina') {
                 if (!goalBearing) goalBearing = `Since you chose ${goal} as your goal, the duration of your exercises will be 1min 30sec.`;
+                setTargetDuration(fifteenMins);
             }
 
             if (!exercise.calorieByWeight) continue;
@@ -209,7 +229,7 @@ const ExercisePlanScreen = ({ navigation, route, medicalHistory }) => {
                     if ((restTimeRemaining * -1) > 0) {
                         restTimeRemaining++;
                         return restTimeRemaining;
-                    } else if (timeRemaining % (totalTime + 10) === 0 && timeRemaining !== totalTime) {
+                    } else if (prevTime === 1) {
                         restTimeRemaining = -10;
                         return restTimeRemaining;
                     }
@@ -288,6 +308,7 @@ const ExercisePlanScreen = ({ navigation, route, medicalHistory }) => {
         if (seconds > 0) {
             result += seconds + " sec";
         }
+        if (!result) return "0 sec";
         return result.trim();
     }
 
@@ -310,6 +331,11 @@ const ExercisePlanScreen = ({ navigation, route, medicalHistory }) => {
                     _bearing && <Text style={{ color: '#fff', fontSize: 12, marginVertical: 4 }} key={index}>{_bearing}</Text>
                 ))}
             </View>
+
+            <Text style={{ color: '#156d94', fontSize: 15, marginTop: 10, marginLeft: 10, fontWeight: 'bold' }}>
+                Duration Max Goal : {convertSecondsToMinutesAndSeconds(currentDuration)} / {convertSecondsToMinutesAndSeconds(targetDuration)}
+            </Text>
+
 
             {exerciseList.map((exercise, index) => {
                 const notGoodForExercise = exercise.notGoodFor ? exercise.notGoodFor.toString() : '';
@@ -378,7 +404,7 @@ const ExercisePlanScreen = ({ navigation, route, medicalHistory }) => {
 
                                 {timer < 0 && (
                                     <TouchableOpacity style={[styles.StartButtonClick, { height: 300, display: "flex", justifyContent: "center", alignItems: "center", borderRadius: 20, backgroundColor: '#156d94' }]}>
-                                        <Text style={[styles.startText, { color: '#fff' }]}>REST</Text>
+                                        <Text style={[styles.startText, { color: '#fff', marginTop: 50 }]}>REST</Text>
                                         <Text style={[styles.startText, { color: '#fff', marginTop: 10, 'fontSize': 16 }]}>DRINK WATER</Text>
                                         <Text style={[styles.startText, { color: '#fff', marginTop: 0, 'fontSize': 16 }]}>WATCH YOUR BODY</Text>
 
