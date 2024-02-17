@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ScrollView, StyleSheet, TouchableOpacity, View, Text, Image, Modal, Button } from "react-native";
 import { Video } from "expo-av";
-import { exerciseList } from "./component/exerciseList";
+import { exerciseList as baseExerciseList } from "./component/exerciseList";
 import { getData, storeData } from "../../AsyncStorageFunctions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import headRotationVideo from './picture/Ecercise/headRotation.mp4';
@@ -10,6 +10,7 @@ import { set } from "date-fns";
 
 const ExercisePlanScreen = ({ navigation, route, medicalHistory }) => {
     const numberOfSets = 3;
+    const [exerciseList, setExerciseList] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedExercise, setSelectedExercise] = useState(null);
     const [isOnRest, setIsOnRest] = useState(false);
@@ -20,7 +21,6 @@ const ExercisePlanScreen = ({ navigation, route, medicalHistory }) => {
     const [countdown, setCountdown] = useState(null);
     const [timerRunning, setTimerRunning] = useState(false);
     const exerciseData = require('./component/exerciseList.js');
-    const [userdata, setuserData] = useState(userData.selectMedHistory);
     const [exerciseBurnedDetails, setExerciseBurnedDetails] = useState({
         burnedCalories: 0,
     });
@@ -73,12 +73,45 @@ const ExercisePlanScreen = ({ navigation, route, medicalHistory }) => {
         try {
             const storedData = await AsyncStorage.getItem('userData');
             if (storedData) {
-                const parsedData = JSON.parse(storedData);
-                setUserData(parsedData);
+                const parsedUserData = JSON.parse(storedData);
+                setUserData(parsedUserData);
+                modifyCalorieBasedOnWeight(parsedUserData.weight);
             }
         } catch (error) {
             console.log('Error retrieving data:', error);
         }
+    };
+
+    modifyCalorieBasedOnWeight = (weight) => {
+        let newExerciseList = baseExerciseList;
+        for (let i = 0; i < baseExerciseList.length; i++) {
+            let exercise = baseExerciseList[i];
+            if (!exercise.calorieByWeight) continue;
+            let calorieByWeight = exercise.calorieByWeight;
+            for (let j = 0; j < calorieByWeight.length; j++) {
+                const currentWeightCondition = Number(weight) <= Number(calorieByWeight[j].weight);
+                const prevWeightCondition = j > 0 && Number(weight) > Number(calorieByWeight[j - 1].weight);
+                if (currentWeightCondition && prevWeightCondition) {
+                    exercise.caloriesBurn = calorieByWeight[j].calories;
+                    newExerciseList[i] = exercise;
+                    continue;
+                }
+
+                if (j === 0 && currentWeightCondition) {
+                    exercise.caloriesBurn = calorieByWeight[j].calories;
+                    newExerciseList[i] = exercise;
+                    continue;
+                }
+
+                let isLastIndex = j === calorieByWeight.length - 1;
+                let isWeightGreaterThanLast = weight > calorieByWeight[j].weight;
+                if (isLastIndex && isWeightGreaterThanLast) {
+                    exercise.caloriesBurn = calorieByWeight[j].calories;
+                    newExerciseList[i] = exercise;
+                }
+            }
+        }
+        setExerciseList(newExerciseList);
     };
 
     const handleExerciseClick = (exercise, durationAfterMedicalCondition) => {
@@ -242,7 +275,6 @@ const ExercisePlanScreen = ({ navigation, route, medicalHistory }) => {
 
     return (
         <ScrollView>
-
             {exerciseList.map((exercise, index) => {
                 const notGoodForExercise = exercise.notGoodFor ? exercise.notGoodFor.toString() : '';
                 const medHistory = userData.selectMedHistory ? userData.selectMedHistory.toString() : '';
