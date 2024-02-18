@@ -5,7 +5,8 @@ export const exerciseList = [
     "caloriesBurn": "225",
     "duration": "60", // time per set
     "notGoodFor": ["Stroke", "High Blood", "Asthma", "Diabetes", "Fatigue", "Arthritis"],
-    "exerciseVid": 'https://drive.google.com/uc?id=18IUdKNePNh5GvGWMUQjbLg2WWIFPUjx8',
+    // "exerciseVid": 'https://drive.google.com/uc?id=18IUdKNePNh5GvGWMUQjbLg2WWIFPUjx8',
+    "exerciseVid": 'https://drive.google.com/uc?id=1dJkrJI_wNcvMhs5npU-HXhER-rYYdLho',
     "calorieByWeight": [
       {
         "weight": 57,
@@ -28,7 +29,7 @@ export const exerciseList = [
     "caloriesBurn": "112",
     "duration": "60", // time per set
     "notGoodFor": ["Fatigue"],
-    "exerciseVid": 'https://drive.google.com/uc?id=19oXdvhH8IcDzYcvKLfXuu46h3re7ouQv',
+    "exerciseVid": 'https://drive.google.com/uc?id=1pujH4OABWJC6oZt9OWHl8x6AUXmom4qm',
     "calorieByWeight": [
       {
         "weight": 57,
@@ -51,7 +52,8 @@ export const exerciseList = [
     "caloriesBurn": "84",
     "duration": "60",
     "notGoodFor": ["Fatigue"],
-    "exerciseVid": 'https://drive.google.com/uc?id=19TWWMzr6XnehK0QwpBUMxt0f5Zx0gl-d',
+    // "exerciseVid": 'https://drive.google.com/uc?id=19TWWMzr6XnehK0QwpBUMxt0f5Zx0gl-d',
+    "exerciseVid": 'https://drive.google.com/uc?id=1rK9jzp_yLtiCXDY10_gbG78tJN-gibwW',
     "calorieByWeight": [
       {
         "weight": 57,
@@ -74,7 +76,8 @@ export const exerciseList = [
     "caloriesBurn": "153",
     "duration": "60",
     "notGoodFor": ["Fatigue", "Stroke", "Arthritis", "Asthma", "High Blood"],
-    "exerciseVid": "https://drive.google.com/uc?id=18MELwImAd4u6vuAd2zY5A0fR0gAwn1xo",
+    // "exerciseVid": "https://drive.google.com/uc?id=18MELwImAd4u6vuAd2zY5A0fR0gAwn1xo",
+    "exerciseVid": "https://drive.google.com/uc?id=1LAv3b0ckPfX6VVHfXw7uuHai0VA70p4H",
     "calorieByWeight": [
       {
         "weight": 57,

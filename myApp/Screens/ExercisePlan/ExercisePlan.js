@@ -387,7 +387,7 @@ const ExercisePlanScreen = ({ navigation, route, medicalHistory }) => {
                         {selectedExercise && (
                             <View style={styles.modalDetails}>
                                 {timer >= 0 && (
-                                    <View style={{ height: 300, backgroundColor: '#156d94', borderRadius: 5 }}>
+                                    <View style={{ height: 300, backgroundColor: '#156d94', borderRadius: 20 }}>
                                         {/* <Video
                                         ref={videoRef}
                                         source={{ uri: selectedExercise.exerciseVid }}
@@ -397,7 +397,8 @@ const ExercisePlanScreen = ({ navigation, route, medicalHistory }) => {
                                         onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
                                     /> */}
 
-                                        <Image source={{ uri: selectedExercise.exerciseVid }} style={styles.image1} />
+                                        {timerRunning && <Image source={{ uri: selectedExercise.exerciseVid }} style={styles.image1} />}
+                                        {!timerRunning && <Image source={{ uri: selectedExercise.mealImage }} style={styles.image1} />}
 
                                     </View>
                                 )}
