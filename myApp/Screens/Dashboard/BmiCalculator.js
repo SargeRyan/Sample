@@ -1,4 +1,4 @@
-import { Touchable, TouchableOpacity } from "react-native";
+import { Touchable, TouchableOpacity, Alert } from "react-native";
 import SyncDataToCloud from "./SyncDataToCloud";
 import {
     Text,
@@ -267,24 +267,41 @@ export default BmiCalculator = ({ navigation, route }) => {
                             color="#87a3af"
                             title={"Log Out"}
                             onPress={async () => {
-                                userData.isOld = true;
-                                const allAsyncData = await getAllAsyncData();
-                                await saveDataToCloud("allAsyncData", "userLogIn/" + userData.username, allAsyncData);
-                                // await AsyncStorage.removeItem('userData');
-                                await AsyncStorage.clear();
-                                setUserData({});
-                                setBmi('');
-                                setBmiSpeedometer(0);
-                                setDescription('');
-                                // clear medical history
-                                // let allKeys = await AsyncStorage.getAllKeys();
-                                // for (let i = 0; i < allKeys.length; i++) {
-                                //     if (allKeys[i].startsWith("@medicalHistory_")) {
-                                //         await AsyncStorage.removeItem(allKeys[i]);
-                                //     }
-                                // }
+                                // show confirmation dialog
+                                Alert.alert(
+                                    'Log out',
+                                    'Are you sure you want to Log out?',
+                                    [
+                                        {
+                                            text: 'Cancel',
+                                            style: 'cancel',
+                                        },
+                                        {
+                                            text: 'Log out',
+                                            style: 'destructive',
+                                            onPress: async () => {
+                                                userData.isOld = true;
+                                                const allAsyncData = await getAllAsyncData();
+                                                await saveDataToCloud("allAsyncData", "userLogIn/" + userData.username, allAsyncData);
+                                                // await AsyncStorage.removeItem('userData');
+                                                await AsyncStorage.clear();
+                                                setUserData({});
+                                                setBmi('');
+                                                setBmiSpeedometer(0);
+                                                setDescription('');
+                                                // clear medical history
+                                                // let allKeys = await AsyncStorage.getAllKeys();
+                                                // for (let i = 0; i < allKeys.length; i++) {
+                                                //     if (allKeys[i].startsWith("@medicalHistory_")) {
+                                                //         await AsyncStorage.removeItem(allKeys[i]);
+                                                //     }
+                                                // }
 
-                                Updates.reloadAsync()
+                                                Updates.reloadAsync()
+                                            }
+                                        }
+                                    ],
+                                );
                             }} />
 
                         <View>

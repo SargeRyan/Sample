@@ -550,7 +550,13 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
 
                         <Pressable
                             style={{ backgroundColor: "#156d94", height: 50, width: 330, borderRadius: 10, marginTop: 30, position: "absolute", bottom: 20, alignSelf: "center" }}
-                            onPress={() => setModalVisible1(true)}>
+                            onPress={() => {
+                                if (!goal) {
+                                    alert("Please select a goal")
+                                    return;
+                                }
+                                setModalVisible1(true)
+                            }}>
                             <Text style={{ alignSelf: "center", marginTop: 10, fontSize: 20, fontWeight: "bold", color: "#fff" }}>NEXT</Text>
                         </Pressable>
 
@@ -569,18 +575,21 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                         { label: 'Lose 0.25kg per week', value: '0.25' },
                                         { label: 'Lose 0.50kg per week', value: '0.50' },
                                         { label: 'Lose 0.75kg per month', value: '0.18' },
-
                                     ])
                                 }}
                                 label={'Loss Weight (Magbawas ng timbang)'}
                                 containerStyle={styles.goalCheckBox}
                             />
                         </View>
-                        <View style={styles.goalCheckBoxContainer}>
+                        <View style={[styles.goalCheckBoxContainer, { zIndex: 10 }]}>
                             <CheckBox
                                 value={goal}
                                 checked={goal === 'Maintain Weight'}
                                 onChange={() => {
+                                    if (weight > limitationWeight.max) {
+                                        alert('Your weight is higher that recommended, please select another goal')
+                                        return;
+                                    }
                                     setGoal('Maintain Weight')
                                     setSelections([])
                                 }}
@@ -588,7 +597,10 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                 containerStyle={styles.goalCheckBox}
                             />
                         </View>
-                        <View style={[styles.goalCheckBoxContainer, { opacity: weight >= limitationWeight.max ? 0 : 1, marginTop: weight >= limitationWeight.max ? -50 : 10 }]}>
+                        <View style={[styles.goalCheckBoxContainer, {
+                            opacity: weight >= limitationWeight.max ? 0 : 1, marginTop: weight >= limitationWeight.max ? -50 : 10,
+                            zIndex: weight >= limitationWeight.max ? -10 : 10,
+                        }]}>
                             <CheckBox
                                 value={goal}
                                 checked={goal === 'Gain Weight'}
