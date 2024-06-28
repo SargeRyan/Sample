@@ -166,7 +166,7 @@ export const exerciseList = [
     "caloriesBurn": "18",
     "duration": "60",
     "notGoodFor": ["g"],
-    "exerciseVid": "https://drive.google.com/uc?id=1dCLACGwJjD8W4HewbcrwNf_r_wm4yJTn",
+    "exerciseVid": "https://drive.google.com/uc?id=18KJwmUEK-UzsPzurnoMedCr7EiB3uc96",
     "calorieByWeight": [
       {
         "weight": 57,
@@ -184,11 +184,11 @@ export const exerciseList = [
   },
   {
     "mealName": "Hip Rotation",
-    "mealImage": "https://drive.google.com/uc?id=1QxlA8Ef6S4rFIg4vn3mhH-q3BfVIhzsk",
+    "mealImage": "https://drive.google.com/uc?id=1Hog27WyOFltkGCvGcH17dalFOAyLvLOS",
     "caloriesBurn": " 67",
     "duration": "60",
     "notGoodFor": ["g"],
-    "exerciseVid": "https://drive.google.com/uc?id=18KJwmUEK-UzsPzurnoMedCr7EiB3uc96",
+    "exerciseVid": "",
     "calorieByWeight": [
       {
         "weight": 57,
