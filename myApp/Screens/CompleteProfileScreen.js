@@ -276,7 +276,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                 <View>
                     <Image
                         style={styles.imageTitleHeader}
-                        source={require("../image/logo.png")}
+                        source={require("../image/logo.jpg")}
                     />
                 </View>
 

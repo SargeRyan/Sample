@@ -21,10 +21,10 @@
     "slug": "myApp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/logo.jpg",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/logo.jpg",
+      "image": "./assets/logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -36,7 +36,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logo.jpg",
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "useNextNotificationsApi": true,
@@ -47,7 +47,7 @@
       "package": "com.paulpaulpaulpaul.Healtpilot"
     },
     "web": {
-      "favicon": "./assets/logo.jpg"
+      "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {

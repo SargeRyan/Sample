@@ -48,8 +48,6 @@ export default Announcements = ({ navigation, route }) => {
                                 shadowOffset: { width: 0, height: 2 },
                                 shadowOpacity: 0.2,
                                 shadowRadius: 4,
-                                // Android
-                                backgroundColor: "rgba(207, 233, 255,0.5)"
                             }}
                         >
                             <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{announcement.title}</Text>
