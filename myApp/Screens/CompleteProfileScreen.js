@@ -587,7 +587,7 @@ export default CompleteProfileScreen = ({ setShowMainScreen }) => {
                                 checked={goal === 'Maintain Weight'}
                                 onChange={() => {
                                     if (weight > limitationWeight.max) {
-                                        alert('Your weight is higher that recommended, please select another goal')
+                                        alert('Your weight is higher than recommended, please select another goal \n(Ang iyong timbang ay mas mataas kaysa sa inirerekomenda, mangyaring pumili ng ibang layunin)')
                                         return;
                                     }
                                     setGoal('Maintain Weight')
